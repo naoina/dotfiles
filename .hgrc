@@ -1,0 +1,11 @@
+[ui]
+username = Naoya Inada <naoina@naniyueni.org>
+merge = /usr/bin/vimdiff
+ignore = .hg/hgignore
+
+[web]
+allow_archive = bz2 gz zip
+encoding = UTF-8
+
+[merge-tools]
+checkconflicts = True

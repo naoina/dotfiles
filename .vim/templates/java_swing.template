@@ -1,0 +1,128 @@
+package org.naniyueni;
+
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
+
+public class %FILENAME% {
+
+    private static final String PROGNAME = "%FILENAME%";
+    private static final String VERSION = "0.1";
+
+    private JFrame frame = null;
+    private JPanel contentPane = null;
+    private JMenuBar menuBar = null;
+    private JMenu fileMenu = null;
+    private JMenu helpMenu = null;
+    private JMenuItem exitMenuItem = null;
+    private JMenuItem aboutMenuItem = null;
+    private JPanel aboutContentPane = null;
+    private JLabel aboutVersionLabel = null;
+    private JLabel aboutCopyrightLabel = null;
+
+    private JFrame getJFrame() {
+        if (frame == null) {
+            frame = new JFrame();
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setJMenuBar(getMenuBar());
+            frame.setSize(300, 200);
+            frame.setContentPane(getContentPane());
+            frame.setTitle(PROGNAME);
+        }
+
+        return frame;
+    }
+
+    private JPanel getContentPane() {
+        if (contentPane == null) {
+            contentPane = new JPanel();
+            contentPane.setLayout(new BorderLayout());
+        }
+
+        return contentPane;
+    }
+
+    private JMenuBar getMenuBar() {
+        if (menuBar == null) {
+            menuBar = new JMenuBar();
+            menuBar.add(getFileMenu());
+            menuBar.add(getHelpMenu());
+        }
+
+        return menuBar;
+    }
+
+    private JMenu getFileMenu() {
+        if (fileMenu == null) {
+            fileMenu = new JMenu();
+            fileMenu.setText("ファイル");
+            fileMenu.add(getExitMenuItem());
+        }
+
+        return fileMenu;
+    }
+
+    private JMenu getHelpMenu() {
+        if (helpMenu == null) {
+            helpMenu = new JMenu();
+            helpMenu.setText("ヘルプ");
+            helpMenu.add(getAboutMenuItem());
+        }
+
+        return helpMenu;
+    }
+
+    private JMenuItem getExitMenuItem() {
+        if (exitMenuItem == null) {
+            exitMenuItem = new JMenuItem();
+            exitMenuItem.setText("閉じる");
+            exitMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    System.exit(0);
+                }
+            });
+        }
+
+        return exitMenuItem;
+    }
+
+    private JMenuItem getAboutMenuItem() {
+        if (aboutMenuItem == null) {
+            aboutMenuItem = new JMenuItem();
+            aboutMenuItem.setText(PROGNAME + "について");
+            aboutMenuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    JOptionPane.showMessageDialog(getJFrame(),
+                        "バージョン" + VERSION,
+                        PROGNAME + "について",
+                        JOptionPane.INFORMATION_MESSAGE);
+                }
+            });
+        }
+
+        return aboutMenuItem;
+    }
+
+    public static void main (String [] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                %FILENAME% app = new %FILENAME%();
+                app.getJFrame().setVisible(true);
+            }
+        });
+    }
+} // End of %FILENAME% class.

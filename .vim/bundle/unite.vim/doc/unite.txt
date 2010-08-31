@@ -1,0 +1,244 @@
+*unite.txt*	Unite all sources
+
+Version: 0.1
+Author : Shougo <Shougo.Matsu@gmail.com>
+License: MIT license  {{{
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the
+    "Software"), to deal in the Software without restriction, including
+    without limitation the rights to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell copies of the Software, and to
+    permit persons to whom the Software is furnished to do so, subject to
+    the following conditions:
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+}}}
+
+CONTENTS					*unite-contents*
+
+Introduction		|unite-introduction|
+Install			|unite-install|
+Interface		|unite-interface|
+  Commands		  |unite-commands|
+  Variables		  |unite-variables|
+  Key mappings		  |unite-key-mappings|
+Examples		|unite-examples|
+Create source		|unite-create-source|
+ToDo			|unite-todo|
+Bugs			|unite-bugs|
+Changelog		|unite-changelog|
+
+==============================================================================
+INTRODUCTION					*unite-introduction*
+
+==============================================================================
+USAGE						*unite-usage*
+
+==============================================================================
+INSTALL						*unite-install*
+
+==============================================================================
+INTERFACE					*unite-interface*
+
+------------------------------------------------------------------------------
+COMMANDS 					*unite-commands*
+
+:Unite {sources}				*:Unite*
+		Unite all sources. Initial narrowing text is empty.
+
+:UniteWithCurrentDir {sources}			*:UniteWithCurrentDir*
+		Unite all sources. Initial narrowing text is current directory.
+
+:UniteWithBufferDir {sources}			*:UniteWithBufferDir*
+		Unite all sources. Initial narrowing text is current buffer
+		directory.
+
+------------------------------------------------------------------------------
+VARIABLES 					*unite-variables*
+
+g:unite_update_time				*g:unite_update_time*
+		
+		
+		Default value is 200.
+
+g:unite_enable_ignore_case			*g:unite_enable_ignore_case*
+		
+		
+		Default value is same to 'ignorecase'.
+
+g:unite_enable_smart_case			*g:unite_enable_smart_case*
+		
+		
+		Default value is same to 'infercase'.
+
+g:unite_substitute_patterns			*g:unite_substitute_patterns*
+		
+		
+		Default value is refer to autoload/unite.vim.
+
+g:unite_temporary_directory			*g:unite_temporary_directory*
+		
+		
+		Default value is expand('~/.unite').
+
+------------------------------------------------------------------------------
+KEY MAPPINGS 					*unite-key-mappings*
+
+Normal mode mappings.
+
+<Plug>(unite_exit)				*<Plug>(unite_exit)*
+		Exit unite.
+
+Visual mode mappings.
+
+<Plug>(unite_toggle_mark_selected_lines)	*<Plug>(unite_toggle_selected_lines)*
+		Toggle marks in selected lines.
+
+						*g:unite_default_key_mappings*
+Following keymappings are default keymappings.
+
+Normal mode mappings.
+{lhs}			{rhs}
+--------		-----------------------------
+
+	Please refer to unite#mappings#define_default_mappings() in
+	autoload/unite/mappings.vim.
+
+==============================================================================
+EXAMPLES					*unite-examples*
+>
+	
+	" The prefix key.
+	nnoremap    [unite]   <Nop>
+	nmap    ' [unite]
+	
+	nnoremap [unite]u  :<C-u>Unite<Space>
+	nnoremap <silent> [unite]'  :<C-u>UniteWithCurrentDir buffer file_mru file<CR>
+	nnoremap <silent> [unite]b  :<C-u>UniteWithBufferDir buffer file_mru file<CR>
+	
+	autocmd FileType unite call s:unite_my_settings()
+	function! s:unite_my_settings()"{{{
+	" Overwrite settings.
+	imap <buffer> jj      <Plug>(unite_insert_leave)
+	nnoremap <buffer> t G
+	"startinsert
+	endfunction"}}}
+	
+	let g:unite_source_file_mru_limit = 200
+	
+>
+==============================================================================
+TODO						*unite-todo*
+
+==============================================================================
+BUGS						*unite-bugs*
+
+==============================================================================
+CHANGELOG					*unite-changelog*
+
+2010-08-28
+- Fixed / mapping.
+- Fixed startinsert error.
+- Fixed mappings.
+- Fixed initialization bug.
+- Implemented caching candidates.
+- Improved caching behavior.
+- Improved <Plug>(unite_enter).
+- Added UniteWithCurrentDir.
+- Added UniteWithBufferDir.
+- Improved <Plug>(unite_do_selected_candidate).
+
+2010-08-27
+- Improved <Enter> mappings.
+
+2010-08-25
+- Added examples.
+
+2010-08-19
+- Added wildcard syntax.
+
+2010-08-18
+- Added <Plug>(unite_print_candidate) mapping.
+- Improved truncate string.
+- Fixed escape bug.
+- Implemented insert mode completion.
+- Improved truncate max.
+- Improved unite_enter.
+- Implemented <Plug>(unite_insert_leave) mapping.
+
+2010-08-13
+- Fixed highlight bug.
+- Fixed buffer filtering bug.
+- Fixed load error.
+
+2010-08-12
+- Improved source buffer.
+- Improved mappings.
+- Improved filter.
+- Added g:unite_enable_ignore_case and g:unite_enable_smart_case option.
+
+2010-08-10
+- Improved keymappings.
+- Improved InsertLeave behavior.
+- Improved substitute tilde.
+- Added g:unite_substitute_patterns option.
+
+2010-08-08
+- Fixed nomodifiable error.
+- Improved redraw.
+- Implemented previous/next source.
+
+2010-08-07
+- Implemented buffer delete.
+- Improved action table.
+- Implemented marks.
+- Improved buffer settings.
+
+2010-08-06
+- Improved buffer abbr.
+- Renamed unite#buf_leave().
+- Improved buffer sort.
+- Improved cursor position.
+- Improved buffer leave.
+
+2010-08-05
+- Fixed buffer switch.
+- Improved match behavior.
+
+2010-08-04
+- Improved menu.
+- Improved syntax.
+- Improved redrawtime.
+- Improved file source.
+- Fixed open bugs.
+
+2010-08-03
+- Changed mru file format.
+- Changed mappings name.
+- Added highlight match.
+
+2010-08-02
+- Improved mappings name.
+
+2010-08-01
+- Updated file_mru.
+- Improved mappings.
+
+2010-07-31
+- Added documentation.
+- Added syntax file.
+- Implemented buffer source.
+- Added file source.
+- Added file_mru source.
+- Some improvements.
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:fdm=marker:
