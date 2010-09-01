@@ -248,7 +248,18 @@ function! s:php_setting()
   setlocal include=
 endfunction
 
-au MyAutoCmd FileType python call s:python_setting()
-au MyAutoCmd FileType php    call s:php_setting()
+function! s:html_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal expandtab
+endfunction
+
+function! s:setting()
+  let f = "s:" . &ft . "_setting()"
+  if exists("*" . f)
+    exec "call " . f
+  endif
+endfunction
+
+au MyAutoCmd FileType * call s:setting()
 
 " vim: set ft=vim sw=2 :
