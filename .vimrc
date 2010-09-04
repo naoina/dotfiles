@@ -34,6 +34,7 @@ match FullwidthSpace /　/
 
 runtime macros/matchit.vim
 call pathogen#runtime_append_all_bundles()
+call pathogen#helptags()
 
 
 set backupdir=$VIMLOCAL/backup
@@ -77,8 +78,6 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,japan,sjis,utf-8
 set fileformat=unix
 set fileformats=unix,dos,mac
-
-setlocal omnifunc=syntaxcomplete#Complete
 
 " Mappings.
 noremap j  gj
@@ -136,18 +135,21 @@ au BufReadPost * normal '"
 au BufEnter * exec "lcd " . expand("%:p:h")
 
 "actionscript,mxml setting.
-au BufNewFile,BufRead *.as      set filetype=actionscript
-au BufNewFile,BufRead *.mxml    set filetype=mxml
+au BufNewFile,BufRead *.as      setlocal filetype=actionscript
+au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
+
+au BufNewFile,BufRead *.inc     setlocal filetype=php
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
 let timestamp_rep    = '%F %T %z'
 
 " For NERD_commenter, script_id=1218.
+" let NERDCreateDefaultMappings = 0
 let NERDSpaceDelims = 1
-nmap <C-_> ,c<SPACE>
-vmap <C-_> ,c<SPACE>
-imap <C-_> <C-o>,c<SPACE>
+nmap <C-_> <Plug>NERDCommenterInvert
+vmap <C-_> <Plug>NERDCommenterInvert
+imap <C-_> <C-o><Plug>NERDCommenterInvert
 
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
@@ -161,7 +163,7 @@ let g:acp_ignorecaseOption = 0
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_min_keyword_length = 4
 let g:neocomplcache_min_syntax_length  = 4
-let g:neocomplcache_auto_completion_start_length = 2
+let g:neocomplcache_auto_completion_start_length = 1
 let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = $VIMLOCAL . '/cache'
@@ -219,9 +221,14 @@ function! s:flyhighlight()
     unlet b:flymakematchid
   endif
 
+  let ignore_fmt = ["m", "f", "s"]
+
   for line in readfile(&makeef)
-    let fmt = substitute(&errorformat, "%m", '\\%(.*\\)', "g")
-    let fmt = substitute(fmt, "%f", '\\%(.*\\)', "g")
+    let fmt = &errorformat
+    for c in ignore_fmt
+      let fmt = substitute(fmt, "%" . c, '\\%(.*\\)', "g")
+    endfor
+
     let fmt = substitute(fmt, "%l", '\\(\\d\\+\\)', "")
     let lno = substitute(line, fmt, '\1', "")
 
@@ -234,7 +241,7 @@ augroup MyAutoCmd
 augroup End
 
 au MyAutoCmd FileType ruby call s:quickfixmake('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
-au MyAutoCmd FileType php  call s:quickfixmake('php\ -lq\ %', 'PHP\ Parse\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
+au MyAutoCmd FileType php  call s:quickfixmake('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
 
 
 " Filetypes setting
