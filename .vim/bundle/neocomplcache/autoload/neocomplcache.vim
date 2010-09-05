@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 25 Aug 2010
+" Last Modified: 01 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -134,9 +134,11 @@ function! neocomplcache#enable() "{{{
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'cpp',
         \'^\s*#\s*\h\w*\|\%(\h\w*::\)*\h\w*\%(()\?\|<>\?\)\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'objc',
-        \'^\s*#\s*\h\w*\|\h\w*\%(()\?\|<>\?\|:\)\?\|@\h\w*\%(()\?\)\?\|(\h\w*\s*\*\?)\?')
+        \'^\s*#\s*\h\w*\|\h\w*\%(()\?\|<>\?\|:\)\?\|@\h\w*\%(()\?\)\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'objcpp',
-        \'^\s*#\s*\h\w*\|\%(\h\w*::\)*\h\w*\%(()\?\|<>\?\|:\)\?\|@\h\w*\%(()\?\)\?\|(\s*\h\w*\s*\*\?\s*)\?')
+        \'^\s*#\s*\h\w*\|\%(\h\w*::\)*\h\w*\%(()\?\|<>\?\|:\)\?\|@\h\w*\%(()\?\)\?')
+  call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'objj',
+        \'\h\w*\%(()\?\|<>\?\|:\)\?\|@\h\w*\%(()\?\)\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'd',
         \'\h\w*\%(!\?()\?\)\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'python,int-python,int-ipython',
@@ -309,10 +311,18 @@ function! neocomplcache#enable() "{{{
   call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'default', '')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'vim',
         \"--extra=fq --fields=afmiKlnsStz --regex-vim='/function!? ([a-z#:_0-9A-Z]+)/\\1/function/'")
+  if !neocomplcache#is_win() && (has('macunix') || neocomplcache#system('uname') =~? '^darwin')
+    call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'c',
+          \'--c-kinds=+p --fields=+iaS --extra=+q -I__DARWIN_ALIAS,__DARWIN_ALIAS_C,__DARWIN_ALIAS_I,__DARWIN_INODE64
+          \ -I__DARWIN_1050,__DARWIN_1050ALIAS,__DARWIN_1050ALIAS_C,__DARWIN_1050ALIAS_I,__DARWIN_1050INODE64
+          \ -I__DARWIN_EXTSN,__DARWIN_EXTSN_C
+          \ -I__DARWIN_LDBL_COMPAT,__DARWIN_LDBL_COMPAT2')
+  else
+    call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'c',
+          \'--c-kinds=+p --fields=+iaS --extra=+q -I __wur')
+  endif
   call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'cpp',
         \'--c++-kinds=+p --fields=+iaS --extra=+q -I __wur')
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_ctags_arguments_list, 'c',
-        \'--c-kinds=+p --fields=+iaS --extra=+q -I __wur')
   "}}}
   
   " Initialize text mode filetypes."{{{
@@ -926,6 +936,9 @@ endfunction"}}}
 function! neocomplcache#is_text_mode()"{{{
   return s:is_text_mode || s:within_comment
 endfunction"}}}
+function! neocomplcache#is_win()"{{{
+  return has('win32') || has('win64')
+endfunction"}}}
 function! neocomplcache#exists_echodoc()"{{{
   return exists('g:loaded_echodoc') && g:loaded_echodoc
 endfunction"}}}
@@ -1186,13 +1199,13 @@ function! s:display_neco(number)"{{{
     \],
   \]
 
-  let l:num = a:number == '' ? neocomplcache#rand(len(l:animation) - 1) : a:number
-  let &cmdheight = len(l:animation[l:num][0])
+  let l:anim = get(l:animation, a:number, l:animation[neocomplcache#rand(len(l:animation) - 1)])
+  let &cmdheight = len(l:anim[0])
 
-  for l:anim in l:animation[l:num]
-    echo join(repeat([''], &cmdheight-1), "\n")
+  for l:frame in l:anim
+    echo repeat("\n", &cmdheight-2)
     redraw
-    echon join(l:anim, "\n")
+    echon join(l:frame, "\n")
     sleep 300m
   endfor
   redraw
@@ -1476,7 +1489,7 @@ function! s:integrate_completion(complete_result, is_sort)"{{{
   if !neocomplcache#is_eskk_enabled() && a:is_sort
     call sort(l:complete_words, 'neocomplcache#compare_rank')
   endif
-  let l:complete_words = filter(l:complete_words[: g:neocomplcache_max_list], 'v:val.word !=# '.string(l:cur_keyword_str))
+  let l:complete_words = l:complete_words[: g:neocomplcache_max_list]
   
   let l:icase = g:neocomplcache_enable_ignore_case && 
         \!(g:neocomplcache_enable_smart_case && l:cur_keyword_str =~ '\u')
