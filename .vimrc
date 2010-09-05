@@ -108,7 +108,7 @@ noremap! <C-a> <HOME>
 noremap! <C-e> <END>
 noremap! <C-f> <RIGHT>
 noremap! <C-b> <LEFT>
-nnoremap ,t :!(cd %:p:h;ctags *)&<CR>
+nnoremap ,t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
 " nnoremap <silent><C-p> :exec "!" . &ft . " %"<CR>
 
@@ -193,7 +193,7 @@ hi ShowMarksHLm cterm=bold ctermfg=20
 
 
 " For ctags.
-set tags+=tags;
+set tags=tags;
 
 let g:qb_hotkey = ",<SPACE>"
 au VimEnter * exec "cunmap " . g:qb_hotkey
