@@ -139,6 +139,7 @@ au BufNewFile,BufRead *.as      setlocal filetype=actionscript
 au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
 
 au BufNewFile,BufRead *.inc     setlocal filetype=php
+au BufNewFile,BufRead *.snip    setlocal filetype=snippet
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
@@ -168,6 +169,8 @@ let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = $VIMLOCAL . '/cache'
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
+imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
+smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
 
 " For unite
 let g:unite_temporary_directory = $VIMLOCAL . '/cache'
@@ -258,6 +261,12 @@ endfunction
 function! s:html_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal expandtab
+endfunction
+
+function! s:snippet_setting()
+  setlocal noexpandtab
+  sunmap <Tab>
+  iunmap <Tab>
 endfunction
 
 function! s:setting()

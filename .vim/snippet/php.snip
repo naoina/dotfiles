@@ -1,0 +1,95 @@
+snippet function
+	${1:public }function ${2:funcname}(${3}) {
+		${0:// TODO: implementation}
+	}
+
+snippet foreach
+	foreach (${1:/* arr */} as ${2:$v}) {
+		${0:// TODO: implementation}
+	}
+
+snippet class
+	class ${1:ClassName} {
+	  function ${2:__construct}(${3}) {
+			${0:// TODO: implementation}
+		}
+	}
+
+snippet if
+	if (${1:/* condition */}) {
+		${0}
+	}
+
+snippet else
+	else {
+		${0: // TODO: implementation}
+	}
+
+snippet elseif
+	elseif (${1:/* cond */}) {
+		${0:// TODO: implementation}
+	}
+
+snippet for
+	for ($i = 0; $i < ${1} $i++) {
+		${0: // TODO: implementation}
+	}
+
+snippet while
+	while (${1:/* cond */}) {
+		${0:// TODO: implementation}
+	}
+
+snippet req
+abbr require_once
+	require_once dirname(__FILE__) . '${1}';
+
+snippet switch
+	switch (${1:/* var */}) {
+		case ${2}:
+			${0:// TODO:implementation}
+			break;
+	}
+
+snippet case
+	case ${1}:
+		${0:// TODO:implementation}
+		break;
+
+snippet array
+	$${1} = array(
+		'${2}' => ${3},
+	);
+
+snippet c
+abbr doc comment
+	/**
+	 * ${0}
+	 */
+
+snippet pr
+abbr print_r
+	print_r(${1});
+
+snippet vd
+abbr var_dump
+	var_dump(${1});
+
+snippet post
+	\$_POST['${1}']
+
+snippet get
+	\$_GET['${1}']
+
+snippet request
+	\$_REQUEST['${1}']
+
+snippet server
+	\$_SERVER['${1}']
+
+snippet session
+	\$_SESSION['${1}']
+
+snippet cookie
+	\$_COOKIE['${1}']
+
