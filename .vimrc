@@ -60,6 +60,7 @@ set iminsert=1
 set cinkeys+=;
 set ambiwidth=double
 set foldopen=block,hor,jump,mark,percent,quickfix,search,tag,undo
+set foldlevel=99
 set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
@@ -110,7 +111,7 @@ noremap! <C-f> <RIGHT>
 noremap! <C-b> <LEFT>
 nnoremap ,t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
-" nnoremap <silent><C-p> :exec "!" . &ft . " %"<CR>
+nnoremap <silent>yu :%y +<CR>
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
@@ -190,14 +191,17 @@ hi ShowMarksHLu cterm=bold ctermfg=20
 hi ShowMarksHLo cterm=bold ctermfg=20
 hi ShowMarksHLm cterm=bold ctermfg=20
 
-" for surround, script_id=1697
-" nmap s  <Plug>Ysurround
-" nmap ss <Plug>Yssurround
-
+" For quickfun
+let g:quickrun_config = {
+      \ '*': {
+      \   'split': 'vertical rightbelow 50',
+      \ },
+\}
 
 " For ctags.
 set tags=tags;
 
+" For qbuf, script_id=1910
 let g:qb_hotkey = ",<SPACE>"
 au VimEnter * exec "cunmap " . g:qb_hotkey
 
