@@ -1,6 +1,6 @@
 snippet function
 	${1:public }function ${2:funcname}(${3}) {
-		${0:// TODO: implementation}
+		// TODO: implementation
 	}
 
 snippet foreach
@@ -9,9 +9,9 @@ snippet foreach
 	}
 
 snippet class
-	class ${1:ClassName} {
-	  function ${2:__construct}(${3}) {
-			${0:// TODO: implementation}
+	class ${1:`join(map(split(expand("%:t:r"), "_"), 'toupper(v:val[0]) . v:val[1:]'), '')`} {
+		function ${2:__construct}(${3}) {
+			// TODO: implementation
 		}
 	}
 
@@ -61,6 +61,9 @@ snippet array
 		'${2}' => ${3},
 	);
 
+snippet =>
+	'${1}' => '${2}',
+
 snippet c
 abbr doc comment
 	/**
@@ -68,28 +71,30 @@ abbr doc comment
 	 */
 
 snippet pr
+alias print_r
 abbr print_r
 	print_r(${1});
 
 snippet vd
+alias var_dump
 abbr var_dump
 	var_dump(${1});
 
 snippet post
-	\$_POST['${1}']
+	$_POST['${1}']
 
 snippet get
-	\$_GET['${1}']
+	$_GET['${1}']
 
 snippet request
-	\$_REQUEST['${1}']
+	$_REQUEST['${1}']
 
 snippet server
-	\$_SERVER['${1}']
+	$_SERVER['${1}']
 
 snippet session
-	\$_SESSION['${1}']
+	$_SESSION['${1}']
 
 snippet cookie
-	\$_COOKIE['${1}']
+	$_COOKIE['${1}']
 
