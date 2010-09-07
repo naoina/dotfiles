@@ -144,6 +144,15 @@ function! LoadTemplateFile()
     silent! execute 'normal G"_dd'
     " go to first line
     silent! execute "normal gg"
+
+    " clear undo
+    let old_undolevels = &undolevels
+    setlocal undolevels=-1
+    exec "normal a \<BS>\<Esc>"
+    let &undolevels = old_undolevels
+    unlet old_undolevels
+
+    setlocal nomodified
 endfunction
 " }}}
 
