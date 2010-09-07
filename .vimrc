@@ -194,7 +194,7 @@ hi ShowMarksHLm cterm=bold ctermfg=20
 " For quickfun
 let g:quickrun_config = {
       \ '*': {
-      \   'split': 'vertical rightbelow 50',
+      \   'split': 'vertical 50',
       \ },
 \}
 
@@ -206,21 +206,33 @@ let g:qb_hotkey = ",<SPACE>"
 au VimEnter * exec "cunmap " . g:qb_hotkey
 
 " Simplicity flymake.
-function! s:quickfixmake(prg, fmt, opt)
-  let &makeef = &directory . "/" . expand("%:t") . ".makeef"
+function! s:flymake_run(cmd, prg, fmt)
+  let save_mp  = &makeprg
+  let save_efm = &errorformat
 
-  exec "setlocal makeprg=" . a:prg
-  exec "setlocal errorformat=" . a:fmt
+  exec "set makeprg=" . a:prg
+  exec "set errorformat=" . a:fmt
+
+  exec a:cmd
+
+  let &makeprg = save_mp
+  let &errorformat = save_efm
+  unlet save_mp
+  unlet save_efm
+endfunction
+
+function! s:flymake_make(prg, fmt, opt)
+  let &makeef = &directory . "/" . expand("%:t") . ".makeef"
 
   if a:opt != ""
     exec a:opt
   endif
 
-  au BufWritePost <buffer> silent make! | cw 3
-  au QuickFixCmdPost <buffer> call s:flyhighlight()
+  exec "au BufWritePost <buffer> call s:flymake_run('silent make! | cw 3', '" . a:prg . "', '" . a:fmt . "')"
+  au QuickFixCmdPost <buffer> call s:flymake_highlight()
 endfunction
 
-function! s:flyhighlight()
+function! s:flymake_highlight()
   hi ErrorLine ctermfg=white ctermbg=darkred
 
   if exists("b:flymakematchid")
@@ -247,8 +259,8 @@ augroup MyAutoCmd
   au!
 augroup End
 
-au MyAutoCmd FileType ruby call s:quickfixmake('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
-au MyAutoCmd FileType php  call s:quickfixmake('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
+au MyAutoCmd FileType ruby call s:flymake_make('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
+au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
 
 
 " Filetypes setting
