@@ -1,5 +1,5 @@
 fg_color = gray
-use_transbg = false
+use_transbg = true
 wall_picture = 
 bg_color = black
 tabsize = 4
@@ -12,3 +12,7 @@ use_bidi = false
 col_size_of_width_a = 2
 input_method = xim
 ENCODING = auto
+gamma = 100
+fade_ratio = 100
+brightness = 7
+contrast = 7

@@ -1,11 +1,11 @@
 PATH="~/bin:$PATH"
-IMAGE_PATH="$HOME/work/media/images"
+IMAGE_PATH="$HOME/work/media/image"
 
 # WM=xmonad
 # WM=compiz-fusion
 # WM=awesome
 WM=i3
-WALLPAPER="$IMAGE_PATH/wallpaper/miku_school.png"
+WALLPAPER="$IMAGE_PATH/wallpaper/pink_is_the_new_color_of_death_by_softmeanie.jpg"
 
 export LANG=ja_JP.UTF-8
 export LC_CTYPE=$LANG
@@ -37,6 +37,9 @@ case "$WM" in
     xmonad)
         Esetroot -fit "$WALLPAPER"
         xcompmgr &
+        ;;
+    i3)
+        Esetroot "$WALLPAPER"
         ;;
     *)
         ;;

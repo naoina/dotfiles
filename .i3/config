@@ -107,7 +107,7 @@ bind Mod1+Shift+18 m9
 bind Mod1+Shift+19 m10
 
 # Mod1+Enter starts a new terminal
-bind Control+36 exec /usr/bin/mlterm -e $HOME/bin/tmux.sh
+bind Control+36 exec $HOME/bin/mlterm.sh -e $HOME/bin/tmux.sh
 
 # Mod1+Shift+c kills the current client
 bind Mod1+Shift+54 kill
