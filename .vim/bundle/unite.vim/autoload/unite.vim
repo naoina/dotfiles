@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 28 Aug 2010
+" Last Modified: 09 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -54,6 +54,7 @@ endif
 " Variables  "{{{
 " buffer number of the unite buffer
 let s:unite_bufnr = s:INVALID_BUFNR
+let s:old_winnr = s:INVALID_BUFNR
 let s:update_time_save = &updatetime
 let s:unite = {}
 let s:is_invalidate = 0
@@ -72,7 +73,7 @@ function! unite#available_sources(...)"{{{
   return a:0 == 0 ? s:unite.sources_dict : s:unite.sources_dict[a:1]
 endfunction"}}}
 function! unite#escape_match(str)"{{{
-  return escape(a:str, '~"\.^$[]')
+  return escape(a:str, '~"\.$[]')
 endfunction"}}}
 function! unite#complete_source(arglead, cmdline, cursorpos)"{{{
   return filter(map(split(globpath(&runtimepath, 'autoload/unite/sources/*.vim'), '\n'), 'fnamemodify(v:val, ":t:r")')
@@ -144,12 +145,18 @@ endfunction"}}}
 function! unite#get_marked_candidates() "{{{
   return filter(copy(s:unite.candidates), 'v:val.is_marked')
 endfunction"}}}
-function! unite#keyword_filter(list, cur_keyword_str)"{{{
-  for l:cur_keyword_str in split(a:cur_keyword_str, '\\\@<! ')
-    if l:cur_keyword_str =~ '[*]'
+function! unite#keyword_filter(list, cur_text)"{{{
+  for l:cur_keyword_str in split(a:cur_text, '\\\@<! ')
+    if l:cur_keyword_str =~ '^!'
+      " Exclusion.
+      let l:cur_keyword_str = substitute(unite#escape_match(l:cur_keyword_str), '\*', '[^/]*', 'g')
+      call filter(a:list, 'v:val.word !~ ' . string(l:cur_keyword_str[1:]))
+    elseif l:cur_keyword_str =~ '[*]'
+      " Wildcard.
       let l:cur_keyword_str = substitute(unite#escape_match(l:cur_keyword_str), '\*', '[^/]*', 'g')
       call filter(a:list, 'v:val.word =~ ' . string(l:cur_keyword_str))
     else
+      let l:cur_keyword_str = substitute(l:cur_keyword_str, '\\ ', ' ', 'g')
       if &ignorecase
         let l:expr = printf('stridx(tolower(v:val.word), %s) != -1', string(tolower(l:cur_keyword_str)))
       else
@@ -165,9 +172,14 @@ endfunction"}}}
 "}}}
 
 function! unite#start(sources, cur_text)"{{{
+  let s:old_winnr = winnr()
+  
   " Open or create the unite buffer.
   let v:errmsg = ''
-  execute 'topleft' (bufexists(s:unite_bufnr) ? 'split' : 'new')
+  execute g:unite_split_rule 
+        \ g:unite_enable_split_vertically ?
+        \        (bufexists(s:unite_bufnr) ? 'vsplit' : 'vnew')
+        \      : (bufexists(s:unite_bufnr) ? 'split' : 'new')
   if v:errmsg != ''
     return s:FALSE
   endif
@@ -178,13 +190,17 @@ function! unite#start(sources, cur_text)"{{{
     call s:initialize_unite_buffer()
   endif
 
-  " Save redrawtime
-  let s:redrawtime_save = &redrawtime
-  let &redrawtime = 500
+  if exists('&redrawtime')
+    " Save redrawtime
+    let s:redrawtime_save = &redrawtime
+    let &redrawtime = 500
+  endif
 
   let s:is_invalidate = 0
 
-  20 wincmd _
+  if !g:unite_enable_split_vertically
+    20 wincmd _
+  endif
   
   " Initialize sources.
   call s:initialize_sources(a:sources)
@@ -204,8 +220,13 @@ function! unite#start(sources, cur_text)"{{{
 
   call unite#force_redraw()
 
-  3
-  normal! 0z.
+  if g:unite_enable_start_insert
+    2
+    startinsert!
+  else
+    3
+    normal! 0z.
+  endif
 
   setlocal nomodifiable
 
@@ -213,16 +234,28 @@ function! unite#start(sources, cur_text)"{{{
 endfunction"}}}
 
 function! s:initialize_sources(sources)"{{{
+  " Gathering all sources name.
+  let l:all_sources = {}
+  for l:source_name in map(split(globpath(&runtimepath, 'autoload/unite/sources/*.vim'), '\n'),
+        \ 'fnamemodify(v:val, ":t:r")')
+    let l:all_sources[l:source_name] = 1
+  endfor
+  
   let s:unite.sources = []
   let s:unite.sources_dict = {}
+  let s:unite.candidates = []
   for l:source_name in a:sources
+    if !has_key(l:all_sources, l:source_name)
+      echoerr 'Invalid source name "' . l:source_name . '" is detected.'
+      return
+    endif
+      
     let l:source = call('unite#sources#' . l:source_name . '#define', [])
     if !has_key(s:unite.sources_dict, l:source_name)
       let s:unite.sources_dict[l:source_name] = l:source
       call add(s:unite.sources, l:source)
     endif
   endfor
-  let s:unite.candidates = []
 endfunction"}}}
 function! s:caching_candidates(args, text)"{{{
   " Save options.
@@ -267,18 +300,19 @@ function! s:gather_candidates(args, text)"{{{
   endif
   
   let l:args = a:args
-  let l:args.cur_text = a:text
+  let l:cur_text_list = filter(split(a:text, '\\\@<! ', 1), 'v:val !~ "!"')
+  let l:args.cur_text = empty(l:cur_text_list) ? '' : l:cur_text_list[0]
   
   let l:candidates = []
   for l:source in s:unite.sources
-    if has_key(s:unite.cached_candidates, l:source.name)
-      let l:candidates += s:unite.cached_candidates[l:source.name]
-    else
-      for l:candidate in l:source.gather_candidates(a:args)
-        let l:candidate.is_marked = 0
-        call add(l:candidates, l:candidate)
-      endfor
+    let l:source_candidates = has_key(s:unite.cached_candidates, l:source.name) ?
+          \ s:unite.cached_candidates[l:source.name] : l:source.gather_candidates(a:args)
+    if has_key(l:source, 'max_candidates') && l:source.max_candidates != 0
+      " Filtering too many candidates.
+      let l:source_candidates = l:source_candidates[: l:source.max_candidates - 1]
     endif
+    
+    let l:candidates += l:source_candidates
   endfor
 
   if a:text != ''
@@ -286,6 +320,10 @@ function! s:gather_candidates(args, text)"{{{
   endif
 
   let &ignorecase = l:ignorecase_save
+  
+  for l:candidate in l:candidates
+    let l:candidate.is_marked = 0
+  endfor
 
   return l:candidates
 endfunction"}}}
@@ -295,8 +333,9 @@ function! s:convert_lines(candidates)"{{{
         \ '(v:val.is_marked ? "* " : "- ") . unite#util#truncate_smart(has_key(v:val, "abbr")? v:val.abbr : v:val.word, ' . l:max_width .  ', 25, "..") . " " . v:val.source')
 endfunction"}}}
 function! s:convert_line(candidate)"{{{
+  let l:max_width = winwidth(0) - 20
   return (a:candidate.is_marked ? '* ' : '- ')
-        \ . unite#util#truncate(has_key(a:candidate, 'abbr')? a:candidate.abbr : a:candidate.word, 80)
+        \ . unite#util#truncate_smart(has_key(a:candidate, 'abbr')? a:candidate.abbr : a:candidate.word, l:max_width, 25, '..')
         \ . " " . a:candidate.source
 endfunction"}}}
 
@@ -340,19 +379,28 @@ function! unite#quit_session()  "{{{
 endfunction"}}}
 function! unite#leave_buffer()  "{{{
   if &filetype ==# 'unite'
-    let &redrawtime = s:redrawtime_save
+    if exists('&redrawtime')
+      let &redrawtime = s:redrawtime_save
+    endif
+    
     let l:cwd = getcwd()
     if winnr('$') != 1
       close
+      execute s:old_winnr . 'wincmd w'
     endif
     
     " Restore current directory.
     lcd `=l:cwd`
+    stopinsert
   endif
 endfunction"}}}
 
 " Autocmd events.
 function! s:on_insert_enter()  "{{{
+  if &eventignore =~# 'InsertEnter'
+    return
+  endif
+  
   if &updatetime > g:unite_update_time
     let s:update_time_save = &updatetime
     let &updatetime = g:unite_update_time
@@ -361,11 +409,6 @@ function! s:on_insert_enter()  "{{{
   setlocal cursorline
   setlocal modifiable
   
-  if line('.') != 2 || col('.') == 1
-    2
-    startinsert!
-  endif
-
   match
 endfunction"}}}
 function! s:on_insert_leave()  "{{{
@@ -383,7 +426,9 @@ function! s:on_insert_leave()  "{{{
   for [l:pattern, l:subst] in items(g:unite_substitute_patterns)
     let l:cur_text = substitute(l:cur_text, l:pattern, l:subst, 'g')
   endfor
-  execute 'match IncSearch' '"'.substitute(substitute(unite#escape_match(l:cur_text), '\*', '[^/]*', 'g'), '\\\@<! ', '\\|', 'g').'"'
+  let l:cur_text_list = split(substitute(unite#escape_match(l:cur_text), '\*', '[^/]*', 'g'), '\\\@<! ')
+  call filter(l:cur_text_list, 'v:val !~ "^!"')
+  execute 'match IncSearch' string(join(l:cur_text_list, '\|'))
 endfunction"}}}
 function! s:on_cursor_hold()  "{{{
   " Force redraw.

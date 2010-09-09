@@ -69,6 +69,12 @@ g:unite_update_time				*g:unite_update_time*
 		
 		Default value is 200.
 
+g:unite_enable_start_insert			*g:unite_enable_start_insert*
+		If this variable is enabled, unite.vim will
+		execute|:startinsert| automatically.
+		
+		Default value is 0.
+
 g:unite_enable_ignore_case			*g:unite_enable_ignore_case*
 		
 		
@@ -78,6 +84,16 @@ g:unite_enable_smart_case			*g:unite_enable_smart_case*
 		
 		
 		Default value is same to 'infercase'.
+
+g:unite_split_rule				*g:unite_split_rule*
+		Define split position rule.
+		
+		Default value is "topleft".
+
+g:unite_enable_split_vertically				*g:unite_enable_split_vertically*
+		If this option is true, split unite window vertically.
+		
+		Default value is 0.
 
 g:unite_substitute_patterns			*g:unite_substitute_patterns*
 		
@@ -129,7 +145,7 @@ EXAMPLES					*unite-examples*
 	" Overwrite settings.
 	imap <buffer> jj      <Plug>(unite_insert_leave)
 	nnoremap <buffer> t G
-	"startinsert
+	"let g:unite_enable_start_insert = 1
 	endfunction"}}}
 	
 	let g:unite_source_file_mru_limit = 200
@@ -143,6 +159,29 @@ BUGS						*unite-bugs*
 
 ==============================================================================
 CHANGELOG					*unite-changelog*
+
+2010-09-09
+- Check redrawtime.
+- Implemented ! exclude pattern.
+- Added g:unite_enable_start_insert option.
+- Improved file_mru.
+- Fixed filtering bug.
+- Detect invalid source name.
+- Implemented maximum candidates attribute.
+- Added g:unite_split_rule and g:unite_enable_split_vertically options.
+
+2010-09-05
+- Fixed filtering bug.
+- Improved close buffer.
+- Improved truncate.
+- Improved mappings.
+
+2010-09-04
+- Implemented exclude pattern.
+- Improved syntax.
+
+2010-08-30
+- Improved UniteWithBufferDir.
 
 2010-08-28
 - Fixed / mapping.

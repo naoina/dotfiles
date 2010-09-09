@@ -17,7 +17,7 @@ hi Function   ctermfg=yellow
 hi Visual     cterm=reverse
 hi SpecialKey ctermfg=darkblue
 hi NonText    ctermfg=235
-hi CursorLine ctermbg=233 cterm=none
+hi CursorLine ctermbg=234 cterm=none
 hi Search     ctermfg=grey ctermbg=55 cterm=bold
 
 hi link Number  String
@@ -50,7 +50,8 @@ set number
 set hidden
 set hlsearch
 " set incsearch
-set ignorecase smartcase
+set ignorecase
+set smartcase
 set laststatus=2
 set nowrapscan
 set showcmd
@@ -129,8 +130,19 @@ if &diff
   nnoremap <silent>ZQ    :qall!<CR>
 endif
 
+function! s:clear_undo()
+  let old_undolevels = &undolevels
+  setlocal undolevels=-1
+  exec "normal a \<BS>\<Esc>"
+  let &undolevels = old_undolevels
+  unlet old_undolevels
+
+  setlocal nomodified
+endfunction
+
+au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call s:clear_undo() | endif
+
 " Auto restore last cursor position.
-au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | endif
 au BufReadPost * normal '"
 
 au BufEnter * exec "lcd " . expand("%:p:h")
@@ -175,6 +187,9 @@ smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>
 
 " For unite
 let g:unite_temporary_directory = $VIMLOCAL . '/cache'
+let g:unite_enable_split_vertically = 1
+let g:unite_split_rule = "rightbelow"
+nnoremap <silent><C-u> :Unite file buffer<CR>
 
 " For yankring, script_id=1234.
 let g:yankring_history_dir    = $VIMLOCAL . '/cache'
