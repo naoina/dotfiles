@@ -76,8 +76,43 @@ au FileType * setlocal formatoptions+=cqmM
 
 set statusline=%<[%n]\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 
-set fileencoding=utf-8
-set fileencodings=ucs-bom,utf-8,japan,sjis,utf-8
+" Encoding settings
+set encoding=utf-8
+if has('iconv')
+  let s:enc_euc = 'euc-jp'
+  let s:enc_jis = 'iso-2022-jp'
+
+  " Does iconv support JIS X 0213 ?
+  if iconv("\x87\x64\x87\x6a", 'cp932', 'euc-jisx0213') ==# "\xad\xc5\xad\xcb"
+    let s:enc_euc = 'euc-jisx0213,euc-jp'
+    let s:enc_jis = 'iso-2022-jp-3'
+  endif
+
+  " Make fileencodings
+  let &fileencodings = 'ucs-bom'
+  if &encoding !=# 'utf-8'
+    let &fileencodings = &fileencodings . ',' . 'ucs-2le'
+    let &fileencodings = &fileencodings . ',' . 'ucs-2'
+  endif
+  let &fileencodings = &fileencodings . ',' . s:enc_jis
+
+  if &encoding ==# 'utf-8'
+    let &fileencodings = &fileencodings . ',' . s:enc_euc
+    let &fileencodings = &fileencodings . ',' . 'cp932'
+  elseif &encoding =~# '^euc-\%(jp\|jisx0213\)$'
+    let &encoding = s:enc_euc
+    let &fileencodings = &fileencodings . ',' . 'utf-8'
+    let &fileencodings = &fileencodings . ',' . 'cp932'
+  else  " cp932
+    let &fileencodings = &fileencodings . ',' . 'utf-8'
+    let &fileencodings = &fileencodings . ',' . s:enc_euc
+  endif
+  let &fileencodings = &fileencodings . ',' . &encoding
+
+  unlet s:enc_euc
+  unlet s:enc_jis
+endif
+
 set fileformat=unix
 set fileformats=unix,dos,mac
 
