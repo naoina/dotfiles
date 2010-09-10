@@ -9,3 +9,7 @@ encoding = UTF-8
 
 [merge-tools]
 checkconflicts = True
+
+[extensions]
+rebase =
+record =

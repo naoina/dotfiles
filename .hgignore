@@ -1,0 +1,26 @@
+syntax: regexp
+
+^((?!\.vim|\.vimrc|\.zshrc|\.i3|bin|\.yaourtrc|\.xsession|\.tmux\.conf|\.lftp/rc|\.hgrc|\.mlterm|\.makepkg\.conf|\.Xdefaults|\.scim|\.anthy).)+$
+
+syntax: glob
+
+*~
+*.swp
+*.swo
+*history*
+*log*
+cache/**
+*.o
+*.hi
+tags
+.xsession-errors
+.netrwhist
+.VimballRecord
+.viminfo
+.git/**
+*.vba
+*.zip
+bin/*
+.anthy/*
+.vim/GetLatest/Installed/*
+.mlterm/challenge
