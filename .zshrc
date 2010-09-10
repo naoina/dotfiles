@@ -38,6 +38,8 @@ export CVS_RSH="ssh"
 export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
 
+[ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
+
 #if [ -x "`whence llvm-gcc`" ]; then
 #    export CC="llvm-gcc"
 #    export CXX="llvm-g++"
@@ -88,11 +90,8 @@ if [ -x "`whence mvn`" ]; then
 fi
 
 [[ -x "`whence gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
-
 [[ -x "`whence powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
-
 [[ -x "`whence rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
-
 [[ -x "`whence mplayer`" ]] && alias mplayer="`whence mplayer` -softvol"
 
 alias ll="ls -l"
