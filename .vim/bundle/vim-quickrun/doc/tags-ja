@@ -10,8 +10,8 @@ QuickRun()	quickrun.jax	/*QuickRun()*
 b:quickrun_config	quickrun.jax	/*b:quickrun_config*
 g:quicklaunch_commands	quicklaunch.jax	/*g:quicklaunch_commands*
 g:quicklaunch_no_default_key_mappings	quicklaunch.jax	/*g:quicklaunch_no_default_key_mappings*
+g:quickrun#default_config	quickrun.jax	/*g:quickrun#default_config*
 g:quickrun_config	quickrun.jax	/*g:quickrun_config*
-g:quickrun_default_config	quickrun.jax	/*g:quickrun_default_config*
 g:quickrun_no_default_key_mappings	quickrun.jax	/*g:quickrun_no_default_key_mappings*
 quicklaunch	quicklaunch.jax	/*quicklaunch*
 quicklaunch-changelog	quicklaunch.jax	/*quicklaunch-changelog*

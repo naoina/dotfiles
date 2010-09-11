@@ -31,13 +31,14 @@ g:neocomplcache_cursor_hold_i_time	neocomplcache.jax	/*g:neocomplcache_cursor_ho
 g:neocomplcache_delimiter_patterns	neocomplcache.jax	/*g:neocomplcache_delimiter_patterns*
 g:neocomplcache_dictionary_filetype_lists	neocomplcache.jax	/*g:neocomplcache_dictionary_filetype_lists*
 g:neocomplcache_disable_auto_complete	neocomplcache.jax	/*g:neocomplcache_disable_auto_complete*
+g:neocomplcache_disable_auto_select_buffer_name_pattern	neocomplcache.jax	/*g:neocomplcache_disable_auto_select_buffer_name_pattern*
 g:neocomplcache_disable_caching_buffer_name_pattern	neocomplcache.jax	/*g:neocomplcache_disable_caching_buffer_name_pattern*
 g:neocomplcache_disable_select_mode_mappings	neocomplcache.jax	/*g:neocomplcache_disable_select_mode_mappings*
 g:neocomplcache_enable_at_startup	neocomplcache.jax	/*g:neocomplcache_enable_at_startup*
 g:neocomplcache_enable_auto_select	neocomplcache.jax	/*g:neocomplcache_enable_auto_select*
+g:neocomplcache_enable_caching_message	neocomplcache.jax	/*g:neocomplcache_enable_caching_message*
 g:neocomplcache_enable_camel_case_completion	neocomplcache.jax	/*g:neocomplcache_enable_camel_case_completion*
 g:neocomplcache_enable_cursor_hold_i	neocomplcache.jax	/*g:neocomplcache_enable_cursor_hold_i*
-g:neocomplcache_enable_display_parameter	neocomplcache.jax	/*g:neocomplcache_enable_display_parameter*
 g:neocomplcache_enable_ignore_case	neocomplcache.jax	/*g:neocomplcache_enable_ignore_case*
 g:neocomplcache_enable_quick_match	neocomplcache.jax	/*g:neocomplcache_enable_quick_match*
 g:neocomplcache_enable_smart_case	neocomplcache.jax	/*g:neocomplcache_enable_smart_case*
@@ -87,6 +88,7 @@ neocomplcache-commands	neocomplcache.jax	/*neocomplcache-commands*
 neocomplcache-contents	neocomplcache.jax	/*neocomplcache-contents*
 neocomplcache-create-plugin	neocomplcache.jax	/*neocomplcache-create-plugin*
 neocomplcache-examples	neocomplcache.jax	/*neocomplcache-examples*
+neocomplcache-install	neocomplcache.jax	/*neocomplcache-install*
 neocomplcache-interface	neocomplcache.jax	/*neocomplcache-interface*
 neocomplcache-introduction	neocomplcache.jax	/*neocomplcache-introduction*
 neocomplcache-key-mappings	neocomplcache.jax	/*neocomplcache-key-mappings*

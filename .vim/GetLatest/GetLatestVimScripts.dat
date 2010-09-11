@@ -3,10 +3,8 @@ ScriptID SourceID Filename
 642 8136 :AutoInstall: getscript.vim
 923 10283 :AutoInstall: timestamp.vim
 1075 11979 :AutoInstall: netrw.vim
-1218 10318 :AutoInstall: NERD_commenter.vim
 1234 13554 :AutoInstall: yankring.vim
 1502 11981 :AutoInstall: vimball.vim
-1697 12566 surround.vim
 2009 9223 :AutoInstall: autoclose.vim
 2136 8206 repeat.vim
 294 10110 :AutoInstall: Align.vim
@@ -17,4 +15,3 @@ ScriptID SourceID Filename
 301 13387 :AutoInstall: xmledit.vba
 1910 9909 qbuf.vim
 2332 12116 pathogen.vim
-893 8555 gtags.vim
