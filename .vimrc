@@ -280,7 +280,7 @@ au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ i
 
 " Filetypes setting
 function! s:python_setting()
-  setlocal tabstop=8 softtabstop=4 shiftwidth=4
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=80
   setlocal expandtab
 endfunction
