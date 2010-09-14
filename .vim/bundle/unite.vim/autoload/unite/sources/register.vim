@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: file.vim
+" FILE: register.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 14 Sep 2010
+" Last Modified: 12 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,31 +24,28 @@
 " }}}
 "=============================================================================
 
-function! unite#sources#file#define()"{{{
+function! unite#sources#register#define()"{{{
   return s:source
 endfunction"}}}
 
 let s:source = {
-      \ 'name' : 'file',
-      \ 'is_volatile' : 1,
+      \ 'name' : 'register',
       \}
 
 function! s:source.gather_candidates(args)"{{{
-  let l:input = substitute(substitute(a:args.input, '\*$\|\*\*', '', 'g'), '^\a\+:\zs\*/', '/', '')
-  let l:input = substitute(l:input, '\\ ', ' ', 'g')
-  let l:candidates = split(substitute(glob(l:input . '*'), '\\', '/', 'g'), '\n')
-
-  if empty(l:candidates) && a:args.input !~ '\*'
-    " Add dummy candidate.
-    let l:candidates = [ a:args.input ]
-  endif
+  let l:candidates = []
   
-  call map(l:candidates, '{
-        \ "word" : v:val,
-        \ "abbr" : v:val . (isdirectory(v:val) ? "/" : ""),
-        \ "source" : "file",
-        \ "kind" : (isdirectory(v:val) ? "directory" : "file"),
-        \}')
+  for l:reg in ['"', '*', '+', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    
+    let l:register = eval('@' . l:reg)
+    call add(l:candidates, {
+          \ 'word' : l:register,
+          \ 'abbr' : printf('register%s - %s', l:reg, l:register),
+          \ 'source' : 'register',
+          \ 'kind' : 'word',
+          \ 'is_insert' : a:args.is_insert,
+          \ })
+  endfor
 
   return l:candidates
 endfunction"}}}

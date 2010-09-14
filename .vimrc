@@ -189,7 +189,7 @@ smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>
 let g:unite_temporary_directory = $VIMLOCAL . '/cache'
 let g:unite_enable_split_vertically = 1
 let g:unite_split_rule = "rightbelow"
-nnoremap <silent><C-u> :Unite file buffer<CR>
+nnoremap <silent><C-u> :Unite file buffer register<CR>
 
 " For yankring, script_id=1234.
 let g:yankring_history_dir    = $VIMLOCAL . '/cache'
@@ -279,6 +279,16 @@ au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ i
 
 
 " Filetypes setting
+function! s:txt_setting()
+  setlocal textwidth=78
+endfunction
+
+function! s:help_setting()
+  setlocal textwidth=78
+  setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
+  setlocal nosmarttab
+endfunction
+
 function! s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=80
