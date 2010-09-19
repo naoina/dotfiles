@@ -45,6 +45,7 @@ g:neocomplcache_enable_smart_case	neocomplcache.jax	/*g:neocomplcache_enable_sma
 g:neocomplcache_enable_underbar_completion	neocomplcache.jax	/*g:neocomplcache_enable_underbar_completion*
 g:neocomplcache_enable_wildcard	neocomplcache.jax	/*g:neocomplcache_enable_wildcard*
 g:neocomplcache_filetype_include_lists	neocomplcache.jax	/*g:neocomplcache_filetype_include_lists*
+g:neocomplcache_force_caching_buffer_name_pattern	neocomplcache.jax	/*g:neocomplcache_force_caching_buffer_name_pattern*
 g:neocomplcache_include_exprs	neocomplcache.jax	/*g:neocomplcache_include_exprs*
 g:neocomplcache_include_paths	neocomplcache.jax	/*g:neocomplcache_include_paths*
 g:neocomplcache_include_patterns	neocomplcache.jax	/*g:neocomplcache_include_patterns*

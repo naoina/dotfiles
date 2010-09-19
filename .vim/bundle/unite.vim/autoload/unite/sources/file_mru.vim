@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: file_mru.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Sep 2010
+" Last Modified: 17 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -36,7 +36,8 @@ let s:mru_file_mtime = 0  " the last modified time of the mru file.
 call unite#set_default('g:unite_source_file_mru_time_format', '(%x %H:%M:%S)')
 call unite#set_default('g:unite_source_file_mru_file',  g:unite_temporary_directory . '/.file_mru')
 call unite#set_default('g:unite_source_file_mru_limit', 100)
-call unite#set_default('g:unite_source_file_mru_ignore_pattern', '')
+call unite#set_default('g:unite_source_file_mru_ignore_pattern', 
+      \'\~$\|\.\%(o|exe|dll|bak|sw[po]\)$\|\%(^\|[/\\]\)\.\%(hg\|git\|bzr\|svn\)\%($\|[/\\]\)\|^\%(\\\\\|/mnt/\|/media/\|/Volumes/\)')
 "}}}
 
 function! unite#sources#file_mru#define()"{{{
@@ -67,19 +68,32 @@ endfunction"}}}
 let s:source = {
       \ 'name' : 'file_mru',
       \ 'max_candidates': 30,
+      \ 'action_table': {},
       \}
 
 function! s:source.gather_candidates(args)"{{{
   call s:load()
   return sort(map(copy(s:mru_files), '{
         \ "abbr" : strftime(g:unite_source_file_mru_time_format, v:val[1]) .
-        \          fnamemodify(v:val[0], ":~:."),
+        \          (fnamemodify(v:val[0], ":~:.") != "" ? fnamemodify(v:val[0], ":~:.") : v:val[0]),
         \ "word" : v:val[0],
         \ "source" : "file_mru",
         \ "unite_file_mru_time" : v:val[1],
         \ "kind" : (isdirectory(v:val[0]) ? "directory" : "file"),
         \   }'), 's:compare')
 endfunction"}}}
+
+" Actions"{{{
+let s:source.action_table.delete = {
+      \ 'is_invalidate_cache' : 1, 
+      \ 'is_quit' : 0, 
+      \ 'is_selectable' : 1, 
+      \ }
+function! s:source.action_table.delete.func(candidate)"{{{
+  call filter(s:mru_files, 'v:val[0] !=# ' . string(a:candidate.word))
+  call s:save()
+endfunction"}}}
+"}}}
 
 " Misc
 function! s:compare(candidate_a, candidate_b)"{{{

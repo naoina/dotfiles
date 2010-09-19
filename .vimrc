@@ -189,7 +189,8 @@ smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>
 let g:unite_temporary_directory = $VIMLOCAL . '/cache'
 let g:unite_enable_split_vertically = 1
 let g:unite_split_rule = "rightbelow"
-nnoremap <silent><C-u> :Unite file buffer register<CR>
+" let g:unite_enable_start_insert = 1
+nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
 
 " For yankring, script_id=1234.
 let g:yankring_history_dir    = $VIMLOCAL . '/cache'
@@ -215,10 +216,6 @@ let g:quickrun_config = {
 
 " For ctags.
 set tags=tags;
-
-" For qbuf, script_id=1910
-let g:qb_hotkey = ",<SPACE>"
-au VimEnter * exec "cunmap " . g:qb_hotkey
 
 " Simplicity flymake.
 function! s:flymake_run(cmd, prg, fmt)

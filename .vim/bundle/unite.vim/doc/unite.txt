@@ -29,6 +29,7 @@ Install			|unite-install|
 Interface		|unite-interface|
   Commands		  |unite-commands|
   Variables		  |unite-variables|
+    Sources variables	    |unite-sources-variables|
   Key mappings		  |unite-key-mappings|
 Examples		|unite-examples|
 Create source		|unite-create-source|
@@ -51,13 +52,18 @@ INTERFACE					*unite-interface*
 ------------------------------------------------------------------------------
 COMMANDS 					*unite-commands*
 
-:Unite {sources}				*:Unite*
+:Unite [-buffer-name={buffer-name}] [-input={input-text}] {sources}
+						*:Unite*
 		Unite all sources. Initial narrowing text is empty.
+		{buffer-name} is unite buffer name.
+		{input-text} is initial input text.
 
-:UniteWithCurrentDir {sources}			*:UniteWithCurrentDir*
+:UniteWithCurrentDir [-buffer-name={buffer-name}] [-input={input-text}] {sources}
+						*:UniteWithCurrentDir*
 		Unite all sources. Initial narrowing text is current directory.
 
-:UniteWithBufferDir {sources}			*:UniteWithBufferDir*
+:UniteWithBufferDir [-buffer-name={buffer-name}] [-input={input-text}] {sources}
+						*:UniteWithBufferDir*
 		Unite all sources. Initial narrowing text is current buffer
 		directory.
 
@@ -67,7 +73,7 @@ VARIABLES 					*unite-variables*
 g:unite_update_time				*g:unite_update_time*
 		
 		
-		Default value is 200.
+		Default value is 400.
 
 g:unite_enable_start_insert			*g:unite_enable_start_insert*
 		If this variable is enabled, unite.vim will
@@ -104,6 +110,33 @@ g:unite_temporary_directory			*g:unite_temporary_directory*
 		
 		
 		Default value is expand('~/.unite').
+
+SOURCES VARIABLES 					*unite-sources-variables*
+
+g:unite_source_file_ignore_pattern		*g:unite_source_file_ignore_pattern*
+		
+		
+		Default value is refer to autoload/unite/sources/file.vim.
+
+g:unite_source_file_mru_time_format		*g:unite_source_file_mru_time_format*
+		
+		
+		Default value is "(%x %H:%M:%S)".
+
+g:unite_source_file_mru_file			*g:unite_source_file_mru_file*
+		
+		
+		Default value is |g:unite_temporary_directory| . '/.file_mru'.
+
+g:unite_source_file_mru_limit			*g:unite_source_file_mru_limit*
+		
+		
+		Default value is 100.
+
+g:unite_source_file_mru_ignore_pattern		*g:unite_source_file_mru_ignore_pattern*
+		
+		
+		Default value is refer to autoload/unite/sources/file_mru.vim.
 
 ------------------------------------------------------------------------------
 KEY MAPPINGS 					*unite-key-mappings*
@@ -169,10 +202,10 @@ EXAMPLES					*unite-examples*
 	
 	" The prefix key.
 	nnoremap    [unite]   <Nop>
-	nmap    ' [unite]
+	nmap    f [unite]
 	
 	nnoremap [unite]u  :<C-u>Unite<Space>
-	nnoremap <silent> [unite]'  :<C-u>UniteWithCurrentDir buffer file_mru file<CR>
+	nnoremap <silent> [unite]f  :<C-u>Unite -buffer-name=files buffer file_mru file<CR>
 	nnoremap <silent> [unite]b  :<C-u>UniteWithBufferDir buffer file_mru file<CR>
 	
 	autocmd FileType unite call s:unite_my_settings()
@@ -194,6 +227,50 @@ BUGS						*unite-bugs*
 
 ==============================================================================
 CHANGELOG					*unite-changelog*
+
+2010-09-19
+- Fixed wildcard bug.
+- Improved buffer check.
+
+2010-09-18
+- Display modified flag in source buffer.
+- Fixed multiple unite buffer bug.
+- Refactoringed.
+- Fixed :UniteWithBufferDir and :UniteWithCurrentDir.
+- Improved multiple unite buffer.
+- Set nomodeline.
+- Fixed redraw bug.
+- Changed g:unite_update_time default value.
+
+2010-09-17
+- Implemented escape ' '.
+- Added split actions in kind file.
+- Added cd and lcd actions in kind file.
+- Added ex action in kind file.
+- Improved filtering.
+- Added vimshell action in kind directory.
+- Improved mru format.
+- Implemented delete action in file_mru.
+- Improved action table.
+
+2010-09-16
+- Added <Plug>(unite_move_head) keymapping.
+- Deleted h keymappings.
+- Added sources variables description.
+- Supported ** pattern.
+- Added g:unite_source_file_ignore_pattern option.
+- Improved g:unite_source_file_mru_ignore_pattern option.
+- Implemented option parse.
+- Revised examples.
+- Improved directory kind.
+- Added file kind actions.
+- Added preview keymapping.
+
+2010-09-15
+- Improved complete sources.
+- Implemented choose action.
+- Resolve link file.
+- Improved restore window.
 
 2010-09-14
 - Added dummy candidate in file source.

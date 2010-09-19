@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: mappings.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Sep 2010
+" Last Modified: 16 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -36,13 +36,15 @@ function! unite#mappings#define_default_mappings()"{{{
   inoremap <expr><buffer> <Plug>(unite_select_previous_line)  pumvisible() ? "\<C-p>" : "\<Up>"
   inoremap <expr><buffer> <Plug>(unite_select_next_page)  pumvisible() ? "\<PageDown>" : repeat("\<Down>", winheight(0))
   inoremap <expr><buffer> <Plug>(unite_select_previous_page)  pumvisible() ? "\<PageUp>" : repeat("\<Up>", winheight(0))
-  inoremap <silent><buffer> <Plug>(unite_do_default_action) <C-o>:call <SID>do_action('default')<CR>
+  inoremap <silent><buffer> <Plug>(unite_do_default_action) <C-o>:call unite#mappings#do_action('default')<CR>
   inoremap <silent><buffer> <Plug>(unite_toggle_mark_current_file)  <C-o>:<C-u>call <SID>toggle_mark()<CR>
   inoremap <silent><buffer> <Plug>(unite_choose_action)  <C-o>:<C-u>call <SID>choose_action()<CR>
+  inoremap <silent><buffer> <Plug>(unite_move_head)  <C-o>:<C-u>call <SID>insert_head()<CR>
   
   nnoremap <silent><buffer> <Plug>(unite_exit)  :<C-u>call <SID>exit()<CR>
-  nnoremap <silent><buffer> <Plug>(unite_do_default_action)  :<C-u>call <SID>do_action('default')<CR>
-  nnoremap <silent><buffer> <Plug>(unite_do_delete_action)  :<C-u>call <SID>do_action('delete')<CR>
+  nnoremap <silent><buffer> <Plug>(unite_do_default_action)  :<C-u>call unite#mappings#do_action('default')<CR>
+  nnoremap <silent><buffer> <Plug>(unite_do_delete_action)  :<C-u>call unite#mappings#do_action('delete')<CR>
+  nnoremap <silent><buffer> <Plug>(unite_do_preview_action)  :<C-u>call unite#mappings#do_action('preview')<CR>
   nnoremap <silent><buffer> <Plug>(unite_choose_action)  :<C-u>call <SID>choose_action()<CR>
   nnoremap <silent><buffer> <Plug>(unite_insert_enter)  :<C-u>call <SID>insert_enter()<CR>
   nnoremap <silent><buffer> <Plug>(unite_insert_head)  :<C-u>call <SID>insert_head()<CR>
@@ -75,16 +77,16 @@ function! unite#mappings#define_default_mappings()"{{{
   nmap <buffer> <C-n> <Plug>(unite_search_next_source)
   nmap <buffer> <C-p> <Plug>(unite_search_previous_source)
   nmap <buffer><expr><silent> l line('.') <= 2 ? 'l' : "\<Plug>(unite_do_default_action)"
-  nmap <buffer><expr><silent> h line('.') <= 2 ? 'h' : "i../\<ESC>"
   nmap <buffer> <silent> ~ i<Plug>(unite_delete_backward_line)~/<ESC>
   nmap <buffer> <C-g> <Plug>(unite_print_candidate)
   nmap <buffer> e <Plug>(unite_edit_candidate)
+  nmap <buffer> p <Plug>(unite_do_preview_action)
   nmap <buffer> <C-l> <Plug>(unite_redraw)
 
   " Insert mode key-mappings.
   inoremap <buffer><expr> /    getline(2) == '>' ? '/' : '*/'
   imap <buffer> <ESC>     <Plug>(unite_insert_leave)
-  imap <buffer> <TAB>     <Plug>(unite_select_next_line)
+  imap <buffer> <TAB>     <Plug>(unite_choose_action)
   imap <buffer> <S-TAB>   <Plug>(unite_select_previous_line)
   imap <buffer> <C-n>     <Plug>(unite_select_next_line)
   imap <buffer> <C-p>   <Plug>(unite_select_previous_line)
@@ -95,6 +97,8 @@ function! unite#mappings#define_default_mappings()"{{{
   imap <buffer> <BS>     <Plug>(unite_delete_backward_char)
   imap <buffer> <C-u>     <Plug>(unite_delete_backward_line)
   imap <buffer> <C-w>     <Plug>(unite_delete_backward_word)
+  imap <buffer> <C-a>     <Plug>(unite_move_head)
+  imap <buffer> <Home>     <Plug>(unite_move_head)
   imap <buffer><expr> <Space>  line('.') == 2 ? ' ' : "\<Plug>(unite_toggle_mark_current_file)"
 endfunction"}}}
 
@@ -105,10 +109,7 @@ function! unite#mappings#narrowing(word)"{{{
   2
   startinsert!
 endfunction"}}}
-function! s:exit()"{{{
-  call unite#quit_session()
-endfunction"}}}
-function! s:do_action(action_name)"{{{
+function! unite#mappings#do_action(action_name)"{{{
   let l:candidates = unite#get_marked_candidates()
   if empty(l:candidates)
     if line('.') <= 2
@@ -124,23 +125,29 @@ function! s:do_action(action_name)"{{{
 
     let l:candidates = [ unite#get_unite_candidates()[l:num] ]
   endif
+  
   for l:candidate in l:candidates
-    let l:kind = unite#available_kinds(l:candidate.kind)
-    let l:action_name = (a:action_name ==# 'default' ?
-          \ l:kind.default_action : a:action_name)
-    if has_key(l:kind.action_table, l:action_name)
-      let l:action = l:kind.action_table[l:action_name]
+    let l:action_table = unite#get_action_table(l:candidate.source, l:candidate.kind)
+    
+    let l:action_name = 
+          \ a:action_name ==# 'default' ?
+          \ unite#get_default_action(l:candidate.source, l:candidate.kind)
+          \ : a:action_name
+    
+    if has_key(l:action_table, l:action_name)
+      let l:action = l:action_table[l:action_name]
       
       " Check selectable flag.
       if has_key(l:action, 'is_selectable') && !l:action.is_selectable
             \ && len(l:candidates) > 1
         " Ignore.
+        echohl Error | execute 'echo' printf('"%s" isn''t selectable action.', l:action_name) | echohl None
         continue
       endif
       
       " Check quit flag.
       if !has_key(l:action, 'is_quit') || l:action.is_quit
-        call unite#leave_buffer()
+        call unite#quit_session()
       endif
       
       call l:action.func(l:candidate)
@@ -153,6 +160,9 @@ function! s:do_action(action_name)"{{{
   endfor
 
   call unite#redraw()
+endfunction"}}}
+function! s:exit()"{{{
+  call unite#quit_session()
 endfunction"}}}
 function! s:toggle_mark()"{{{
   if line('.') <= 2
@@ -167,6 +177,80 @@ function! s:toggle_mark()"{{{
   normal! j
 endfunction"}}}
 function! s:choose_action()"{{{
+  let l:candidates = unite#get_marked_candidates()
+  if empty(l:candidates)
+    if line('.') <= 2
+      if line('$') < 3
+        " Ignore.
+        return
+      endif
+
+      let l:num = 0
+    else
+      let l:num = line('.') - 3
+    endif
+
+    let l:candidates = [ unite#get_unite_candidates()[l:num] ]
+  endif
+  
+  let s:actions = {}
+  for l:candidate in l:candidates
+    let l:action_table = unite#get_action_table(l:candidate.source, l:candidate.kind)
+    
+    for [l:action_name, l:action] in items(l:action_table)
+      " Check selectable flag.
+      if has_key(l:action, 'is_selectable') && !l:action.is_selectable
+            \ && len(l:candidates) > 1
+        " Ignore.
+        echohl Error | execute 'echo' printf('"%s" isn''t selectable action.', l:action_name) | echohl None
+      else
+        let s:actions[l:action_name] = l:action
+      endif
+    endfor
+  endfor
+  
+  " Print action names.
+  let l:width = winwidth(0)
+  let l:max = l:width > 90 ? 6 : l:width > 75 ? 5 : l:width > 50 ? 4 : 3
+  let l:cnt = 0
+  
+  echohl Statement
+  for l:action_name in keys(s:actions)
+    echon unite#util#truncate(l:action_name, 14) . ' '
+    let l:cnt += 1
+    
+    if l:cnt >= l:max
+      echo ''
+      let l:cnt = 0
+    endif
+  endfor
+  echohl None
+  
+  let l:input = ''
+  while 1
+    " Choose action.
+    let l:input = input('What action? ', l:input, 'customlist,unite#mappings#complete_actions')
+
+    if l:input == ''
+      " Cancel.
+      return
+    endif
+
+    " Check action candidates.
+    let l:actions = filter(keys(s:actions), printf('stridx(v:val, %s) == 0', string(l:input)))
+    if empty(l:actions)
+      echohl Error | echo 'Invalid action.' | echohl None
+    elseif len(l:actions) > 1
+      echohl Error | echo 'Too match action.' | echohl None
+    else
+      break
+    endif
+    
+    echo ''
+  endwhile
+  
+  " Execute action.
+  call unite#mappings#do_action(l:actions[0])
 endfunction"}}}
 function! s:insert_enter()"{{{
   if line('.') != 2 || col('.') == 1
@@ -177,8 +261,7 @@ function! s:insert_enter()"{{{
   endif
 endfunction"}}}
 function! s:insert_head()"{{{
-  normal! 0
-  normal! l
+  normal! 0l
   call s:insert_enter()
 endfunction"}}}
 function! s:append_enter()"{{{
@@ -246,6 +329,10 @@ function! s:insert_selected_candidate()"{{{
 
   let l:candidate = unite#get_unite_candidates()[line('.') - 3]
   call unite#mappings#narrowing(l:candidate.word)
+endfunction"}}}
+
+function! unite#mappings#complete_actions(arglead, cmdline, cursorpos)"{{{
+  return filter(keys(s:actions), printf('stridx(v:val, %s) == 0', string(a:arglead)))
 endfunction"}}}
 
 " vim: foldmethod=marker
