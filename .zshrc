@@ -37,6 +37,7 @@ export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
 export CVS_RSH="ssh"
 export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
+export GIT_SSH="$HOME/bin/ssh-github"
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 
