@@ -192,6 +192,10 @@ let g:unite_split_rule = "rightbelow"
 " let g:unite_enable_start_insert = 1
 nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
 
+function! s:unite_setting()
+  setlocal timeoutlen=1
+endfunction
+
 " For yankring, script_id=1234.
 let g:yankring_history_dir    = $VIMLOCAL . '/cache'
 let g:yankring_history_file   = "yankring_history"

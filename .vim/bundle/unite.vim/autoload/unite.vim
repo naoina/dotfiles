@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 19 Sep 2010
+" Last Modified: 22 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 0.5, for Vim 7.0
+" Version: 1.0, for Vim 7.0
 "=============================================================================
 
 function! unite#set_dictionary_helper(variable, keys, pattern)"{{{
@@ -46,10 +46,30 @@ let s:LNUM_PATTERN = 2
 " buffer number of the unite buffer
 let s:unite = {}
 
+let s:default_sources = {}
+let s:default_kinds = {}
+
+let s:custom_sources = {}
+let s:custom_kinds = {}
+
 call unite#set_dictionary_helper(g:unite_substitute_patterns, '^\~', substitute($HOME, '\\', '/', 'g'))
 "}}}
 
 " Helper functions."{{{
+function! unite#_take_action(action_name, candidate)"{{{
+  let l:action_table = unite#get_action_table(a:candidate.source, a:candidate.kind)
+
+  let l:action_name = 
+        \ a:action_name ==# 'default' ?
+        \ unite#get_default_action(a:candidate.source, a:candidate.kind)
+        \ : a:action_name
+
+  if !has_key(l:action_table, a:action_name)
+    return 'no such action ' . a:action_name
+  endif
+  
+  return l:action_table[a:action_name].func(a:candidate)
+endfunction"}}}
 function! unite#is_win()"{{{
   return has('win16') || has('win32') || has('win64')
 endfunction"}}}
@@ -95,7 +115,7 @@ function! unite#get_default_action(source_name, kind_name)"{{{
   return l:default_action
 endfunction"}}}
 function! unite#escape_match(str)"{{{
-  return substitute(substitute(escape(a:str, '~"\.$[]'), '\*\@<!\*', '[^/]*', 'g'), '\*\*\+', '.*', 'g')
+  return substitute(substitute(escape(a:str, '~"\.^$[]'), '\*\@<!\*', '[^/]*', 'g'), '\*\*\+', '.*', 'g')
 endfunction"}}}
 function! unite#complete_source(arglead, cmdline, cursorpos)"{{{
   " Unique.
@@ -123,16 +143,17 @@ endfunction"}}}
 function! unite#redraw() "{{{
   call s:redraw(0)
 endfunction"}}}
-function! unite#redraw_current_line() "{{{
-  if line('.') <= 2 || &filetype !=# 'unite'
+function! unite#redraw_line(...) "{{{
+  let l:linenr = a:0 > 0 ? a:1 : line('.')
+  if l:linenr <= 2 || &filetype !=# 'unite'
     " Ignore.
     return
   endif
 
   setlocal modifiable
 
-  let l:candidate = unite#get_unite_candidates()[line('.') - 3]
-  call setline('.', s:convert_line(l:candidate))
+  let l:candidate = unite#get_unite_candidates()[l:linenr - 3]
+  call setline(l:linenr, s:convert_line(l:candidate))
 
   setlocal nomodifiable
 endfunction"}}}
@@ -166,6 +187,11 @@ endfunction"}}}
 "}}}
 
 function! unite#start(sources, ...)"{{{
+  if empty(s:default_sources)
+    " Initialize load.
+    call s:load_default_sources_and_kinds()
+  endif
+  
   " Save args.
   let l:args = a:0 >= 1 ? a:1 : {}
   if !has_key(l:args, 'input')
@@ -178,13 +204,8 @@ function! unite#start(sources, ...)"{{{
     let l:args.buffer_name = ''
   endif
   
-  call s:initialize_unite_buffer(l:args)
+  call s:initialize_unite_buffer(a:sources, l:args)
 
-  " Initialize sources.
-  call s:initialize_sources(a:sources)
-  " Initialize kinds.
-  call s:initialize_kinds()
-  
   " User's initialization.
   setlocal nomodifiable
   setfiletype unite
@@ -244,49 +265,53 @@ function! unite#quit_session()  "{{{
   endif
 endfunction"}}}
 
-function! s:initialize_sources(sources)"{{{
-  " Gathering all sources name.
-  let b:unite.sources = {}
-  let b:unite.candidates = []
-  let b:unite.cached_candidates = {}
+function! s:load_default_sources_and_kinds()"{{{
+  " Gathering all sources and kind name.
+  let s:default_sources = {}
+  let s:default_kinds = {}
   
-  let l:all_sources = {}
-  for l:source_name in map(split(globpath(&runtimepath, 'autoload/unite/sources/*.vim'), '\n'),
+  for l:name in map(split(globpath(&runtimepath, 'autoload/unite/sources/*.vim'), '\n'),
         \ 'fnamemodify(v:val, ":t:r")')
-    let l:all_sources[l:source_name] = 1
+    if !has_key(s:default_sources, l:name)
+      let s:default_sources[l:name] = 
+            \ call('unite#sources#' . l:name . '#define', [])
+    endif
   endfor
   
-  let l:number = 0
-  for l:source_name in a:sources
-    if !has_key(l:all_sources, l:source_name)
-      echoerr 'Invalid source name "' . l:source_name . '" is detected.'
-      return
-    endif
-      
-    let l:source = call('unite#sources#' . l:source_name . '#define', [])
-    if !has_key(b:unite.sources, l:source_name)
-      if !has_key(l:source, 'is_volatile')
-        let l:source.is_volatile = 0
-      endif
-      let l:source.unite__is_invalidate = 1
-      
-      let l:source.unite__number = l:number
-      let l:number += 1
-      
-      let b:unite.sources[l:source_name] = l:source
+  for l:name in map(split(globpath(&runtimepath, 'autoload/unite/kinds/*.vim'), '\n'),
+        \ 'fnamemodify(v:val, ":t:r")')
+    if !has_key(s:default_kinds, l:name)
+      let s:default_kinds[l:name] = 
+            \ call('unite#kinds#' . l:name . '#define', [])
     endif
   endfor
 endfunction"}}}
-function! s:initialize_kinds()"{{{
-  " Gathering all kinds name.
-  let b:unite.kinds = {}
-  for l:kind_name in map(split(globpath(&runtimepath, 'autoload/unite/kinds/*.vim'), '\n'),
-        \ 'fnamemodify(v:val, ":t:r")')
-    let l:kind = call('unite#kinds#' . l:kind_name . '#define', [])
-    if !has_key(b:unite.kinds, l:kind_name)
-      let b:unite.kinds[l:kind_name] = l:kind
+function! s:initialize_sources(sources)"{{{
+  let l:sources = {}
+  
+  let l:number = 0
+  for l:source_name in a:sources
+    if !has_key(s:default_sources, l:source_name)
+      echoerr 'Invalid source name "' . l:source_name . '" is detected.'
+      return {}
     endif
+    
+    let l:source = s:default_sources[l:source_name]
+    if !has_key(l:source, 'is_volatile')
+      let l:source.is_volatile = 0
+    endif
+    let l:source.unite__is_invalidate = 1
+
+    let l:source.unite__number = l:number
+    let l:number += 1
+
+    let l:sources[l:source_name] = l:source
   endfor
+  
+  return l:sources
+endfunction"}}}
+function! s:initialize_kinds()"{{{
+  return s:default_kinds
 endfunction"}}}
 function! s:gather_candidates(text, args)"{{{
   " Save options.
@@ -363,7 +388,12 @@ function! s:convert_line(candidate)"{{{
         \ . " " . a:candidate.source
 endfunction"}}}
 
-function! s:initialize_unite_buffer(args)"{{{
+function! s:initialize_unite_buffer(sources, args)"{{{
+  while getbufvar(bufnr('%'), '&filetype') ==# 'unite'
+    " Quit unite buffer.
+    call unite#quit_session()
+  endwhile
+
   " The current buffer is initialized.
   if unite#is_win()
     let l:buffer_name = '[unite]'
@@ -377,16 +407,23 @@ function! s:initialize_unite_buffer(args)"{{{
   let l:winnr = winnr()
   let l:win_rest_cmd = winrestcmd()
   
-  if bufname('%') !=# l:buffer_name
-    " Split window.
-    execute g:unite_split_rule 
-          \ g:unite_enable_split_vertically ?
-          \        (s:bufexists(l:buffer_name) ? 'vsplit' : 'vnew')
-          \      : (s:bufexists(l:buffer_name) ? 'split' : 'new')
-  endif
+  " Split window.
+  execute g:unite_split_rule 
+        \ g:unite_enable_split_vertically ?
+        \        (bufexists(l:buffer_name) ? 'vsplit' : 'vnew')
+        \      : (bufexists(l:buffer_name) ? 'split' : 'new')
   
-  if s:bufexists(l:buffer_name)
-    silent execute bufnr(s:fnameescape(l:buffer_name)) 'buffer'
+  if bufexists(l:buffer_name)
+    " Search buffer name.
+    let l:bufnr = 1
+    let l:max = bufnr('$')
+    while l:bufnr <= l:max
+      if bufname(l:bufnr) ==# l:buffer_name
+        silent execute l:bufnr 'buffer'
+      endif
+      
+      let l:bufnr += 1
+    endwhile
   else
     silent! file `=l:buffer_name`
   endif
@@ -396,6 +433,10 @@ function! s:initialize_unite_buffer(args)"{{{
   let b:unite.old_winnr = l:winnr
   let b:unite.win_rest_cmd = l:win_rest_cmd
   let b:unite.args = a:args
+  let b:unite.candidates = []
+  let b:unite.cached_candidates = {}
+  let b:unite.sources = s:initialize_sources(a:sources)
+  let b:unite.kinds = s:initialize_kinds()
   
   " Basic settings.
   setlocal number
@@ -521,12 +562,6 @@ function! s:get_unite() "{{{
 endfunction"}}}
 function! s:compare(source_a, source_b) "{{{
   return a:source_a.unite__number - a:source_b.unite__number
-endfunction"}}}
-function! s:fnameescape(string) "{{{
-  return escape(a:string, " \t\n*?[{`$\\%#'\"|!<")
-endfunction"}}}
-function! s:bufexists(name) "{{{
-  return bufname(s:fnameescape(a:name)) ==# a:name
 endfunction"}}}
 "}}}
 

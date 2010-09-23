@@ -1,6 +1,6 @@
 *unite.txt*	Unite all sources
 
-Version: 0.5
+Version: 1.0
 Author : Shougo <Shougo.Matsu@gmail.com>
 License: MIT license  {{{
     Permission is hereby granted, free of charge, to any person obtaining
@@ -66,6 +66,10 @@ COMMANDS 					*unite-commands*
 						*:UniteWithBufferDir*
 		Unite all sources. Initial narrowing text is current buffer
 		directory.
+
+:UniteWithCursorWord [-buffer-name={buffer-name}] [-input={input-text}] {sources}
+						*:UniteWithCursorWord*
+		Unite all sources. Initial narrowing text is cursor word.
 
 ------------------------------------------------------------------------------
 VARIABLES 					*unite-variables*
@@ -148,8 +152,8 @@ Normal mode mappings.
 
 Visual mode mappings.
 
-<Plug>(unite_toggle_mark_selected_lines)	*<Plug>(unite_toggle_selected_lines)*
-		Toggle marks in selected lines.
+<Plug>(unite_toggle_mark_selected_candidates)	*<Plug>(unite_toggle_selected_candidates)*
+		Toggle marks in selected candidates.
 
 						*g:unite_default_key_mappings*
 Following keymappings are default keymappings.
@@ -205,8 +209,8 @@ EXAMPLES					*unite-examples*
 	nmap    f [unite]
 	
 	nnoremap [unite]u  :<C-u>Unite<Space>
-	nnoremap <silent> [unite]f  :<C-u>Unite -buffer-name=files buffer file_mru file<CR>
-	nnoremap <silent> [unite]b  :<C-u>UniteWithBufferDir buffer file_mru file<CR>
+	nnoremap <silent> [unite]f  :<C-u>UniteWithCurrentDir -buffer-name=files buffer file_mru bookmark file<CR>
+	nnoremap <silent> [unite]b  :<C-u>UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 	
 	autocmd FileType unite call s:unite_my_settings()
 	function! s:unite_my_settings()"{{{
@@ -228,9 +232,35 @@ BUGS						*unite-bugs*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2010-09-21
+- Ver.1.0 development is started.
+- Fixed unite buffer restore bug.
+
+Ver.0.5 {{{
+2010-09-21 
+- Ver.0.5 is released.
+- Fixed japanese documentation.
+- Improved unite buffer detect.
+
+2010-09-20
+- Added :UniteWithCursorWord command.
+- Improved initialization.
+- Added Japanese help(Thanks naoina!).
+- Added <Plug>(unite_toggle_mark_selected_candidates) keymapping.
+- Changed some keymappings name.
+- Refactoringed file_mru.
+- Added bookmark source.
+- Added jump_list kind.
+- Added <Plug>(unite_do_bookmark_action)
+- Detect vimfiler and vimshell in bookmark.
+- Improved buffer search.
+- Fixed i_<Plug>(unite_exit).
+- Fixed help tags.
+
 2010-09-19
 - Fixed wildcard bug.
 - Improved buffer check.
+- Improved split.
 
 2010-09-18
 - Display modified flag in source buffer.
@@ -286,8 +316,9 @@ CHANGELOG					*unite-changelog*
 - Ver.0.5 development is started.
 - Implemented kind.
 - Improved caching.
+}}}
 
-" Ver.0.1"{{{
+Ver.0.1 {{{
 2010-09-10
 - Improved UniteWithBufferDir and UniteWithCurrentDir.
 
@@ -410,7 +441,7 @@ CHANGELOG					*unite-changelog*
 - Added file source.
 - Added file_mru source.
 - Some improvements.
-"}}}
+}}}
 
 ==============================================================================
 vim:tw=78:ts=8:ft=help:norl:noet:fen:fdl=0:fdm=marker:

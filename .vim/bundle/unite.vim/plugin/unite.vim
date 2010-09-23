@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 17 Sep 2010
+" Last Modified: 21 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 0.5, for Vim 7.0
+" Version: 1.0, for Vim 7.0
 "=============================================================================
 
 if exists('g:loaded_unite')
@@ -61,13 +61,13 @@ endif
 
 " Wrapper command.
 command! -nargs=+ -complete=customlist,unite#complete_source Unite call s:call_unite_empty(<q-args>)
-function! s:call_unite_empty(args)
+function! s:call_unite_empty(args)"{{{
   let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
   call unite#start(l:args, l:options)
-endfunction
+endfunction"}}}
 
 command! -nargs=+ -complete=customlist,unite#complete_source UniteWithCurrentDir call s:call_unite_current_dir(<q-args>)
-function! s:call_unite_current_dir(args)
+function! s:call_unite_current_dir(args)"{{{
   let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
   if !has_key(l:options, 'input')
     let l:path = &filetype ==# 'vimfiler' ? b:vimfiler.current_dir : substitute(fnamemodify(getcwd(), ':p'), '\\', '/', 'g')
@@ -75,10 +75,10 @@ function! s:call_unite_current_dir(args)
   endif
   
   call unite#start(l:args, l:options)
-endfunction
+endfunction"}}}
 
 command! -nargs=+ -complete=customlist,unite#complete_source UniteWithBufferDir call s:call_unite_buffer_dir(<q-args>)
-function! s:call_unite_buffer_dir(args)
+function! s:call_unite_buffer_dir(args)"{{{
   let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
   if !has_key(l:options, 'input')
     let l:path = &filetype ==# 'vimfiler' ? b:vimfiler.current_dir : substitute(fnamemodify(bufname('%'), ':p:h'), '\\', '/', 'g')
@@ -86,9 +86,19 @@ function! s:call_unite_buffer_dir(args)
   endif
   
   call unite#start(l:args, l:options)
-endfunction
+endfunction"}}}
 
-function! s:parse_options(args)
+command! -nargs=+ -complete=customlist,unite#complete_source UniteWithCursorWord call s:call_unite_cursor_word(<q-args>)
+function! s:call_unite_cursor_word(args)"{{{
+  let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
+  if !has_key(l:options, 'input')
+    let l:options.input = expand('<cword>')
+  endif
+  
+  call unite#start(l:args, l:options)
+endfunction"}}}
+
+function! s:parse_options(args)"{{{
   let l:args = []
   let l:options = {}
   for l:arg in a:args
@@ -102,7 +112,7 @@ function! s:parse_options(args)
   endfor
   
   return [l:args, l:options]
-endfunction
+endfunction"}}}
 
 let g:loaded_unite = 1
 

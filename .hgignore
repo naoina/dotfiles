@@ -25,3 +25,5 @@ bin/*
 .vim/GetLatest/Installed/*
 .mlterm/challenge
 *.orig
+tags-*
+.scim/config
