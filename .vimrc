@@ -153,6 +153,7 @@ au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
 
 au BufNewFile,BufRead *.inc     setlocal filetype=php
 au BufNewFile,BufRead *.snip    setlocal filetype=snippet
+au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
@@ -193,7 +194,20 @@ let g:unite_split_rule = "rightbelow"
 nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
 
 function! s:unite_setting()
-  setlocal timeoutlen=1
+  if exists("b:did_unite_setting") && b:did_unite_setting
+    return
+  endif
+  let b:did_unite_setting = 1
+  let timeoutlen_save = &timeoutlen
+  let &timeoutlen = 1
+
+  augroup Unite
+    au!
+  augroup END
+  au Unite BufEnter <buffer> setlocal timeoutlen=1
+  exec "au Unite BufLeave <buffer> setlocal timeoutlen=" . timeoutlen_save
+
+  unlet timeoutlen_save
 endfunction
 
 " For yankring, script_id=1234.
