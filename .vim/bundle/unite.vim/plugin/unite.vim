@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: unite.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 21 Sep 2010
+" Last Modified: 02 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -48,14 +48,11 @@ endif
 if !exists('g:unite_enable_split_vertically')
   let g:unite_enable_split_vertically = 0
 endif
-if !exists('g:unite_substitute_patterns')
-  let g:unite_substitute_patterns = {}
+if !exists('g:unite_data_directory')
+  let g:unite_data_directory = expand('~/.unite')
 endif
-if !exists('g:unite_temporary_directory')
-  let g:unite_temporary_directory = expand('~/.unite')
-endif
-if !isdirectory(fnamemodify(g:unite_temporary_directory, ':p'))
-  call mkdir(fnamemodify(g:unite_temporary_directory, ':p'), 'p')
+if !isdirectory(fnamemodify(g:unite_data_directory, ':p'))
+  call mkdir(fnamemodify(g:unite_data_directory, ':p'), 'p')
 endif
 "}}}
 
@@ -71,9 +68,9 @@ function! s:call_unite_current_dir(args)"{{{
   let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
   if !has_key(l:options, 'input')
     let l:path = &filetype ==# 'vimfiler' ? b:vimfiler.current_dir : substitute(fnamemodify(getcwd(), ':p'), '\\', '/', 'g')
-    let l:options.input = escape(l:path.(l:path =~ '[\\/]$' ? '' : '/'), ' ')
+    let l:options.input = escape(l:path.(l:path =~ '/$' ? '' : '/'), ' ')
   endif
-  
+
   call unite#start(l:args, l:options)
 endfunction"}}}
 
@@ -82,9 +79,9 @@ function! s:call_unite_buffer_dir(args)"{{{
   let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
   if !has_key(l:options, 'input')
     let l:path = &filetype ==# 'vimfiler' ? b:vimfiler.current_dir : substitute(fnamemodify(bufname('%'), ':p:h'), '\\', '/', 'g')
-    let l:options.input = escape(l:path.(l:path =~ '[\\/]$' ? '' : '/'), ' ')
+    let l:options.input = escape(l:path.(l:path =~ '/$' ? '' : '/'), ' ')
   endif
-  
+
   call unite#start(l:args, l:options)
 endfunction"}}}
 
@@ -94,7 +91,18 @@ function! s:call_unite_cursor_word(args)"{{{
   if !has_key(l:options, 'input')
     let l:options.input = expand('<cword>')
   endif
-  
+
+  call unite#start(l:args, l:options)
+endfunction"}}}
+
+command! -nargs=+ -complete=customlist,unite#complete_source UniteWithInput call s:call_unite_input(<q-args>)
+function! s:call_unite_input(args)"{{{
+  let [l:args, l:options] = s:parse_options(split(a:args, '\\\@<! '))
+  if !has_key(l:options, 'input')
+    let l:path = substitute(input('Input narrowing text: ', '', 'dir'), '\\', '/', 'g')
+    let l:options.input = escape(l:path.(l:path =~ '/$' ? '' : '/'), ' ')
+  endif
+
   call unite#start(l:args, l:options)
 endfunction"}}}
 
@@ -110,9 +118,11 @@ function! s:parse_options(args)"{{{
       call add(l:args, l:arg)
     endif
   endfor
-  
+
   return [l:args, l:options]
 endfunction"}}}
+
+command! -nargs=? -complete=customlist,unite#complete_buffer UniteResume call unite#resume(<q-args>)
 
 let g:loaded_unite = 1
 

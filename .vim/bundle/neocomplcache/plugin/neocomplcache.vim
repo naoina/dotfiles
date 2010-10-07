@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 10 Sep 2010
+" Last Modified: 02 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -22,7 +22,7 @@
 "     TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 "     SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 " }}}
-" Version: 5.2, for Vim 7.0
+" Version: 5.3, for Vim 7.0
 " GetLatestVimScripts: 2620 1 :AutoInstall: neocomplcache
 "=============================================================================
 
@@ -106,6 +106,9 @@ if !exists('g:neocomplcache_cursor_hold_i_time')
 endif
 if !exists('g:neocomplcache_enable_auto_select')
   let g:neocomplcache_enable_auto_select = 0
+endif
+if !exists('g:neocomplcache_enable_auto_delimiter')
+  let g:neocomplcache_enable_auto_delimiter = 0
 endif
 if !exists('g:neocomplcache_caching_limit_file_size')
   let g:neocomplcache_caching_limit_file_size = 500000

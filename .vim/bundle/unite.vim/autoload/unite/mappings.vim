@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: mappings.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 20 Sep 2010
+" Last Modified: 30 Sep 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -32,6 +32,7 @@ function! unite#mappings#define_default_mappings()"{{{
   nnoremap <silent><buffer> <Plug>(unite_do_delete_action)  :<C-u>call unite#mappings#do_action('delete')<CR>
   nnoremap <silent><buffer> <Plug>(unite_do_bookmark_action)  :<C-u>call unite#mappings#do_action('bookmark')<CR>
   nnoremap <silent><buffer> <Plug>(unite_do_preview_action)  :<C-u>call unite#mappings#do_action('preview')<CR>
+  nnoremap <silent><buffer> <Plug>(unite_do_narrow_action)  :<C-u>call unite#mappings#do_action('narrow')<CR>
   nnoremap <silent><buffer> <Plug>(unite_choose_action)  :<C-u>call <SID>choose_action()<CR>
   nnoremap <silent><buffer> <Plug>(unite_insert_enter)  :<C-u>call <SID>insert_enter()<CR>
   nnoremap <silent><buffer> <Plug>(unite_insert_head)  :<C-u>call <SID>insert_head()<CR>
@@ -42,18 +43,19 @@ function! unite#mappings#define_default_mappings()"{{{
   nnoremap <silent><buffer> <Plug>(unite_search_next_source)  :<C-u>call <SID>search_source(1)<CR>
   nnoremap <silent><buffer> <Plug>(unite_search_previous_source)  :<C-u>call <SID>search_source(0)<CR>
   nnoremap <silent><buffer> <Plug>(unite_print_candidate)  :<C-u>call <SID>print_candidate()<CR>
-  nnoremap <silent><expr><buffer> <Plug>(unite_edit_candidate) line('.') <= 2 ?
-        \ ":\<C-u>call \<SID>insert_enter()\<CR>" : ":\<C-u>call \<SID>insert_selected_candidate()\<CR>"
+  nnoremap <buffer> <Plug>(unite_cursor_top)  2G0z.
+  nnoremap <buffer><expr> <Plug>(unite_loop_cursor_down)  (line('.') == line('$'))? '2G0z.' : 'j'
+  nnoremap <buffer><expr> <Plug>(unite_loop_cursor_up)  (line('.') <= 2)? 'G' : 'k'
   
   vnoremap <buffer><silent> <Plug>(unite_toggle_mark_selected_candidates)  :<C-u>call <SID>toggle_mark_candidates(getpos("'<")[1], getpos("'>")[1])<CR>
   
   inoremap <silent><buffer> <Plug>(unite_exit)  <ESC>:<C-u>call <SID>exit()<CR>
-  inoremap <buffer><expr> <Plug>(unite_insert_leave)  line('.') == 2 ? "\<ESC>j" : "\<ESC>0"
-  inoremap <expr><buffer> <Plug>(unite_delete_backward_char)  col('.') == 2 ? '' : "\<C-h>"
-  inoremap <expr><buffer> <Plug>(unite_delete_backward_line)  repeat("\<C-h>", col('.')-2)
-  inoremap <expr><buffer> <Plug>(unite_delete_backward_word)  col('.') == 2 ? '' : "\<C-w>"
-  inoremap <expr><buffer> <Plug>(unite_select_next_line)  pumvisible() ? "\<C-n>" : "\<Down>"
-  inoremap <expr><buffer> <Plug>(unite_select_previous_line)  pumvisible() ? "\<C-p>" : "\<Up>"
+  inoremap <buffer><expr> <Plug>(unite_insert_leave)  unite#mappings#smart_imap("\<ESC>j", "\<ESC>0")
+  inoremap <expr><buffer> <Plug>(unite_delete_backward_char)  col('.') <= (len(b:unite.prompt)+1) ? '' : "\<C-h>"
+  inoremap <expr><buffer> <Plug>(unite_delete_backward_line)  repeat("\<C-h>", col('.')-(len(b:unite.prompt)+1))
+  inoremap <expr><buffer> <Plug>(unite_delete_backward_word)  col('.') <= (len(b:unite.prompt)+1) ? '' : "\<C-w>"
+  inoremap <expr><buffer> <Plug>(unite_select_next_line)  pumvisible() ? "\<C-n>" : line('.') == line('$') ? "\<C-Home>\<Down>\<Down>" : "\<Home>\<Down>"
+  inoremap <expr><buffer> <Plug>(unite_select_previous_line)  pumvisible() ? "\<C-p>" : line('.') <= 3 ? "\<C-End>\<Home>" : "\<Home>\<Up>"
   inoremap <expr><buffer> <Plug>(unite_select_next_page)  pumvisible() ? "\<PageDown>" : repeat("\<Down>", winheight(0))
   inoremap <expr><buffer> <Plug>(unite_select_previous_page)  pumvisible() ? "\<PageUp>" : repeat("\<Up>", winheight(0))
   inoremap <silent><buffer> <Plug>(unite_do_default_action) <C-o>:call unite#mappings#do_action('default')<CR>
@@ -76,22 +78,23 @@ function! unite#mappings#define_default_mappings()"{{{
   nmap <buffer> <CR> <Plug>(unite_do_default_action)
   nmap <buffer> d <Plug>(unite_do_delete_action)
   nmap <buffer> b <Plug>(unite_do_bookmark_action)
+  nmap <buffer> e <Plug>(unite_do_narrow_action)
   nmap <buffer> <Space> <Plug>(unite_toggle_mark_current_candidate)
   nmap <buffer> <Tab> <Plug>(unite_choose_action)
   nmap <buffer> <C-n> <Plug>(unite_search_next_source)
   nmap <buffer> <C-p> <Plug>(unite_search_previous_source)
   nmap <buffer><expr><silent> l line('.') <= 2 ? 'l' : "\<Plug>(unite_do_default_action)"
-  nmap <buffer> <silent> ~ i<Plug>(unite_delete_backward_line)~/<ESC>
   nmap <buffer> <C-g> <Plug>(unite_print_candidate)
-  nmap <buffer> e <Plug>(unite_edit_candidate)
   nmap <buffer> p <Plug>(unite_do_preview_action)
   nmap <buffer> <C-l> <Plug>(unite_redraw)
+  nmap <buffer> gg <Plug>(unite_cursor_top)
+  nmap <buffer> j <Plug>(unite_loop_cursor_down)
+  nmap <buffer> k <Plug>(unite_loop_cursor_up)
 
   " Visual mode key-mappings.
   xmap <buffer> <Space> <Plug>(unite_toggle_mark_selected_candidates)
 
   " Insert mode key-mappings.
-  inoremap <buffer><expr> /    getline(2) == '>' ? '/' : '*/'
   imap <buffer> <ESC>     <Plug>(unite_insert_leave)
   imap <buffer> <TAB>     <Plug>(unite_choose_action)
   imap <buffer> <S-TAB>   <Plug>(unite_select_previous_line)
@@ -106,13 +109,15 @@ function! unite#mappings#define_default_mappings()"{{{
   imap <buffer> <C-w>     <Plug>(unite_delete_backward_word)
   imap <buffer> <C-a>     <Plug>(unite_move_head)
   imap <buffer> <Home>     <Plug>(unite_move_head)
-  imap <buffer><expr> <Space>  line('.') == 2 ? ' ' : "\<Plug>(unite_toggle_mark_current_candidate)"
+  imap <buffer><expr> <Space>  unite#mappings#smart_imap(' ', "\<Plug>(unite_toggle_mark_current_candidate)")
+  inoremap <buffer><expr> /    unite#mappings#smart_imap('/', 
+        \ "\<C-o>:\<C-u>call unite#mappings#do_action('narrow')\<CR>")
 endfunction"}}}
 
 " key-mappings functions.
 function! unite#mappings#narrowing(word)"{{{
   setlocal modifiable
-  call setline(2, '>' . escape(a:word, ' *'))
+  call setline(2, b:unite.prompt . escape(a:word, ' *'))
   2
   startinsert!
 endfunction"}}}
@@ -133,6 +138,7 @@ function! unite#mappings#do_action(action_name)"{{{
     let l:candidates = [ unite#get_unite_candidates()[l:num] ]
   endif
   
+  let l:is_redraw = 0
   for l:candidate in l:candidates
     let l:action_table = unite#get_action_table(l:candidate.source, l:candidate.kind)
     
@@ -162,11 +168,17 @@ function! unite#mappings#do_action(action_name)"{{{
       " Check invalidate cache flag.
       if has_key(l:action, 'is_invalidate_cache') && l:action.is_invalidate_cache
         call unite#invalidate_cache(l:candidate.source)
+        let l:is_redraw = 1
       endif
     endif
   endfor
 
-  call unite#redraw()
+  if l:is_redraw
+    call unite#force_redraw()
+  endif
+endfunction"}}}
+function! unite#mappings#smart_imap(narrow_map, select_map)"{{{
+  return line('.')  == 2 ? a:narrow_map : a:select_map
 endfunction"}}}
 function! s:exit()"{{{
   call unite#quit_session()
@@ -216,8 +228,15 @@ function! s:choose_action()"{{{
     let l:candidates = [ unite#get_unite_candidates()[l:num] ]
   endif
   
+  echohl Statement | echo 'Candidates:' | echohl None
+  
   let s:actions = {}
   for l:candidate in l:candidates
+    " Print candidates.
+    echo l:candidate.abbr . '('
+    echohl Type | echon l:candidate.source | echohl None
+    echon ')'
+    
     let l:action_table = unite#get_action_table(l:candidate.source, l:candidate.kind)
     
     for [l:action_name, l:action] in items(l:action_table)
@@ -231,13 +250,14 @@ function! s:choose_action()"{{{
       endif
     endfor
   endfor
-  
+
   " Print action names.
   let l:width = winwidth(0)
   let l:max = l:width > 90 ? 6 : l:width > 75 ? 5 : l:width > 50 ? 4 : 3
   let l:cnt = 0
   
-  echohl Statement
+  echohl Identifier
+  echo ''
   for l:action_name in keys(s:actions)
     echon unite#util#truncate(l:action_name, 14) . ' '
     let l:cnt += 1

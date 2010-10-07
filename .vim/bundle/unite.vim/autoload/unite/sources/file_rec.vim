@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: directory.vim
+" FILE: file_rec.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 28 Sep 2010
+" Last Modified: 02 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,35 +24,55 @@
 " }}}
 "=============================================================================
 
-function! unite#kinds#directory#define()"{{{
-  return s:kind
+function! unite#sources#file_rec#define()"{{{
+  return s:source
 endfunction"}}}
 
-let s:kind = {
-      \ 'name' : 'directory',
-      \ 'default_action' : 'narrow',
-      \ 'action_table': {},
+let s:source = {
+      \ 'name' : 'file_rec',
+      \ 'max_candidates': 30,
       \}
 
-" Actions"{{{
-let s:kind.action_table = deepcopy(unite#kinds#file#define().action_table)
+function! s:source.gather_candidates(args)"{{{
+  if isdirectory(a:args.input)
+    let l:directory = a:args.input
+    if l:directory !~ '[\\/]$'
+      let l:directory .= '/'
+    endif
+    
+    let l:input = l:directory
+  else
+    let l:directory = substitute(getcwd(), '\\', '/', 'g')
+    if l:directory !~ '[\\/]$'
+      let l:directory .= '/'
+    endif
+    
+    let l:input = ''
+  endif
+  
+  if l:directory =~ '^\%(\a\+:\)\?/$' || expand(l:directory) ==# substitute($HOME . '/', '\\', '/', 'g')
+    call unite#print_error('file_rec: Too many candidates.')
+    return []
+  endif
+  let l:candidates = split(substitute(glob(l:input . '**'), '\\', '/', 'g'), '\n')
+  
+  if len(l:candidates) > 10000
+    call unite#print_error('file_rec: Too many candidates.')
+    return []
+  endif
 
-let s:kind.action_table.narrow = {
-      \ 'is_quit' : 0,
-      \ }
-function! s:kind.action_table.narrow.func(candidate)"{{{
-  let l:word = a:candidate.word . (a:candidate.word =~ '[\\/]$' ? '' : '/')
-  call unite#mappings#narrowing(l:word)
+  " Remove directories.
+  call filter(l:candidates, '!isdirectory(v:val)')
+  
+  if g:unite_source_file_ignore_pattern != ''
+    call filter(l:candidates, 'v:val !~ ' . string(g:unite_source_file_ignore_pattern))
+  endif
+  
+  return map(l:candidates, '{
+        \ "word" : v:val,
+        \ "source" : "file_rec",
+        \ "kind" : "file"
+        \ }')
 endfunction"}}}
-
-if exists(':VimShell')
-  let s:kind.action_table.vimshell = {
-        \ }
-  function! s:kind.action_table.vimshell.func(candidate)"{{{
-    let l:dir = isdirectory(a:candidate.word) ? a:candidate.word : fnamemodify(a:candidate.word, ':p:h')
-    VimShellCreate `=l:dir`
-  endfunction"}}}
-endif
-"}}}
 
 " vim: foldmethod=marker

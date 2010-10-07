@@ -105,12 +105,7 @@ g:unite_enable_split_vertically				*g:unite_enable_split_vertically*
 		
 		Default value is 0.
 
-g:unite_substitute_patterns			*g:unite_substitute_patterns*
-		
-		
-		Default value is refer to autoload/unite.vim.
-
-g:unite_temporary_directory			*g:unite_temporary_directory*
+g:unite_data_directory					*g:unite_data_directory*
 		
 		
 		Default value is expand('~/.unite').
@@ -130,7 +125,7 @@ g:unite_source_file_mru_time_format		*g:unite_source_file_mru_time_format*
 g:unite_source_file_mru_file			*g:unite_source_file_mru_file*
 		
 		
-		Default value is |g:unite_temporary_directory| . '/.file_mru'.
+		Default value is |g:unite_data_directory| . '/.file_mru'.
 
 g:unite_source_file_mru_limit			*g:unite_source_file_mru_limit*
 		
@@ -216,7 +211,8 @@ EXAMPLES					*unite-examples*
 	function! s:unite_my_settings()"{{{
 	" Overwrite settings.
 	imap <buffer> jj      <Plug>(unite_insert_leave)
-	nnoremap <buffer> t G
+	nnoremap <silent><buffer> <C-k> :<C-u>call unite#mappings#do_action('preview')<CR>
+	" Start insert.
 	"let g:unite_enable_start_insert = 1
 	endfunction"}}}
 	
@@ -231,6 +227,90 @@ BUGS						*unite-bugs*
 
 ==============================================================================
 CHANGELOG					*unite-changelog*
+
+2010-10-07
+- Improved :UniteResume.
+- Fixed file_mru word.
+- Optimized register source.
+- Don't chase link.
+
+2010-10-06
+- Improved unite#set_substitute_pattern().
+- Deleted / mappings.
+- Improved description.
+- Improved globing pattern.
+- List current buffer.
+- Added vimshell action in buffer.
+- Improved default substitute patterns.
+- Improved / substitute pattern.
+- Fixed substitute pattern.
+- Added :UniteResume.
+
+2010-10-04
+- Fixed Japanese description.
+- Deleted :UniteFilemruSweep command.
+
+2010-10-02
+- Added file_rec source.
+- Improved file_rec source.
+- Added :UniteWithInput command.
+- Improved get input text.
+- Improved invalid source detection.
+- Detect home directory in file_rec.
+
+2010-10-01
+- Improved iskeyword.
+
+2010-09-30
+- Improved g:unite_source_file_ignore_pattern.
+- Changed g:unite_temporary_directory into g:unite_data_directory.
+- Improved / mapping.
+- Fixed globing.
+- Deleted setlocal number.
+- Fixed / mapping.
+
+2010-09-29
+- Added openable kind.
+- Print candidates when <Plug>(unite_choose_action).
+- Changed / mapping.
+- Implemented unite#mappings#smart_imap().
+
+2010-09-28
+- Optimized redraw.
+- Added <Plug>(unite_do_narrow_action).
+- Reverted / behavior.
+- Added narrow action in buffer.
+- Fixed glob().
+- Fixed force redraw bug.
+- Added cd and lcd action in buffer.
+- Fixed modifiable bug.
+
+2010-09-27
+- Fixed file glob.
+- Fixed abbr in file_mru.
+- Fixed doted file search.
+- Improved g:unite_source_file_ignore_pattern.
+
+2010-09-26
+- Fixed ignorecase bug.
+- Deleted obsolute mappings.
+- Improved prompt.
+- Implemented input text save.
+- Optimized file_mru.
+- Added <Plug>(unite_cursor_top) and <Plug>(unite_loop_cursor_down) and <Plug>(unite_loop_cursor_up) mappings.
+- Improved documentation.
+- Fixed vimshell error.
+- Improved glob.
+
+2010-09-24
+- Improved <Plug>(unite_select_next_line) and <Plug>(unite_previous_line) behavior.
+- Fixed documentation typo.
+- Added unite#set_substitute_pattern().
+- Deleted g:unite_substitute_patterns.
+
+2010-09-23
+- Fixed filtering bug.
+- Added the unite-functions description into Japanese document.
 
 2010-09-21
 - Ver.1.0 development is started.

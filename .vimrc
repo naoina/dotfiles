@@ -187,7 +187,7 @@ imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>
 smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
 
 " For unite
-let g:unite_temporary_directory = $VIMLOCAL . '/cache'
+let g:unite_data_directory = $VIMLOCAL . '/cache'
 let g:unite_enable_split_vertically = 1
 let g:unite_split_rule = "rightbelow"
 " let g:unite_enable_start_insert = 1
@@ -308,6 +308,7 @@ function! s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=80
   setlocal expandtab
+  setlocal foldmethod=indent
 endfunction
 
 function! s:php_setting()
