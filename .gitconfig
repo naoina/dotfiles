@@ -1,0 +1,6 @@
+[user]
+	name = Naoya Inada
+	email = naoina@naniyueni.org
+[alias]
+	ci = commit
+	st = status
