@@ -1,0 +1,16 @@
+#!/bin/bash
+
+usage() {
+    cat << EOF
+Usage: `basename $0` DIR...
+EOF
+    exit $1
+}
+
+[ $# = 0 ] && usage 1
+
+for d in "$@"; do
+    images+=(`ls $d/*.{jpg,png,gif} 2>/dev/null`)
+done
+
+Esetroot -fit "${images[$(($RANDOM % ${#images[@]}))]}"
