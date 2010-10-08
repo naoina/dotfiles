@@ -39,7 +39,7 @@ case "$WM" in
         xcompmgr &
         ;;
     i3)
-        Esetroot "$WALLPAPER"
+        Esetroot -fit "$WALLPAPER"
         ;;
     *)
         ;;
