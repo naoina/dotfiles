@@ -5,7 +5,7 @@ IMAGE_PATH="$HOME/work/media/image"
 # WM=compiz-fusion
 # WM=awesome
 WM=i3
-WALLPAPER="$IMAGE_PATH/wallpaper/pink_is_the_new_color_of_death_by_softmeanie.jpg"
+WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper"
 
 export LANG=ja_JP.UTF-8
 export LC_CTYPE=$LANG
@@ -35,11 +35,11 @@ case "$WM" in
         WM="fusion-icon"
         ;;
     xmonad)
-        Esetroot -fit "$WALLPAPER"
+        $WALLPAPER_PICKER $IMAGE_PATH
         xcompmgr &
         ;;
     i3)
-        Esetroot -fit "$WALLPAPER"
+        $WALLPAPER_PICKER $IMAGE_PATH
         ;;
     *)
         ;;
