@@ -65,6 +65,7 @@ set foldlevel=99
 set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
+set pastetoggle=<Leader><SPACE>
 
 setlocal cursorline
 au WinEnter,BufEnter * setlocal cursorline
@@ -110,7 +111,7 @@ noremap! <C-a> <HOME>
 noremap! <C-e> <END>
 noremap! <C-f> <RIGHT>
 noremap! <C-b> <LEFT>
-nnoremap ,t :!(cd %:p:h;ctags *)<CR>
+nnoremap <Leader>t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
 
@@ -162,9 +163,12 @@ let timestamp_rep    = '%F %T %z'
 " For NERD_commenter, script_id=1218.
 " let NERDCreateDefaultMappings = 0
 let NERDSpaceDelims = 1
-nmap <C-_> <Plug>NERDCommenterInvert
-vmap <C-_> <Plug>NERDCommenterInvert
-imap <C-_> <C-o><Plug>NERDCommenterInvert
+nmap <C-_>. <Plug>NERDCommenterNest
+nmap <C-_>, <Plug>NERDCommenterUncomment
+vmap <C-_>. <Plug>NERDCommenterNest
+vmap <C-_>, <Plug>NERDCommenterUncomment
+imap <C-_>. <C-o><Plug>NERDCommenterNest
+imap <C-_>, <C-o><Plug>NERDCommenterUncomment
 
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
