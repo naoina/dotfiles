@@ -50,7 +50,7 @@ if [ -x "`whence vim`" ]; then
     export EDITOR="`whence vim`"
     alias vi="`whence vim`"
 else
-    export EDITOR="/usr/bin/vi"
+    export EDITOR="`whence vi`"
 fi
 
 if [ -x "`whence lv`" ]; then
@@ -96,6 +96,7 @@ fi
 [[ -x "`whence mplayer`" ]] && alias mplayer="`whence mplayer` -softvol"
 
 alias ll="ls -l"
+alias lz="ll -Z"
 alias df="df -h"
 alias du="du -h"
 alias gprof="gprof -b"
@@ -115,7 +116,7 @@ TMUX_PROG="`whence tmux`"
 # Set prompt
 #
 PROMPT="[%~]
-[%n@%m(`arch`)]%# "
+[%n@%M(`arch`)]%# "
 
 # ulimit -c unlimited
 umask 072
