@@ -13,6 +13,8 @@ checkconflicts = True
 [extensions]
 rebase =
 record =
+color =
+mq =
 
 [alias]
 show = diff -r -2:tip
