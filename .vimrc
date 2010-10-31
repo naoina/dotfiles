@@ -65,7 +65,8 @@ set foldlevel=99
 set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
-set pastetoggle=<Leader><SPACE>
+set pastetoggle=<F3>
+set clipboard=unnamed
 
 setlocal cursorline
 au WinEnter,BufEnter * setlocal cursorline
@@ -104,8 +105,8 @@ noremap  <C-k> <C-w>W
 nnoremap <silent><C-l> :nohl<CR>:redr!<CR>
 inoremap <silent><C-l> <C-o>:nohl<CR><C-o>:redr!<CR>
 nnoremap <SPACE> za
-nnoremap <silent><C-n> :bn<CR>
-nnoremap <silent><C-p> :bN<CR>
+nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
+nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
 nnoremap <silent><C-d> :bw!<CR>
 noremap! <C-a> <HOME>
 noremap! <C-e> <END>
@@ -163,12 +164,9 @@ let timestamp_rep    = '%F %T %z'
 " For NERD_commenter, script_id=1218.
 " let NERDCreateDefaultMappings = 0
 let NERDSpaceDelims = 1
-nmap <C-_>. <Plug>NERDCommenterNest
-nmap <C-_>, <Plug>NERDCommenterUncomment
-vmap <C-_>. <Plug>NERDCommenterNest
-vmap <C-_>, <Plug>NERDCommenterUncomment
-imap <C-_>. <C-o><Plug>NERDCommenterNest
-imap <C-_>, <C-o><Plug>NERDCommenterUncomment
+nmap <C-_> <Plug>NERDCommenterToggle
+vmap <C-_> <Plug>NERDCommenterToggle
+imap <C-_> <C-o><Plug>NERDCommenterToggle
 
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
@@ -262,31 +260,35 @@ function! s:flymake_make(prg, fmt, opt)
     exec a:opt
   endif
 
+  hi ErrorLine ctermfg=white ctermbg=darkred
+
   exec "au BufWritePost <buffer> call s:flymake_run('silent make! | cw 3', '" . a:prg . "', '" . a:fmt . "')"
   au QuickFixCmdPost <buffer> call s:flymake_highlight()
+  hi ErrorSign ctermfg=red cterm=bold
+  sign define error_flymake text=!! texthl=ErrorLine
 endfunction
 
 function! s:flymake_highlight()
-  hi ErrorLine ctermfg=white ctermbg=darkred
-
   if exists("b:flymakematchid")
     call matchdelete(b:flymakematchid)
     unlet b:flymakematchid
+    sign unplace 3
   endif
 
-  let ignore_fmt = ["m", "f", "s"]
-
   for line in readfile(&makeef)
-    let fmt = &errorformat
-    for c in ignore_fmt
-      let fmt = substitute(fmt, "%" . c, '\\%(.*\\)', "g")
-    endfor
-
-    let fmt = substitute(fmt, "%l", '\\(\\d\\+\\)', "")
-    let lno = substitute(line, fmt, '\1', "")
-
+    " hilight error line
+    let lno = s:flymake_take_by_regex(line, "l", '\\d\\+')
     let b:flymakematchid = matchadd("ErrorLine", '\%' . lno . "l.*")
+
+    " put error sign
+    let fname = s:flymake_take_by_regex(line, "f", '.*')
+    exec "sign place 3 line=" . lno . " name=error_flymake file=" . fname
   endfor
+endfunction
+
+function! s:flymake_take_by_regex(line, c, regex)
+  let fmt = substitute(&errorformat, '%[^' . a:c . ']', '\\%(.*\\)', "g")
+  return substitute(a:line, substitute(fmt, "%" . a:c, '\\(' . a:regex . '\\)', ""), '\1', "")
 endfunction
 
 augroup MyAutoCmd
