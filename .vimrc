@@ -67,6 +67,7 @@ set grepprg=grep\ -nH
 set writeany
 set pastetoggle=<F3>
 set clipboard=unnamed
+set tags=tags; " For ctags
 
 setlocal cursorline
 au WinEnter,BufEnter * setlocal cursorline
@@ -102,11 +103,11 @@ inoremap <C-s> <Nop>
 noremap  <C-o> o<ESC><UP>
 noremap  <C-j> <C-w>w
 noremap  <C-k> <C-w>W
-nnoremap <silent><C-l> :nohl<CR>:redr!<CR>
-inoremap <silent><C-l> <C-o>:nohl<CR><C-o>:redr!<CR>
+nnoremap <silent><C-l> :Refresh<CR>
+inoremap <silent><C-l> <C-o>:Refresh<CR>
 nnoremap <SPACE> za
-nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
-nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
+nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>tabn\<CR>"
+nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>tabN\<CR>"
 nnoremap <silent><C-d> :bw!<CR>
 noremap! <C-a> <HOME>
 noremap! <C-e> <END>
@@ -115,6 +116,9 @@ noremap! <C-b> <LEFT>
 nnoremap <Leader>t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
+
+cabbrev e tabe
+cabbrev enew tabnew
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
@@ -194,6 +198,7 @@ let g:unite_enable_split_vertically = 1
 let g:unite_split_rule = "rightbelow"
 " let g:unite_enable_start_insert = 1
 nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
+call unite#custom_default_action("file", "tabopen")
 
 function! s:unite_setting()
   if exists("b:did_unite_setting") && b:did_unite_setting
@@ -234,8 +239,14 @@ let g:quickrun_config = {
       \ },
 \}
 
-" For ctags.
-set tags=tags;
+function! s:refresh()
+  let save_ar = &autoread
+  setlocal autoread
+  nohl | redr! | checktime
+  let &autoread = save_ar
+  unlet save_ar
+endfunction
+command! Refresh call s:refresh()
 
 " Simplicity flymake.
 function! s:flymake_run(cmd, prg, fmt)
