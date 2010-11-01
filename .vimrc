@@ -191,6 +191,7 @@ let g:neocomplcache_temporary_dir = $VIMLOCAL . '/cache'
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
 imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
 smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
+cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
 let g:unite_data_directory = $VIMLOCAL . '/cache'

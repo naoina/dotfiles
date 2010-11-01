@@ -1,0 +1,122 @@
+snippet class
+alias cl
+abbr class
+	class ${1:`expand("%:t:r")`} {
+		public $1() {
+			${0:// TODO: implementation}
+		}
+	} // End of $1 class.
+
+snippet interface
+alias in
+abbr interface
+	interface `expand("%:t:r")` {
+		${0:// TODO: implementation}
+	}
+
+snippet pu
+	public
+
+snippet pr
+	private
+
+snippet pro
+	protected
+
+snippet method
+alias m
+abbr method
+	${1:public} ${2:void} ${3:methodName}(${4}) {
+		${0:// TODO: implementation}
+	}
+
+snippet fi
+	final
+
+snippet ab
+	abstract
+
+snippet v
+	${1:String} ${2};
+
+snippet =
+	${1:String} ${2} = ${3};
+
+snippet co
+	public static final ${1:String} ${2} = ${3};
+
+snippet cos
+	public static final String ${1} = "${2}";
+
+snippet as
+abbr assert
+	assert ${1};
+
+snippet if
+	if (${1}) {
+		${0:// TODO: implementation}
+	}
+
+snippet else
+	else {
+		${0:// TODO: implementation}
+	}
+
+snippet elif
+abbr else if
+	else if (${1}) {
+		${0:// TODO: implementation}
+	}
+
+snippet while
+alias wh
+abbr while
+	while (${1}) {
+		${0:// TODO: implementation}
+	}
+
+snippet for
+	for (${1}; ${2}; ${3}) {
+		${0:// TODO: implementation}
+	}
+
+snippet foreach
+alias fore
+abbr foreach
+	for (${1} : ${2}) {
+		${0:// TODO: implementation}
+	}
+
+snippet switch
+alias sw
+abbr switch
+	switch (${1}) {
+		${2}
+	}
+
+snippet case
+	case ${1}:
+		${0:// TODO: implementation}
+		break;
+
+snippet catch
+alias ca
+abbr catch
+	catch (${1:Exception} e) {
+		${0:// TODO: implementation}
+	}
+
+snippet main
+	public static void main(String[] args) {
+		${0:// TODO: implementation}
+	}
+
+snippet p
+abbr println
+	System.out.println(${1});
+
+snippet c
+abbr comment
+	/**
+	 * ${0}
+	 */
