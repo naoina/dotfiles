@@ -103,8 +103,8 @@ inoremap <C-s> <Nop>
 noremap  <C-o> o<ESC><UP>
 noremap  <C-j> <C-w>w
 noremap  <C-k> <C-w>W
-nnoremap <silent><C-l> :Refresh<CR>
-inoremap <silent><C-l> <C-o>:Refresh<CR>
+nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
+inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>tabn\<CR>"
 nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>tabN\<CR>"
@@ -242,7 +242,7 @@ let g:quickrun_config = {
 function! s:refresh()
   let save_ar = &autoread
   setlocal autoread
-  nohl | redr! | checktime
+  redr! | checktime
   let &autoread = save_ar
   unlet save_ar
 endfunction
