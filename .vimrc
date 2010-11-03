@@ -134,10 +134,7 @@ endif
 
 function! s:auto_ctags()
   if executable("ctags") == 1 && tagfiles() != []
-    let tagsdir = substitute(get(tagfiles(), -1, ""), '^\(.*\)/.*$', '\1', "")
-    if !isdirectory(tagsdir)
-      let tagsdir = expand("%:p:h")
-    endif
+    let tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
 
     exec "setlocal tags=" . tagsdir . "/**/tags"
 
@@ -173,7 +170,7 @@ au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call 
 " Auto restore last cursor position.
 au BufReadPost * normal '"
 
-au BufEnter * exec "lcd " . expand("%:p:h")
+au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
 au BufEnter * call s:auto_ctags()
 
 "actionscript,mxml setting.
@@ -288,7 +285,7 @@ function! s:flymake_run(cmd, prg, fmt)
 endfunction
 
 function! s:flymake_make(prg, fmt, opt)
-  let &makeef = &directory . "/" . expand("%:t") . ".makeef"
+  let &makeef = &directory . "/" . fnameescape(expand("%:t")) . ".makeef"
 
   if a:opt != ""
     exec a:opt
