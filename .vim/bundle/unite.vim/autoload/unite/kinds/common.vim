@@ -1,5 +1,5 @@
 "=============================================================================
-" FILE: directory.vim
+" FILE: common.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
 " Last Modified: 31 Oct 2010
 " License: MIT license  {{{
@@ -24,18 +24,37 @@
 " }}}
 "=============================================================================
 
-function! unite#kinds#directory#define()"{{{
+function! unite#kinds#common#define()"{{{
   return s:kind
 endfunction"}}}
 
 let s:kind = {
-      \ 'name' : 'directory',
-      \ 'default_action' : 'narrow',
+      \ 'name' : 'common',
+      \ 'default_action' : 'nop',
       \ 'action_table': {},
-      \ 'parents': ['file'],
+      \ 'parents': [],
       \}
 
 " Actions"{{{
+let s:kind.action_table.nop = {
+      \ }
+function! s:kind.action_table.nop.func(candidate)"{{{
+endfunction"}}}
+
+let s:kind.action_table.yank = {
+      \ }
+function! s:kind.action_table.yank.func(candidate)"{{{
+  let @" = a:candidate.word
+endfunction"}}}
+
+let s:kind.action_table.ex = {
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.ex.func(candidates)"{{{
+  " Result is ':| {candidate}', here '|' means the cursor position.
+  call feedkeys(printf(": %s\<C-b>", join(map(map(copy(a:candidates), 'v:val.word'), 'escape(v:val, " *?[{`$\\%#''|!<")'))), 'n')
+endfunction"}}}
+
 "}}}
 
 " vim: foldmethod=marker

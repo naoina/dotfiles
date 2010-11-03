@@ -40,8 +40,67 @@ Changelog		|unite-changelog|
 ==============================================================================
 INTRODUCTION					*unite-introduction*
 
+*unite* searches and displays information from arbitrary sources like files,
+buffers, recently used files or registers. You can run one of defined action
+on a target displayed.
+
+The differences between |unite| and similar plugins like |fuzzyfinder| or |ku|
+are that |unite| doesn't use the built-in completion interface of Vim, and
+integrates sources at the same time.
+
 ==============================================================================
 USAGE						*unite-usage*
+
+	In case when you run with files and buffers as the source
+>
+	:Unite file buffer
+<
+
+	In case when you run with the initial input value foo
+>
+	:Unite -input=foo file
+<
+
+The unite you started splits the window horizontally as default, opening on
+the top of the Vim.  For example,
+>
+	:Unite file
+<
+lists up the files of the current directory.  You may choose one of the
+candidates by moving j or k, and typing Enter opens the candidate in a new
+buffer.  That's the default action for candidates of which kind is file.  You
+may also select an action with <Tab> on a candidate.  See also |unite-action|
+about the actions.
+
+You can narrow down the candidates with a keyword.  After opening a unite
+window, the cursor goes on the right side of > in the 2nd line by typing i.
+Then you can input a keyword to narrow down the candidates.  Each single
+characters you type narrows down the candidates.  You also can use a wild card * as an
+arbitrary character sequence.  For example
+>
+	*hisa
+<
+matches hisa, ujihisa, or ujihisahisa.  Furthermore, two consequence wild cards
+matches directory recursively.  For example
+>
+	**/foo
+<
+matches bar/foo or buzz/bar/foo.  Note that you should consider using
+|file_rec| that will be described bellow in most cases.
+
+You may specify multiple keywords to narrow down, separating by spaces.
+>
+	foo bar
+<
+That matches candidates that match both foo and bar.
+
+You may specify negative conditions with !.
+>
+	foo !bar
+<
+That matches foo but candidates that match bar will be rejected.
+
+See also |unite_default_key_mappings|for other actions.
 
 ==============================================================================
 INSTALL						*unite-install*
@@ -77,7 +136,7 @@ VARIABLES 					*unite-variables*
 g:unite_update_time				*g:unite_update_time*
 		
 		
-		Default value is 400.
+		Default value is 200.
 
 g:unite_enable_start_insert			*g:unite_enable_start_insert*
 		If this variable is enabled, unite.vim will
@@ -120,7 +179,7 @@ g:unite_source_file_ignore_pattern		*g:unite_source_file_ignore_pattern*
 g:unite_source_file_mru_time_format		*g:unite_source_file_mru_time_format*
 		
 		
-		Default value is "(%x %H:%M:%S)".
+		Default value is "(%c)".
 
 g:unite_source_file_mru_file			*g:unite_source_file_mru_file*
 		
@@ -173,10 +232,11 @@ name			string		(requried)
 			- a-z
 			- 0-9
 			- _
+			- /
 
 			For example:
-			- "buffer" and "file_mru" are valid.
-			- "BadOne", "virw/git", "!@#$%^&*()_[]{}-|" and "" are
+			- "buffer" , "file_mru" and "virw/git" are valid.
+			- "BadOne", "!@#$%^&*()_[]{}-|" and "" are
 			  not valid.
 
 						*unite-source-attribute-max_candidates*
@@ -210,10 +270,14 @@ EXAMPLES					*unite-examples*
 	autocmd FileType unite call s:unite_my_settings()
 	function! s:unite_my_settings()"{{{
 	" Overwrite settings.
+	
 	imap <buffer> jj      <Plug>(unite_insert_leave)
 	nnoremap <silent><buffer> <C-k> :<C-u>call unite#mappings#do_action('preview')<CR>
+	"imap <buffer> <C-w>     <Plug>(unite_delete_backward_path)
+	
 	" Start insert.
 	"let g:unite_enable_start_insert = 1
+	
 	endfunction"}}}
 	
 	let g:unite_source_file_mru_limit = 200
@@ -228,11 +292,178 @@ BUGS						*unite-bugs*
 ==============================================================================
 CHANGELOG					*unite-changelog*
 
+2010-11-02
+- Improved <Plug>(unite_select_next_line) and <Plug>(unite_select_previous_line).
+- Improved prompt check.
+- Fixed default parameters set.
+- Fixed unite#take_action() error.
+
+2010-11-01
+- Improved redraw.
+- Fixed parents.
+
+2010-10-31
+- Fixed buffer action error.
+- Improved buffer actions.
+- Changed unite#start() specification.
+- Improved common parents.
+- Improved unite#take_action().
+- Added unite#take_parents_action().
+- Added cdable source.
+- Improved Japanese documentation.
+- Added rec action in cdable.
+- Improved tab source.
+- Added g:unite_winwidth option.
+- Improved match line.
+
+2010-10-30
+- Action specification is changed dramatically.
+- Improved substitute path separator.
+- Added unite#undef_custom_action().
+- Source bookmark uses unite#custom_action().
+- :Unite command analyses source arguments.
+- Improved Japanese documentation.
+- Set hlsearch option.
+- Added unite#start() and unite#get_context().
+- Implemented extend kinds.
+- Improved file_rec.
+
+2010-10-29
+- Improved selectable action(experimental).
+- Improved tab action.
+- Fixed unite#take_action().
+
+2010-10-28
+- Improved util.vim.
+- Sorted marked candidates.
+
+2010-10-26
+- Added g:unite_winheight option.
+- Improved modifiable.
+- Improved file_mru abbr.
+- Improved file_mru load.
+- Improved unite_tab.
+- Added rename action in kind tab.
+- Fixed filtering bug.
+
+2010-10-25
+- Fixed unite#invalidate_cache() error.
+
+2010-10-24
+- Improved file_mru.
+- Added tab source.
+
+2010-10-23
+- Fixed jump_list.
+
+2010-10-22
+- Fixed escape pattern.
+- Added bookmark action in buffer.
+- Improved file_mru.
+
+2010-10-21
+- Improved prompt check.
+- Added unite#define_source() and unite#define_kind() and unite#undef_source() and unite#undef_kind().
+- Added unite-user-sources.
+- Improved Japanese help.
+- Added tabvimshell action in directory kind.
+- Improved jump_list preview action.
+
+2010-10-20
+- Improved do_action().
+- Fixed source name syntax.
+- Added i_<Plug>(unite_do_delete_action) mapping.
+- Added -start-insert option.
+
+2010-10-19
+- Improved source name completion.
+
+2010-10-16
+- Deleted g:unite_enable_quick_match_mappings option.
+- Added <Plug>(unite_quick_match_default_action) mapping.
+- Improved quick match.
+- Improved unite#mappings#do_action() description.
+- Added g:unite_quick_match_table option.
+- Implemented unite#custom_alias().
+- Improved unite#set_substitute_pattern() and unite#custom_alias().
+- Implemented unite#custom_default_action().
+- Implemented unite#custom_action().
+- Fixed buffer append error.
+- Improved unite#take_action().
+
+2010-10-15
+- Improved <Plug>(unite_select_next_line) and <Plug>(unite_select_previous_line).
+- Implemented default-action option.
+- Improved completion.
+- Displays candidates number.
+- Implemented quick match.
+- Added g:unite_enable_quick_match_mappings option.
+- Added cursor key support.
+- Deleted <ESC> mapping.
+
+2010-10-14
+- Fixed substitute pattern.
+- Improved dummy file.
+- Implemented unite#get_substitute_pattern().
+- Fixed :Unite completion.
+- Improved buffer_tab.
+- Improved s:load_default_sources_and_kinds() loading.
+
+2010-10-12
+- Fixed get directory error.
+- Fixed s:load_default_sources_and_kinds() error.
+- Added buffer_tab source.
+- Improved buffer sort.
+
+2010-10-11
+- Fixed modifiable problem in insert mode.
+- Fixed lcd in unite#quit_session().
+- Improved <Plug>(unite_delete_backward_path) mapping.
+- Improved s:load_default_sources_and_kinds().
+
+2010-10-10
+- Changed g:unite_update_time default value.
+- Allowed source name contained /.
+- Allowed sources#define to list sources.
+- Added <Plug>(unite_delete_backward_path) mapping.
+
+2010-10-09
+- Improved unite#mappings#smart_map().
+- Deleted <S-Tab> default mapping.
+- Improved g:unite_source_file_mru_time_format default pattern.
+- Improved default mappings.
+- Modifiable unite buffer.
+- Fixed register source error.
+- Improved prompt highlight.
+- Improved Japanese description.
+- Parse prompt.
+- Implemented restore prompt.
+- Improved <Plug>(unite_delete_backward_char).
+- Fixed syntax clear.
+- Fixed :UniteWithInput.
+
+2010-10-08
+- Fixed dummy candidates bug.
+- Improved buffer narrowing.
+- Added common kind.
+- Improved unite#mappings#do_action().
+- Improved choose action.
+- Improved mapping description.
+- Changed source action specification.
+- Improved cd action.
+- Improved dummy.
+- Improved English description.
+- Added g:unite_cd_command and g:unite_lcd_command options.
+- Changed gather_candidates() specification.
+- Changed the name of unite#mappings#smart_imap to unite#mappings#smart_map
+
 2010-10-07
 - Improved :UniteResume.
 - Fixed file_mru word.
 - Optimized register source.
 - Don't chase link.
+- Fixed filtering bug.
+- Fixed dummy candidates bug.
 
 2010-10-06
 - Improved unite#set_substitute_pattern().

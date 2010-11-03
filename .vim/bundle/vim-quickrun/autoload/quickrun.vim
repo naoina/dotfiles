@@ -1,5 +1,5 @@
 " Run commands quickly.
-" Version: 0.4.1
+" Version: 0.4.2
 " Author : thinca <thinca+vim@gmail.com>
 " License: Creative Commons Attribution 2.1 Japan License
 "          <http://creativecommons.org/licenses/by/2.1/jp/deed.en>
@@ -791,6 +791,9 @@ function! s:Runner.output(result)  " {{{2
   let result = a:result
   if get(config, 'output_encode', '') != ''
     let enc = split(self.expand(config.output_encode), '[^[:alnum:]-_]')
+    if len(enc) == 1
+      let enc += [&encoding]
+    endif
     if len(enc) == 2
       let [from, to] = enc
       let result = s:iconv(result, from, to)
@@ -970,7 +973,7 @@ endfunction
 
 
 function! quickrun#complete(lead, cmd, pos)  " {{{2
-  let line = split(a:cmd[:a:pos], '', 1)
+  let line = split(a:cmd[:a:pos - 1], '', 1)
   let head = line[-1]
   if 2 <= len(line) && line[-2] =~ '^-'
     let opt = line[-2][1:]

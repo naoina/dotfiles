@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: openable.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 29 Sep 2010
+" Last Modified: 01 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -30,65 +30,78 @@ endfunction"}}}
 
 let s:kind = {
       \ 'name' : 'openable',
-      \ 'default_action' : 'open',
       \ 'action_table': {},
       \}
 
 " Actions"{{{
 let s:kind.action_table.tabopen = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.tabopen.func(candidate)"{{{
-  tabnew
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.tabopen.func(candidates)"{{{
+  for l:candidate in a:candidates
+    tabnew
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.split = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.split.func(candidate)"{{{
-  split
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.split.func(candidates)"{{{
+  for l:candidate in a:candidates
+    split
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.vsplit = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.vsplit.func(candidate)"{{{
-  vsplit
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.vsplit.func(candidates)"{{{
+  for l:candidate in a:candidates
+    vsplit
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.left = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.left.func(candidate)"{{{
-  leftabove vsplit
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.left.func(candidates)"{{{
+  for l:candidate in a:candidates
+    leftabove vsplit
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.right = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.right.func(candidate)"{{{
-  rightbelow vsplit
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.right.func(candidates)"{{{
+  for l:candidate in a:candidates
+    rightbelow vsplit
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.above = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.above.func(candidate)"{{{
-  leftabove split
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.above.func(candidates)"{{{
+  for l:candidate in a:candidates
+    leftabove split
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.below = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.below.func(candidate)"{{{
-  rightbelow split
-  call unite#_take_action('open', a:candidate)
+function! s:kind.action_table.below.func(candidates)"{{{
+  for l:candidate in a:candidates
+    rightbelow split
+    call unite#take_action('open', l:candidate)
+  endfor
 endfunction"}}}
 "}}}
 

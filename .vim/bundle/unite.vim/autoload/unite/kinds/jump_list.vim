@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: jump_list.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 20 Sep 2010
+" Last Modified: 30 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -40,19 +40,31 @@ let s:kind.action_table = deepcopy(unite#kinds#file#define().action_table)
 let s:kind.action_table.open = {
       \ 'is_selectable' : 1, 
       \ }
-function! s:kind.action_table.open.func(candidate)"{{{
-  edit `=a:candidate.word`
-  
-  let l:linenr = (has_key(a:candidate, 'line') && a:candidate.line != '') ? a:candidate.line : 1
+function! s:kind.action_table.open.func(candidates)"{{{
+  for l:candidate in a:candidates
+    edit `=l:candidate.action__path`
 
-  if has_key(a:candidate, 'pattern') && a:candidate.pattern != ''
-        \ && getline(l:linenr) !~ a:candidate.pattern
-    " Search pattern.
-    call search(a:candidate.pattern, 'w')
-  else
-    " Jump to a:candidate.line.
-    execute l:linenr
-  endif
+    let l:linenr = (has_key(l:candidate, 'action__line') && l:candidate.action__line != '') ? l:candidate.action__line : 1
+
+    if has_key(l:candidate, 'action__pattern') && l:candidate.action__pattern != ''
+          \ && getline(l:linenr) !~ l:candidate.action__pattern
+      " Search pattern.
+      call search(l:candidate.action__pattern, 'w')
+    else
+      " Jump to a:candidate.line.
+      execute l:linenr
+    endif
+  endfor
+endfunction"}}}
+
+let s:kind.action_table.preview = {
+      \ 'is_quit' : 0,
+      \ }
+function! s:kind.action_table.preview.func(candidate)"{{{
+  execute 'pedit'
+        \ (has_key(a:candidate, 'action__line') && a:candidate.action__line != '' ? '+'.a:candidate.action__line : '')
+        \ .(has_key(a:candidate, 'action__pattern') && a:candidate.action__pattern != '' ? '+/'.escape(a:candidate.action__pattern, "\t /") : '')
+        \ '`=a:candidate.action__path`'
 endfunction"}}}
 "}}}
 

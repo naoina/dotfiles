@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: directory.vim
+" FILE: tab.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 31 Oct 2010
+" Last Modified: 24 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,18 +24,16 @@
 " }}}
 "=============================================================================
 
-function! unite#kinds#directory#define()"{{{
-  return s:kind
-endfunction"}}}
+if exists('g:loaded_unite_source_tab')
+  finish
+endif
 
-let s:kind = {
-      \ 'name' : 'directory',
-      \ 'default_action' : 'narrow',
-      \ 'action_table': {},
-      \ 'parents': ['file'],
-      \}
+augroup plugin-unite-source-tab
+  autocmd!
+  autocmd TabEnter * call unite#sources#tab#_append()
+augroup END
 
-" Actions"{{{
-"}}}
+let g:loaded_unite_source_tab = 1
 
+" __END__
 " vim: foldmethod=marker

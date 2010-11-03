@@ -1,5 +1,5 @@
 "=============================================================================
-" FILE: directory.vim
+" FILE: tab.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
 " Last Modified: 31 Oct 2010
 " License: MIT license  {{{
@@ -24,18 +24,58 @@
 " }}}
 "=============================================================================
 
-function! unite#kinds#directory#define()"{{{
+function! unite#kinds#tab#define()"{{{
   return s:kind
 endfunction"}}}
 
 let s:kind = {
-      \ 'name' : 'directory',
-      \ 'default_action' : 'narrow',
+      \ 'name' : 'tab',
+      \ 'default_action' : 'open',
       \ 'action_table': {},
-      \ 'parents': ['file'],
       \}
 
 " Actions"{{{
+let s:kind.action_table.open = {
+      \ }
+function! s:kind.action_table.open.func(candidate)"{{{
+  execute 'tabnext' a:candidate.action__tab_nr
+endfunction"}}}
+
+let s:kind.action_table.delete = {
+      \ 'is_selectable' : 1,
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+      \ }
+function! s:kind.action_table.delete.func(candidates)"{{{
+  for l:candidate in sort(a:candidates, 's:compare')
+    execute 'tabclose' l:candidate.action__tab_nr
+  endfor
+endfunction"}}}
+
+if exists('*gettabvar')
+  " Enable cd action.
+  let s:kind.parents = ['cdable']
+
+  let s:kind.action_table.rename = {
+      \ 'is_selectable' : 1,
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+        \ }
+  function! s:kind.action_table.rename.func(candidates)"{{{
+    for l:candidate in a:candidates
+      let l:old_title = gettabvar(l:candidate.action__tab_nr, 'title')
+      let l:title = input(printf('New title: %s -> ', l:old_title), l:old_title)
+      if l:title != ''
+        call settabvar(l:candidate.action__tab_nr, 'title', l:title)
+      endif
+    endfor
+  endfunction"}}}
+endif
 "}}}
+
+" Misc
+function! s:compare(candidate_a, candidate_b)"{{{
+  return a:candidate_b.action__tab_nr - a:candidate_a.action__tab_nr
+endfunction"}}}
 
 " vim: foldmethod=marker

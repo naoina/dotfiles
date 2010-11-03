@@ -26,9 +26,9 @@ function! s:run()
         \ 'name' : 'hoge',
         \ 'is_volatile' : 1,
         \}
-  function! l:source.gather_candidates(args)"{{{
+  function! l:source.gather_candidates(args, context)"{{{
     " Add dummy candidate.
-    let l:candidates = [ a:args.input ]
+    let l:candidates = [ a:context.input ]
 
     call map(l:candidates, '{
           \ "word" : v:val,
@@ -50,8 +50,11 @@ function! s:run()
   \   'word': 'EMPRESS',
   \ }
 
-  silent! let _ = unite#_take_action('*choose*', candidate)
+  silent! let _ = unite#take_action('*choose*', candidate)
   Like _ 'no such action'
+
+  Ok unite#undef_kind(l:kind.name) == 0, "undef kind"
+  Ok unite#undef_source(l:source.name) == 0, "undef source"
   
 endfunction
 

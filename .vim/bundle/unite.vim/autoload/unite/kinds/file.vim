@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: file.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 29 Sep 2010
+" Last Modified: 31 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -32,70 +32,33 @@ let s:kind = {
       \ 'name' : 'file',
       \ 'default_action' : 'open',
       \ 'action_table': {},
+      \ 'parents': ['openable', 'cdable'],
       \}
 
 " Actions"{{{
-let s:kind.action_table = deepcopy(unite#kinds#openable#define().action_table)
-
 let s:kind.action_table.open = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.open.func(candidate)"{{{
-  edit `=a:candidate.word`
+function! s:kind.action_table.open.func(candidates)"{{{
+  for l:candidate in a:candidates
+    edit `=l:candidate.action__path`
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.fopen = {
-      \ 'is_selectable' : 1, 
+      \ 'is_selectable' : 1,
       \ }
-function! s:kind.action_table.fopen.func(candidate)"{{{
-  edit! `=a:candidate.word`
+function! s:kind.action_table.fopen.func(candidates)"{{{
+  for l:candidate in a:candidates
+    edit! `=l:candidate.action__path`
+  endfor
 endfunction"}}}
 
 let s:kind.action_table.preview = {
       \ 'is_quit' : 0,
       \ }
 function! s:kind.action_table.preview.func(candidate)"{{{
-  pedit `=a:candidate.word`
-endfunction"}}}
-
-let s:kind.action_table.cd = {
-      \ }
-function! s:kind.action_table.cd.func(candidate)"{{{
-  let l:dir = isdirectory(a:candidate.word) ? a:candidate.word : fnamemodify(a:candidate.word, ':p:h')
-  cd `=l:dir`
-endfunction"}}}
-
-let s:kind.action_table.lcd = {
-      \ }
-function! s:kind.action_table.lcd.func(candidate)"{{{
-  let l:dir = isdirectory(a:candidate.word) ? a:candidate.word : fnamemodify(a:candidate.word, ':p:h')
-  lcd `=l:dir`
-endfunction"}}}
-
-let s:kind.action_table.ex = {
-      \ }
-function! s:kind.action_table.ex.func(candidate)"{{{
-  " Result is ':| {candidate}', here '|' means the cursor position.
-  call feedkeys(printf(": %s\<C-b>", escape(a:candidate.word, " \t\n*?[{`$\\%#'\"|!<")), 'n')
-endfunction"}}}
-
-let s:kind.action_table.bookmark = {
-      \ }
-function! s:kind.action_table.bookmark.func(candidate)"{{{
-  " Add to bookmark.
-  call unite#sources#bookmark#_append(a:candidate.word)
-endfunction"}}}
-
-let s:kind.action_table.narrow = {
-      \ 'is_quit' : 0,
-      \ }
-function! s:kind.action_table.narrow.func(candidate)"{{{
-  let l:word = fnamemodify(a:candidate.word, ':h')
-  if l:word !~ '[\\/]$'
-    let l:word .= '/'
-  endif
-  
-  call unite#mappings#narrowing(l:word)
+  pedit `=a:candidate.action__path`
 endfunction"}}}
 "}}}
 

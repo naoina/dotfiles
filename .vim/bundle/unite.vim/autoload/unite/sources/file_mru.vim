@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: file_mru.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 07 Oct 2010
+" Last Modified: 31 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -33,7 +33,7 @@ let s:mru_files = []
 
 let s:mru_file_mtime = 0  " the last modified time of the mru file.
 
-call unite#set_default('g:unite_source_file_mru_time_format', '(%x %H:%M:%S)')
+call unite#set_default('g:unite_source_file_mru_time_format', '(%c)')
 call unite#set_default('g:unite_source_file_mru_file',  g:unite_data_directory . '/.file_mru')
 call unite#set_default('g:unite_source_file_mru_limit', 100)
 call unite#set_default('g:unite_source_file_mru_ignore_pattern', 
@@ -45,7 +45,7 @@ function! unite#sources#file_mru#define()"{{{
 endfunction"}}}
 function! unite#sources#file_mru#_append()"{{{
   " Append the current buffer to the mru list.
-  let l:path = substitute(expand('%:p'), '\\', '/', 'g')
+  let l:path = unite#substitute_path_separator(expand('%:p'))
   if !s:is_exists_path(path) || &l:buftype =~ 'help'
   \   || (g:unite_source_file_mru_ignore_pattern != ''
   \      && l:path =~# g:unite_source_file_mru_ignore_pattern)
@@ -53,8 +53,8 @@ function! unite#sources#file_mru#_append()"{{{
   endif
 
   call s:load()
-  call insert(filter(s:mru_files, 'v:val.word !=# l:path'),
-  \           s:convert2dictionary([path, localtime()]))
+  call insert(filter(s:mru_files, 'v:val.action__path !=# l:path'),
+  \           s:convert2dictionary([l:path, localtime()]))
 
   if g:unite_source_file_mru_limit > 0
     unlet s:mru_files[g:unite_source_file_mru_limit]
@@ -69,40 +69,43 @@ let s:source = {
       \ 'action_table': {},
       \}
 
-function! s:source.gather_candidates(args)"{{{
+function! s:source.gather_candidates(args, context)"{{{
   call s:load()
 
   " Create abbr.
   for l:mru in s:mru_files
-    let l:abbr = strftime(g:unite_source_file_mru_time_format, l:mru.unite_file_mru_time) .
-          \          fnamemodify(l:mru.word, ':.')
-
-    if l:abbr == ''
-      let l:abbr = strftime(g:unite_source_file_mru_time_format, l:mru.unite_file_mru_time) . l:mru.word
+    let l:relative_path = unite#substitute_path_separator(fnamemodify(l:mru.action__path, ':~:.'))
+    if l:relative_path == ''
+      let l:relative_path = l:mru.action__path
     endif
 
-    let l:mru.abbr = substitute(l:abbr, '\\', '/', 'g')
+    let l:mru.abbr = strftime(g:unite_source_file_mru_time_format, l:mru.source__time) . l:relative_path
   endfor
 
-  return sort(s:mru_files, 's:compare')
+  return s:mru_files
 endfunction"}}}
 
 " Actions"{{{
-let s:source.action_table.delete = {
-      \ 'is_invalidate_cache' : 1, 
-      \ 'is_quit' : 0, 
-      \ 'is_selectable' : 1, 
+let s:action_table = {}
+
+let s:action_table.delete = {
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+      \ 'is_selectable' : 1,
       \ }
-function! s:source.action_table.delete.func(candidate)"{{{
-  call filter(s:mru_files, 'v:val.word !=# ' . string(a:candidate.word))
+function! s:action_table.delete.func(candidates)"{{{
+  for l:candidate in a:candidates
+    call filter(s:mru_files, 'v:val.action__path !=# a:candidate.action__path')
+  endfor
+
   call s:save()
 endfunction"}}}
+
+let s:source.action_table.file = s:action_table
+let s:source.action_table.directory = s:action_table
 "}}}
 
 " Misc
-function! s:compare(candidate_a, candidate_b)"{{{
-  return a:candidate_b['unite_file_mru_time'] - a:candidate_a['unite_file_mru_time']
-endfunction"}}}
 function! s:save()  "{{{
   call writefile([s:VERSION] + map(copy(s:mru_files), 'join(s:convert2list(v:val), "\t")'),
   \              g:unite_source_file_mru_file)
@@ -112,20 +115,18 @@ function! s:load()  "{{{
   if filereadable(g:unite_source_file_mru_file)
   \  && s:mru_file_mtime != getftime(g:unite_source_file_mru_file)
     let [ver; s:mru_files] = readfile(g:unite_source_file_mru_file)
-    
+
     if ver !=# s:VERSION
-      echohl WarningMsg
-      echomsg 'Sorry, the version of MRU file is old.  Clears the MRU list.'
-      echohl None
+      call unite#print_error('Sorry, the version of MRU file is old.  Clears the MRU list.')
       let s:mru_files = []
       return
     endif
-    
+
     let s:mru_files =
-    \   map(filter(map(s:mru_files[: g:unite_source_file_mru_limit - 1],
-    \              'split(v:val, "\t")'), 's:is_exists_path(v:val[0])'),
-    \              's:convert2dictionary(v:val)')
-    
+    \   map(s:mru_files[: g:unite_source_file_mru_limit - 1],
+    \              's:convert2dictionary(split(v:val, "\t"))')
+    call filter(s:mru_files, 's:is_exists_path(v:val.action__path)')
+
     let s:mru_file_mtime = getftime(g:unite_source_file_mru_file)
   endif
 endfunction"}}}
@@ -134,14 +135,16 @@ function! s:is_exists_path(path)  "{{{
 endfunction"}}}
 function! s:convert2dictionary(list)  "{{{
   return {
-        \ 'word' : substitute(a:list[0], '\\', '/', 'g'),
+        \ 'word' : unite#substitute_path_separator(a:list[0]),
         \ 'source' : 'file_mru',
-        \ 'unite_file_mru_time' : a:list[1],
-        \ 'kind' : (isdirectory(a:list[0]) ? 'directory' : "file"),
+        \ 'kind' : (isdirectory(a:list[0]) ? 'directory' : 'file'),
+        \ 'source__time' : a:list[1],
+        \ 'action__path' : unite#substitute_path_separator(a:list[0]),
+        \ 'action__directory' : unite#path2directory(unite#substitute_path_separator(a:list[0])),
         \   }
 endfunction"}}}
 function! s:convert2list(dict)  "{{{
-  return [ a:dict.word, a:dict.unite_file_mru_time ]
+  return [ a:dict.action__path, a:dict.source__time ]
 endfunction"}}}
 
 " vim: foldmethod=marker

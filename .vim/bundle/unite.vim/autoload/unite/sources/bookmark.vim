@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: bookmark.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 20 Sep 2010
+" Last Modified: 31 Oct 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -44,17 +44,17 @@ function! unite#sources#bookmark#_append(filename)"{{{
     " Append the current buffer to the bookmark list.
     let l:path = expand('%:p')
     let l:linenr = line('.')
-    let l:pattern = escape(getline('.'), '~"\.^*$[]')
+    let l:pattern = '^' . escape(getline('.'), '~"\.^*$[]') . '$'
   else
     let l:path = fnamemodify(a:filename, ':p')
     let l:linenr = ''
     let l:pattern = ''
   endif
-  
+
   let l:filename = (a:filename == '' ? expand('%') : a:filename)
   if bufexists(l:filename)
     let l:filetype = getbufvar(l:path, '&filetype')
-    
+
     " Detect vimfiler and vimshell.
     if l:filetype ==# 'vimfiler'
       let l:path = getbufvar(l:path, 'vimfiler').current_dir
@@ -62,17 +62,16 @@ function! unite#sources#bookmark#_append(filename)"{{{
       let l:path = getbufvar(l:path, 'vimshell').save_dir
     endif
   endif
-  echomsg l:path
-  
-  let l:path = substitute(l:path, '\\', '/', 'g')
+
+  let l:path = unite#substitute_path_separator(l:path)
   if !s:is_exists_path(path)
     return
   endif
-  
+
   redraw
   echo a:filename
   let l:name = input('Please input bookmark name : ')
-  
+
   call s:load()
   call insert(s:bookmark_files, [l:name, l:path, l:linenr, l:pattern])
   call s:save()
@@ -83,7 +82,7 @@ let s:source = {
       \ 'action_table': {},
       \}
 
-function! s:source.gather_candidates(args)"{{{
+function! s:source.gather_candidates(args, context)"{{{
   call s:load()
   return map(copy(s:bookmark_files), '{
         \ "abbr" : (v:val[0] != "" ? "[" . v:val[0] . "] " : "") .  
@@ -92,22 +91,63 @@ function! s:source.gather_candidates(args)"{{{
         \ "source" : "bookmark",
         \ "kind" : (isdirectory(v:val[1]) ? "directory" : "jump_list"),
         \ "bookmark_name" : v:val[0],
-        \ "line" : v:val[2],
-        \ "pattern" : v:val[3],
+        \ "action__path" : v:val[1],
+        \ "action__line" : v:val[2],
+        \ "action__pattern" : v:val[3],
+        \ "action__directory" : unite#path2directory(v:val[1]),
         \   }')
 endfunction"}}}
 
 " Actions"{{{
-let s:source.action_table.delete = {
+let s:action_table = {}
+
+let s:action_table.delete = {
       \ 'is_invalidate_cache' : 1, 
       \ 'is_quit' : 0, 
       \ 'is_selectable' : 1, 
       \ }
-function! s:source.action_table.delete.func(candidate)"{{{
-  call filter(s:bookmark_files, 'string(v:val) !=# ' .
-        \ string(string([a:candidate.bookmark_name, a:candidate.word, a:candidate.line, a:candidate.pattern])))
+function! s:action_table.delete.func(candidates)"{{{
+  for l:candidate in a:candidates
+    call filter(s:bookmark_files, 'string(v:val) !=# ' .
+        \ string(string([a:candidate.bookmark_name, l:candidate.word, l:candidate.line, l:candidate.pattern])))
+  endfor
+
   call s:save()
 endfunction"}}}
+
+let s:source.action_table.jump_list = s:action_table
+let s:source.action_table.directory = s:action_table
+unlet! s:action_table
+"}}}
+
+" Add custom action table."{{{
+let s:file_bookmark_action = {
+      \ }
+function! s:file_bookmark_action.func(candidate)"{{{
+  " Add to bookmark.
+  call unite#sources#bookmark#_append(a:candidate.action__path)
+endfunction"}}}
+
+let s:buffer_bookmark_action = {
+      \ }
+function! s:buffer_bookmark_action.func(candidate)"{{{
+  let l:filetype = getbufvar(a:candidate.action__buffer_nr, '&filetype')
+  if l:filetype ==# 'vimfiler'
+    let l:filename = getbufvar(a:candidate.action__buffer_nr, 'vimfiler').current_dir
+  elseif l:filetype ==# 'vimshell'
+    let l:filename = getbufvar(a:candidate.action__buffer_nr, 'vimshell').save_dir
+  else
+    let l:filename = a:candidate.action__path
+  endif
+
+  " Add to bookmark.
+  call unite#sources#bookmark#_append(l:filename)
+endfunction"}}}
+
+call unite#custom_action('file', 'bookmark', s:file_bookmark_action)
+call unite#custom_action('buffer', 'bookmark', s:buffer_bookmark_action)
+unlet! s:file_bookmark_action
+unlet! s:buffer_bookmark_action
 "}}}
 
 " Misc
