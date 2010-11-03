@@ -106,8 +106,8 @@ noremap  <C-k> <C-w>W
 nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
 inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
 nnoremap <SPACE> za
-nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>tabn\<CR>"
-nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>tabN\<CR>"
+nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
+nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
 nnoremap <silent><C-d> :bw!<CR>
 noremap! <C-a> <HOME>
 noremap! <C-e> <END>
@@ -116,9 +116,6 @@ noremap! <C-b> <LEFT>
 nnoremap <Leader>t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
-
-cabbrev e tabe
-cabbrev enew tabnew
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
@@ -199,7 +196,6 @@ let g:unite_enable_split_vertically = 1
 let g:unite_split_rule = "rightbelow"
 " let g:unite_enable_start_insert = 1
 nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
-call unite#custom_default_action("file", "tabopen")
 
 function! s:unite_setting()
   if exists("b:did_unite_setting") && b:did_unite_setting
