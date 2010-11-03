@@ -67,7 +67,7 @@ set grepprg=grep\ -nH
 set writeany
 set pastetoggle=<F3>
 set clipboard=unnamed
-set tags=tags; " For ctags
+set tags=tags;
 
 setlocal cursorline
 au WinEnter,BufEnter * setlocal cursorline
@@ -113,7 +113,6 @@ noremap! <C-a> <HOME>
 noremap! <C-e> <END>
 noremap! <C-f> <RIGHT>
 noremap! <C-b> <LEFT>
-nnoremap <Leader>t :!(cd %:p:h;ctags *)<CR>
 nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
 
@@ -133,6 +132,32 @@ if &diff
   nnoremap <silent>ZQ    :qall!<CR>
 endif
 
+function! s:auto_ctags()
+  if executable("ctags") == 1 && tagfiles() != []
+    let tagsdir = substitute(get(tagfiles(), -1, ""), '^\(.*\)/.*$', '\1', "")
+    if !isdirectory(tagsdir)
+      let tagsdir = expand("%:p:h")
+    endif
+
+    exec "setlocal tags=" . tagsdir . "/**/tags"
+
+    au BufWritePre * let b:modified = &modified
+    au BufWritePost * call s:tags_auto_generate()
+    au FileChangedShellPost * call s:tags_auto_generate()
+  endif
+endfunction
+
+function! s:tags_auto_generate()
+  if !(b:modified && exists("*vimproc#system_bg"))
+    return
+  endif
+
+  let opt = &ignorecase ? "--sort=foldcase " : " "
+
+  cd %:p:h
+  call vimproc#system_bg("ctags " . opt . substitute(glob("*"), "\n", " ", "g"))
+endfunction
+
 function! s:clear_undo()
   let old_undolevels = &undolevels
   setlocal undolevels=-1
@@ -149,6 +174,7 @@ au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call 
 au BufReadPost * normal '"
 
 au BufEnter * exec "lcd " . expand("%:p:h")
+au BufEnter * call s:auto_ctags()
 
 "actionscript,mxml setting.
 au BufNewFile,BufRead *.as      setlocal filetype=actionscript
