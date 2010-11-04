@@ -19,6 +19,7 @@ hi SpecialKey ctermfg=darkblue
 hi NonText    ctermfg=235
 hi CursorLine ctermbg=234 cterm=none
 hi Search     ctermfg=grey ctermbg=55 cterm=bold
+hi Todo       ctermfg=232 ctermbg=226 cterm=bold
 
 hi link Number  String
 hi link Boolean keyword
