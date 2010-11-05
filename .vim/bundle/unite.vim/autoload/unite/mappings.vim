@@ -104,7 +104,7 @@ function! unite#mappings#define_default_mappings()"{{{
   xmap <buffer> <Space>   <Plug>(unite_toggle_mark_selected_candidates)
 
   " Insert mode key-mappings.
-  imap <buffer> <ESC>     <Plug>(unite_insert_leave)
+  " imap <buffer> <ESC>     <Plug>(unite_insert_leave)
   imap <buffer> <TAB>     <Plug>(unite_choose_action)
   imap <buffer> <C-n>     <Plug>(unite_select_next_line)
   imap <buffer> <Down>     <Plug>(unite_select_next_line)

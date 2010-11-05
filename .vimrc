@@ -216,8 +216,9 @@ cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
 let g:unite_data_directory = $VIMLOCAL . '/cache'
-let g:unite_enable_split_vertically = 1
-let g:unite_split_rule = "rightbelow"
+" let g:unite_enable_split_vertically = 1
+let g:unite_winheight = 8
+let g:unite_split_rule = "botright"
 " let g:unite_enable_start_insert = 1
 nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
 
@@ -234,8 +235,11 @@ function! s:unite_setting()
   augroup END
   au Unite BufEnter <buffer> setlocal timeoutlen=1
   exec "au Unite BufLeave <buffer> setlocal timeoutlen=" . timeoutlen_save
-
   unlet timeoutlen_save
+
+  nmap <buffer><Esc> <Plug>(unite_exit)
+  imap <buffer><Esc> <Plug>(unite_exit)
+
 endfunction
 
 " For yankring, script_id=1234.
