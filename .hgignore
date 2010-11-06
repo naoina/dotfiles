@@ -18,6 +18,7 @@ tags
 .VimballRecord
 .viminfo
 .git/**
+.git*
 *.vba
 *.zip
 bin/*
