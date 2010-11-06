@@ -336,36 +336,66 @@ au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ i
 
 
 " Filetypes setting
-function! s:txt_setting()
+function s:txt_setting()
   setlocal textwidth=78
 endfunction
 
-function! s:help_setting()
+function s:help_setting()
   setlocal textwidth=78
   setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   setlocal nosmarttab
 endfunction
 
-function! s:python_setting()
+function s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=80
   setlocal expandtab
   setlocal foldmethod=indent
 endfunction
 
-function! s:php_setting()
+function s:php_setting()
   setlocal include=
 endfunction
 
-function! s:html_setting()
+function s:html_setting()
+  call s:xml_setting()
+endfunction
+
+function s:snippet_setting()
+  setlocal noexpandtab
+  sunmap <Tab>
+  iunmap <Tab>
+endfunction
+
+function s:actionscript_setting()
+  setlocal dictionary=$VIMLOCAL/dict/actionscript3.dict
+endfunction
+
+function s:c_setting()
+  setlocal foldmethod=indent foldminlines=2 foldnestmax=1
+endfunction
+
+function s:cpp_setting()
+  setlocal foldmethod=indent foldminlines=2 foldnestmax=2
+endfunction
+
+function s:java_setting()
+  setlocal foldmethod=indent foldlevel=1 foldnestmax=2
+endfunction
+
+function s:xml_setting()
+  let g:xml_syntax_folding = 1
+  setlocal foldmethod=syntax foldlevel=1
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal expandtab
 endfunction
 
-function! s:snippet_setting()
-  setlocal noexpandtab
-  sunmap <Tab>
-  iunmap <Tab>
+function s:ruby_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+endfunction
+
+function s:vim_setting()
+  setlocal shiftwidth=2
 endfunction
 
 function! s:setting()
@@ -375,6 +405,11 @@ function! s:setting()
   endif
 endfunction
 
+function! s:setting4like_c()
+  inoremap {<CR> {<CR>}<C-o><S-o>
+endfunction
+
+au MyAutoCmd FileType c,cpp,java,javascript,php,actionscript call s:setting4like_c()
 au MyAutoCmd FileType * call s:setting()
 
 " vim: set ft=vim sw=2 :
