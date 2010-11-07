@@ -117,6 +117,9 @@ function! LoadTemplateFile()
     silent! execute "%s/@EMAIL@/"         . Email      . "/g"
     silent! execute "%s/@COMPANY@/"       . Company    . "/g"
     silent! execute "%s/@JAVA_PACKAGE@/"  . java_pkg   . "/g"
+    let license = substitute(license, "@YEAR@",   year,   "g")
+    let license = substitute(license, "@AUTHOR@", Author, "g")
+    let license = substitute(license, "@EMAIL@",  Email,  "g")
 
     call cursor(1, 1)
     let startpos = search("@LICENSE@", "nW")

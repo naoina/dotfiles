@@ -1,6 +1,9 @@
 syntax on
 filetype plugin indent on
 
+let g:author = "Naoya Inada"
+let g:email  = "naoina@naniyueni.org"
+
 let $VIMLOCAL = $HOME . '/.vim'
 
 colorscheme desert
