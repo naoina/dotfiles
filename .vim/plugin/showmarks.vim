@@ -128,7 +128,7 @@ if !hasmapto( '<Plug>ShowmarksClearMark'       ) | map <silent> <unique> <leader
 if !hasmapto( '<Plug>ShowmarksClearAll'        ) | map <silent> <unique> <leader>ma :ShowMarksClearAll<cr>|  endif
 if !hasmapto( '<Plug>ShowmarksPlaceMark'       ) | map <silent> <unique> <leader>mm :ShowMarksPlaceMark<cr>| endif
 noremap <unique> <script> \sm m
-noremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
+nnoremap <silent> m :exe 'norm \sm'.nr2char(getchar())<bar>call <sid>ShowMarks()<CR>
 
 " AutoCommands: Only if ShowMarks is enabled
 if g:showmarks_enable == 1

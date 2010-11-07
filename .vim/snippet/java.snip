@@ -1,3 +1,5 @@
+include c_like.snip
+
 snippet class
 alias cl
 abbr class
@@ -52,52 +54,12 @@ snippet as
 abbr assert
 	assert ${1};
 
-snippet if
-	if (${1}) {
-		${0:// TODO: implementation}
-	}
-
-snippet else
-	else {
-		${0:// TODO: implementation}
-	}
-
-snippet elif
-abbr else if
-	else if (${1}) {
-		${0:// TODO: implementation}
-	}
-
-snippet while
-alias wh
-abbr while
-	while (${1}) {
-		${0:// TODO: implementation}
-	}
-
-snippet for
-	for (${1}; ${2}; ${3}) {
-		${0:// TODO: implementation}
-	}
-
 snippet foreach
 alias fore
 abbr foreach
 	for (${1} : ${2}) {
 		${0:// TODO: implementation}
 	}
-
-snippet switch
-alias sw
-abbr switch
-	switch (${1}) {
-		${2}
-	}
-
-snippet case
-	case ${1}:
-		${0:// TODO: implementation}
-		break;
 
 snippet catch
 alias ca
@@ -114,9 +76,3 @@ snippet main
 snippet p
 abbr println
 	System.out.println(${1});
-
-snippet c
-abbr comment
-	/**
-	 * ${0}
-	 */

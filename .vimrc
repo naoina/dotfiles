@@ -174,14 +174,6 @@ au BufReadPost * normal '"
 au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
 au BufEnter * call s:auto_ctags()
 
-"actionscript,mxml setting.
-au BufNewFile,BufRead *.as      setlocal filetype=actionscript
-au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
-
-au BufNewFile,BufRead *.inc     setlocal filetype=php
-au BufNewFile,BufRead *.snip    setlocal filetype=snippet
-au BufNewFile,BufRead *.wsgi    setlocal filetype=python
-
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
 let timestamp_rep    = '%F %T %z'
@@ -336,6 +328,13 @@ au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ i
 
 
 " Filetypes setting
+au BufNewFile,BufRead *.as      setlocal filetype=actionscript
+au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
+
+au BufNewFile,BufRead *.inc     setlocal filetype=php
+au BufNewFile,BufRead *.snip    setlocal filetype=snippet
+au BufNewFile,BufRead *.wsgi    setlocal filetype=python
+
 function s:txt_setting()
   setlocal textwidth=78
 endfunction
@@ -363,8 +362,8 @@ endfunction
 
 function s:snippet_setting()
   setlocal noexpandtab
-  sunmap <Tab>
-  iunmap <Tab>
+  snoremap <buffer><Tab> <Tab>
+  inoremap <buffer><Tab> <Tab>
 endfunction
 
 function s:actionscript_setting()

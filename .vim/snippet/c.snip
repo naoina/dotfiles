@@ -1,0 +1,30 @@
+include c_like.snip
+
+snippet main
+	int main(int argc, char *argv[]) {
+		${0:// TODO: implementation}
+		return 0;
+	}
+
+snippet usage
+	void usage() {
+		printf("Usage: %s ${1}\n, PROG_NAME);
+		exit(EXIT_FAILURE);
+	}
+
+snippet printf
+alias p
+	printf("${1}\n"${2});${0}
+
+snippet inc
+	#include <${1}.h>${0}
+
+snippet def
+	#define ${1} ${2}
+
+snippet fun
+alias func
+abbr function
+	${1:void} ${2:funcname}(${3}) {
+		${0:// TODO: implementation}
+	}
