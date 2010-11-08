@@ -143,6 +143,11 @@ function! s:mkdir(dir, perm)
 endfunction
 
 function! s:auto_ctags()
+  if exists("b:loaded_auto_ctags")
+    return
+  endif
+  let b:loaded_auto_ctags = 1
+
   if executable("ctags") == 1 && tagfiles() != []
     let tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
 
