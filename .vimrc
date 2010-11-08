@@ -40,9 +40,9 @@ runtime macros/matchit.vim
 call pathogen#runtime_append_all_bundles()
 call pathogen#helptags()
 
-
 set backupdir=$VIMLOCAL/backup
 set directory=$VIMLOCAL/swap
+let s:cachedir = $VIMLOCAL . '/cache'
 
 set backup
 set viminfo='1000,<500,f1
@@ -136,6 +136,12 @@ if &diff
   nnoremap <silent>ZQ    :qall!<CR>
 endif
 
+function! s:mkdir(dir, perm)
+  if !isdirectory(a:dir)
+    call mkdir(a:dir, "p", a:perm)
+  endif
+endfunction
+
 function! s:auto_ctags()
   if executable("ctags") == 1 && tagfiles() != []
     let tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
@@ -168,6 +174,10 @@ function! s:clear_undo()
 
   setlocal nomodified
 endfunction
+
+call s:mkdir(&directory, 0700)
+call s:mkdir(&backupdir, 0700)
+call s:mkdir(s:cachedir, 0700)
 
 au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call s:clear_undo() | endif
 
@@ -203,14 +213,14 @@ let g:neocomplcache_min_syntax_length  = 4
 let g:neocomplcache_auto_completion_start_length = 1
 let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
-let g:neocomplcache_temporary_dir = $VIMLOCAL . '/cache'
+let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
 imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
 smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
 cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
-let g:unite_data_directory = $VIMLOCAL . '/cache'
+let g:unite_data_directory = s:cachedir
 " let g:unite_enable_split_vertically = 1
 let g:unite_winheight = 8
 let g:unite_split_rule = "botright"
@@ -238,7 +248,7 @@ function! s:unite_setting()
 endfunction
 
 " For yankring, script_id=1234.
-let g:yankring_history_dir    = $VIMLOCAL . '/cache'
+let g:yankring_history_dir    = s:cachedir
 let g:yankring_history_file   = "yankring_history"
 let g:yankring_replace_n_pkey = ''
 let g:yankring_replace_n_nkey = ''
