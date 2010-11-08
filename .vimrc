@@ -148,9 +148,8 @@ function! s:auto_ctags()
 
     exec "setlocal tags=" . tagsdir . "/**/tags"
 
-    au BufWritePre * let b:modified = &modified
-    au BufWritePost * call s:tags_auto_generate()
-    au FileChangedShellPost * call s:tags_auto_generate()
+    au BufWritePre <buffer> let b:modified = &modified
+    au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:tags_auto_generate()
   endif
 endfunction
 
@@ -162,7 +161,7 @@ function! s:tags_auto_generate()
   let opt = &ignorecase ? "--sort=foldcase " : " "
 
   cd %:p:h
-  call vimproc#system_bg("ctags " . opt . substitute(glob("*"), "\n", " ", "g"))
+  call vimproc#system_bg("ctags " . opt . '*')
 endfunction
 
 function! s:clear_undo()
