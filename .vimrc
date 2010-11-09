@@ -151,7 +151,7 @@ function! s:auto_ctags()
   if executable("ctags") == 1 && tagfiles() != []
     let tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
 
-    exec "setlocal tags=" . tagsdir . "/**/tags"
+    exec "setlocal tags=./tags,tags," . tagsdir . "/**/tags"
 
     au BufWritePre <buffer> let b:modified = &modified
     au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:auto_generate_tags()
