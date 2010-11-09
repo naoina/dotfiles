@@ -154,11 +154,11 @@ function! s:auto_ctags()
     exec "setlocal tags=" . tagsdir . "/**/tags"
 
     au BufWritePre <buffer> let b:modified = &modified
-    au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:tags_auto_generate()
+    au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:auto_generate_tags()
   endif
 endfunction
 
-function! s:tags_auto_generate()
+function! s:auto_generate_tags()
   if !(b:modified && exists("*vimproc#system_bg"))
     return
   endif
@@ -167,6 +167,20 @@ function! s:tags_auto_generate()
 
   cd %:p:h
   call vimproc#system_bg("ctags " . opt . '*')
+endfunction
+
+function! s:generate_all_tags()
+  if confirm("does generate tags files into an under each directory recursively?",
+           \ "&yes\n&no", 2, "Question") == 1
+    let opt = &ignorecase ? '--sort=foldcase ' : ' '
+    let basedir = getcwd()
+    for d in split(glob("**/"), "\n")
+      exec "cd " . basedir . '/' . d
+      call vimproc#system("ctags " . opt . '*')
+    endfor
+  else
+    echo 'Do not generate'
+  endif
 endfunction
 
 function! s:clear_undo()
@@ -190,6 +204,9 @@ au BufReadPost * normal '"
 
 au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
 au BufEnter * call s:auto_ctags()
+
+command! GenerateAllTags call s:generate_all_tags()
+nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
