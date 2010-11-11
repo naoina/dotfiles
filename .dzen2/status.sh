@@ -9,7 +9,7 @@ GH=10       # height of the gauge
 H=23        # dzen height
 X=0         # x position
 Y=-1        # y position
-FN='M+2VM+IPAG circle'  # font
+# FN='M+2VM+IPAG-circle'  # font
 
 TIME_INT=1 # time intervall in seconds
 SEP='|' # status separator
@@ -154,13 +154,13 @@ while true; do
 
     echo -n `date` $SEP # local datetime
 
-    cpu # cpu status
+    # cpu # cpu status
 
-    memory # memory status
+    # memory # memory status
 
-    battery # battery status
+    # battery # battery status
 
     echo " $SEP `date -u` " # UTC datetime
 
     sleep $TIME_INT;
-done | dzen2 -expand left -h $H -ta c -y $Y -x $X -fg $FG -bg $BG -fn "$FN"
+done | dzen2 -expand left -h $H -ta c -y $Y -x $X -fg $FG -bg $BG #-fn "$FN"

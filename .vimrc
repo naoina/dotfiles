@@ -149,9 +149,9 @@ function! s:auto_ctags()
   let b:loaded_auto_ctags = 1
 
   if executable("ctags") == 1 && tagfiles() != []
-    let tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
+    let b:tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
 
-    exec "setlocal tags=./tags,tags," . tagsdir . "/**/tags"
+    exec "setlocal tags=./tags,tags," . b:tagsdir . "/tags"
 
     au BufWritePre <buffer> let b:modified = &modified
     au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:auto_generate_tags()
@@ -166,21 +166,36 @@ function! s:auto_generate_tags()
   let opt = &ignorecase ? "--sort=foldcase " : " "
 
   cd %:p:h
+  " Can not use a plain wildcard.
   call vimproc#system_bg("ctags " . opt . substitute(glob("*"), "\n", " ", "g"))
 endfunction
 
 function! s:generate_all_tags()
-  if confirm("does generate tags files into an under each directory recursively?",
-           \ "&yes\n&no", 2, "Question") == 1
-    let opt = &ignorecase ? '--sort=foldcase ' : ' '
-    let basedir = getcwd()
-    for d in split(glob("**/"), "\n")
-      exec "cd " . basedir . '/' . d
-      call vimproc#system("ctags " . opt . '*')
-    endfor
-  else
-    echo 'Do not generate'
+  let answer = confirm("Does generate tags file?", "&update\n&all\n&no", 3, "Question")
+  let ctags_cmd = 'ctags ' . (&ignorecase ? '--sort=foldcase' : '')
+
+  " terminate or no
+  if answer == 0 || answer == 3
+    echo 'Do not generate.'
+    return
   endif
+
+  if !exists('b:tagsdir')
+    let b:tagsdir = getcwd()
+  endif
+
+  " all
+  redraw! | echo 'Generating...'
+  if answer == 2
+    for d in split(glob(b:tagsdir . "/**/"), "\n")
+      exec "silent cd " . d
+      call vimproc#system(ctags_cmd . " *")
+    endfor
+  endif
+
+  exec 'silent cd' . b:tagsdir
+  call vimproc#system(ctags_cmd . ' -R --file-scope=no .')
+  echo 'Done.'
 endfunction
 
 function! s:clear_undo()
