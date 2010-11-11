@@ -166,7 +166,7 @@ function! s:auto_generate_tags()
   let opt = &ignorecase ? "--sort=foldcase " : " "
 
   cd %:p:h
-  call vimproc#system_bg("ctags " . opt . '*')
+  call vimproc#system_bg("ctags " . opt . substitute(glob("*"), "\n", " ", "g"))
 endfunction
 
 function! s:generate_all_tags()
