@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: neocomplcache.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 02 Nov 2010
+" Last Modified: 14 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -83,7 +83,9 @@ function! neocomplcache#enable() "{{{
           \ && (!has_key(g:neocomplcache_plugin_disable, l:source_name) || 
           \ g:neocomplcache_plugin_disable[l:source_name] == 0)
       let l:source = call('neocomplcache#sources#' . l:source_name . '#define', [])
-      if l:source.kind ==# 'complfunc'
+      if empty(l:source)
+        " Ignore.
+      elseif l:source.kind ==# 'complfunc'
         let s:complfunc_sources[l:source_name] = l:source
       elseif l:source.kind ==# 'ftplugin'
         let s:ftplugin_sources[l:source_name] = l:source
@@ -106,7 +108,7 @@ function! neocomplcache#enable() "{{{
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'filename',
   \'\%(\\[^[:alnum:].-]\|\f\)\+')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'lisp,scheme,clojure,int-gosh,int-clisp,int-clj',
-        \'[[:alpha:]+*/@$_:=.!?-][[:alnum:]+*/@$_:=.!?-]*')
+        \'[[:alpha:]+*/@$_=.!?-][[:alnum:]+*/@$_:=.!?-]*')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'ruby,int-irb',
         \'^=\%(b\%[egin]\|e\%[nd]\)\|\%(@@\|[:$@]\)\h\w*\|\h\w*\%(::\w*\)*[!?]\?\%(()\?\|\s\?\%(do\|{\)\s\?\)\?')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_keyword_patterns, 'php',
@@ -206,7 +208,7 @@ function! neocomplcache#enable() "{{{
   call neocomplcache#set_dictionary_helper(g:neocomplcache_next_keyword_patterns, 'perl6',
         \'\h\w*>')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_next_keyword_patterns, 'vim,help',
-        \'\h\w*:\]\|\h\w*=\|[[:alnum:]_-]*>')
+        \'\w*:\]\|[[:alnum:]_-]*[)>=]')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_next_keyword_patterns, 'tex',
         \'\h\w*\*\?[*[{}]')
   call neocomplcache#set_dictionary_helper(g:neocomplcache_next_keyword_patterns, 'html,xhtml,xml,mkd',
@@ -800,6 +802,11 @@ function! s:compare_pos(i1, i2)
 endfunction"}}}
 
 function! neocomplcache#rand(max)"{{{
+  if !has('reltime')
+    " Same value.
+    return 0
+  endif
+
   let l:time = reltime()[1]
   return (l:time < 0 ? -l:time : l:time)% (a:max + 1)
 endfunction"}}}
@@ -1069,147 +1076,148 @@ function! s:display_neco(number)"{{{
   let l:animation = [
     \[
         \[
-        \ "   A A", 
+        \ "   A A",
         \ "~(-'_'-)"
-        \], 
+        \],
         \[
-        \ "      A A", 
+        \ "      A A",
         \ "   ~(-'_'-)",
         \],
         \[
-        \ "        A A", 
+        \ "        A A",
         \ "     ~(-'_'-)",
         \],
         \[
-        \ "          A A  ", 
+        \ "          A A  ",
         \ "       ~(-'_'-)",
-        \], 
+        \],
         \[
-        \ "             A A", 
+        \ "             A A",
         \ "          ~(-^_^-)",
-        \], 
+        \],
     \],
     \[
         \[
-        \ "   A A", 
+        \ "   A A",
         \ "~(-'_'-)",
         \],
         \[
-        \ "      A A", 
+        \ "      A A",
         \ "   ~(-'_'-)",
         \],
         \[
-        \ "        A A", 
+        \ "        A A",
         \ "     ~(-'_'-)",
         \],
         \[
-        \ "          A A  ", 
+        \ "          A A  ",
         \ "       ~(-'_'-)",
-        \], 
+        \],
         \[
-        \ "             A A", 
+        \ "             A A",
         \ "          ~(-'_'-)",
         \],
         \[
-        \ "          A A  ", 
+        \ "          A A  ",
         \ "       ~(-'_'-)"
         \],
         \[
-        \ "        A A", 
+        \ "        A A",
         \ "     ~(-'_'-)"
         \],
         \[
-        \ "      A A", 
+        \ "      A A",
         \ "   ~(-'_'-)"
         \],
         \[
-        \ "   A A", 
+        \ "   A A",
         \ "~(-'_'-)"
         \],
     \],
     \[
         \[
-        \ "   A A", 
+        \ "   A A",
         \ "~(-'_'-)",
-        \], 
+        \],
         \[
-        \ "        A A", 
+        \ "        A A",
         \ "     ~(-'_'-)",
         \],
         \[
-        \ "             A A", 
+        \ "             A A",
         \ "          ~(-'_'-)",
         \],
         \[
-        \ "                  A A", 
+        \ "                  A A",
         \ "               ~(-'_'-)",
         \],
         \[
-        \ "                       A A", 
+        \ "                       A A",
         \ "                    ~(-'_'-)",
         \],
-        \["                           A A", 
+        \["                           A A",
         \ "                        ~(-'_'-)",
         \],
     \],
     \[
         \[
         \ "",
-        \ "   A A", 
+        \ "   A A",
         \ "~(-'_'-)",
-        \], 
-        \["      A A", 
+        \],
+        \["      A A",
         \ "   ~(-'_'-)",
         \ "",
-        \], 
+        \],
         \[
         \ "",
-        \ "        A A", 
+        \ "        A A",
         \ "     ~(-'_'-)",
         \],
         \[
-        \ "          A A  ", 
-        \ "       ~(-'_'-)", 
+        \ "          A A  ",
+        \ "       ~(-'_'-)",
         \ "",
-        \], 
+        \],
         \[
         \ "",
-        \ "             A A", 
+        \ "             A A",
         \ "          ~(-^_^-)",
         \],
     \],
     \[
         \[
-        \ "   A A        A A", 
+        \ "   A A        A A",
         \ "~(-'_'-)  -8(*'_'*)"
-        \], 
+        \],
         \[
-        \ "     A A        A A", 
+        \ "     A A        A A",
         \ "  ~(-'_'-)  -8(*'_'*)"
         \],
         \[
-        \ "       A A        A A", 
+        \ "       A A        A A",
         \ "    ~(-'_'-)  -8(*'_'*)"
         \],
         \[
-        \ "     A A        A A", 
+        \ "     A A        A A",
         \ "  ~(-'_'-)  -8(*'_'*)"
-        \], 
+        \],
         \[
-        \ "   A A        A A", 
+        \ "   A A        A A",
         \ "~(-'_'-)  -8(*'_'*)"
-        \], 
+        \],
     \],
     \[
         \[
         \ "  A\\_A\\",
-        \ "(=' .' ) ~♥",
+        \ "(=' .' ) ~w",
         \ "(,(\")(\")",
-        \], 
+        \],
     \],
   \]
 
-  let l:anim = get(l:animation, a:number, l:animation[neocomplcache#rand(len(l:animation) - 1)])
+  let l:number = (a:number != '') ? a:number : len(l:animation)
+  let l:anim = get(l:animation, l:number, l:animation[neocomplcache#rand(len(l:animation) - 1)])
   let &cmdheight = len(l:anim[0])
 
   for l:frame in l:anim

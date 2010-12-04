@@ -1,7 +1,7 @@
 "=============================================================================
-" FILE: word.vim
+" FILE: command.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 18 Nov 2010
+" Last Modified: 09 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -24,17 +24,23 @@
 " }}}
 "=============================================================================
 
-function! unite#kinds#word#define()"{{{
+function! unite#kinds#command#define()"{{{
   return s:kind
 endfunction"}}}
 
 let s:kind = {
-      \ 'name' : 'word',
-      \ 'default_action' : 'insert',
+      \ 'name' : 'command',
+      \ 'default_action' : 'execute',
       \ 'action_table': {},
       \}
 
 " Actions"{{{
+let s:kind.action_table.execute = {
+      \ 'description' : 'execute command',
+      \ }
+function! s:kind.action_table.execute.func(candidate)"{{{
+  execute a:candidate.action__command
+endfunction"}}}
 "}}}
 
 " vim: foldmethod=marker

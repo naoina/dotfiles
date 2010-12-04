@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: bookmark.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 31 Oct 2010
+" Last Modified: 22 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -33,7 +33,7 @@ let s:bookmark_file_mtime = 0  " the last modified time of the bookmark file.
 " [ [ name, full_path, linenr, search pattern ], ... ]
 let s:bookmark_files = []
 
-call unite#set_default('g:unite_source_bookmark_file',  g:unite_data_directory . '/.bookmark')
+call unite#util#set_default('g:unite_source_bookmark_file',  g:unite_data_directory . '/.bookmark')
 "}}}
 
 function! unite#sources#bookmark#define()"{{{
@@ -79,7 +79,8 @@ endfunction"}}}
 
 let s:source = {
       \ 'name' : 'bookmark',
-      \ 'action_table': {},
+      \ 'description' : 'candidates from bookmark list',
+      \ 'action_table' : {},
       \}
 
 function! s:source.gather_candidates(args, context)"{{{
@@ -90,7 +91,7 @@ function! s:source.gather_candidates(args, context)"{{{
         \ "word" : v:val[1],
         \ "source" : "bookmark",
         \ "kind" : (isdirectory(v:val[1]) ? "directory" : "jump_list"),
-        \ "bookmark_name" : v:val[0],
+        \ "source_bookmark_name" : v:val[0],
         \ "action__path" : v:val[1],
         \ "action__line" : v:val[2],
         \ "action__pattern" : v:val[3],
@@ -102,26 +103,27 @@ endfunction"}}}
 let s:action_table = {}
 
 let s:action_table.delete = {
-      \ 'is_invalidate_cache' : 1, 
-      \ 'is_quit' : 0, 
-      \ 'is_selectable' : 1, 
+      \ 'description' : 'delete from bookmark list',
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+      \ 'is_selectable' : 1,
       \ }
 function! s:action_table.delete.func(candidates)"{{{
   for l:candidate in a:candidates
     call filter(s:bookmark_files, 'string(v:val) !=# ' .
-        \ string(string([a:candidate.bookmark_name, l:candidate.word, l:candidate.line, l:candidate.pattern])))
+        \ string(string([l:candidate.source_bookmark_name, l:candidate.action__path, l:candidate.action__line, l:candidate.action__pattern])))
   endfor
 
   call s:save()
 endfunction"}}}
 
-let s:source.action_table.jump_list = s:action_table
-let s:source.action_table.directory = s:action_table
+let s:source.action_table['*'] = s:action_table
 unlet! s:action_table
 "}}}
 
 " Add custom action table."{{{
 let s:file_bookmark_action = {
+      \ 'description' : 'append files to bookmark list',
       \ }
 function! s:file_bookmark_action.func(candidate)"{{{
   " Add to bookmark.
@@ -129,6 +131,7 @@ function! s:file_bookmark_action.func(candidate)"{{{
 endfunction"}}}
 
 let s:buffer_bookmark_action = {
+      \ 'description' : 'append buffers to bookmark list',
       \ }
 function! s:buffer_bookmark_action.func(candidate)"{{{
   let l:filetype = getbufvar(a:candidate.action__buffer_nr, '&filetype')
