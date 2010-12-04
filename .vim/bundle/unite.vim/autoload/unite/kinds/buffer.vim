@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: buffer.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 31 Oct 2010
+" Last Modified: 13 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -36,7 +36,18 @@ let s:kind = {
       \}
 
 " Actions"{{{
+let s:kind.action_table.open = {
+      \ 'description' : 'open buffer',
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.open.func(candidates)"{{{
+  for l:candidate in a:candidates
+    execute 'buffer' l:candidate.action__buffer_nr
+  endfor
+endfunction"}}}
+
 let s:kind.action_table.delete = {
+      \ 'description' : 'delete from buffer list',
       \ 'is_invalidate_cache' : 1,
       \ 'is_quit' : 0,
       \ 'is_selectable' : 1,
@@ -48,6 +59,7 @@ function! s:kind.action_table.delete.func(candidates)"{{{
 endfunction"}}}
 
 let s:kind.action_table.fdelete = {
+      \ 'description' : 'force delete from buffer list',
       \ 'is_invalidate_cache' : 1,
       \ 'is_quit' : 0,
       \ 'is_selectable' : 1,
@@ -55,6 +67,30 @@ let s:kind.action_table.fdelete = {
 function! s:kind.action_table.fdelete.func(candidates)"{{{
   for l:candidate in a:candidates
     call s:delete('bdelete!', l:candidate)
+  endfor
+endfunction"}}}
+
+let s:kind.action_table.wipeout = {
+      \ 'description' : 'wipeout from buffer list',
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.wipeout.func(candidates)"{{{
+  for l:candidate in a:candidates
+    call s:delete('bwipeout', l:candidate)
+  endfor
+endfunction"}}}
+
+let s:kind.action_table.unload = {
+      \ 'description' : 'unload from buffer list',
+      \ 'is_invalidate_cache' : 1,
+      \ 'is_quit' : 0,
+      \ 'is_selectable' : 1,
+      \ }
+function! s:kind.action_table.unload.func(candidates)"{{{
+  for l:candidate in a:candidates
+    call s:delete('unload', l:candidate)
   endfor
 endfunction"}}}
 "}}}

@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: buffer.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 31 Oct 2010
+" Last Modified: 05 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -58,6 +58,7 @@ endfunction"}}}
 
 let s:source_buffer_all = {
       \ 'name' : 'buffer',
+      \ 'description' : 'candidates from buffer list',
       \}
 
 function! s:source_buffer_all.gather_candidates(args, context)"{{{
@@ -70,8 +71,7 @@ function! s:source_buffer_all.gather_candidates(args, context)"{{{
   endif
 
   let l:candidates = map(l:list, '{
-        \ "word" : unite#substitute_path_separator(bufname(v:val.action__buffer_nr)),
-        \ "abbr" : s:make_abbr(v:val.action__buffer_nr),
+        \ "word" : s:make_abbr(v:val.action__buffer_nr),
         \ "kind" : "buffer",
         \ "source" : "buffer",
         \ "action__path" : unite#substitute_path_separator(bufname(v:val.action__buffer_nr)),
@@ -84,6 +84,7 @@ endfunction"}}}
 
 let s:source_buffer_tab = {
       \ 'name' : 'buffer_tab',
+      \ 'description' : 'candidates from buffer list in current tab',
       \}
 
 function! s:source_buffer_tab.gather_candidates(args, context)"{{{
@@ -97,8 +98,7 @@ function! s:source_buffer_tab.gather_candidates(args, context)"{{{
   endif
 
   let l:candidates = map(l:list, '{
-        \ "word" : unite#substitute_path_separator(bufname(v:val.action__buffer_nr)),
-        \ "abbr" : s:make_abbr(v:val.action__buffer_nr),
+        \ "word" : s:make_abbr(v:val.action__buffer_nr),
         \ "kind" : "buffer",
         \ "source" : "buffer_tab",
         \ "action__path" : unite#substitute_path_separator(bufname(v:val.action__buffer_nr)),
@@ -113,14 +113,17 @@ endfunction"}}}
 function! s:make_abbr(bufnr)"{{{
   let l:filetype = getbufvar(a:bufnr, '&filetype')
   if l:filetype ==# 'vimfiler'
-    let l:bufvar = getbufvar(a:bufnr, 'vimfiler')
-    return '*vimfiler* - ' . l:bufvar.current_dir
+    let l:path = getbufvar(a:bufnr, 'vimfiler').current_dir
+    let l:path = '*vimfiler* - ' . unite#substitute_path_separator(simplify(l:path))
   elseif l:filetype ==# 'vimshell'
-    let l:bufvar = getbufvar(a:bufnr, 'vimshell')
-    return '*vimshell* - ' . l:bufvar.save_dir
+    let l:path = getbufvar(a:bufnr, 'vimshell').save_dir
+    let l:path = '*vimshell* - ' . unite#substitute_path_separator(simplify(l:path))
   else
-    return unite#substitute_path_separator(bufname(a:bufnr)) . (getbufvar(a:bufnr, '&modified') ? '[+]' : '')
+    let l:path = bufname(a:bufnr) . (getbufvar(a:bufnr, '&modified') ? '[+]' : '')
+    let l:path = unite#substitute_path_separator(simplify(l:path))
   endif
+
+  return l:path
 endfunction"}}}
 function! s:compare(candidate_a, candidate_b)"{{{
   return a:candidate_b.source__time - a:candidate_a.source__time

@@ -70,7 +70,7 @@ set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
 set pastetoggle=<F3>
-set clipboard=unnamed
+" set clipboard=unnamed
 set tags=tags;
 
 setlocal cursorline

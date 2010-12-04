@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: syntax/unite.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 20 Oct 2010
+" Last Modified: 09 Nov 2010
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -35,18 +35,21 @@ syntax match uniteStatusLine /\%1l.*/
 syntax match uniteSourcePrompt /^Sources/ contained nextgroup=uniteSourceSeparator
 syntax match uniteSourceSeparator /: / contained nextgroup=uniteSourceNames
 syntax match uniteSourceNames /[a-z_/-]\+/ contained
-syntax match uniteSourceNames /[[:space:]]\zs[a-z_/-]\+$/
 
 syntax match uniteInputLine /\%2l.*/ contains=uniteInputPrompt,uniteInputPromptError,uniteInputSpecial
 syntax match uniteInputSpecial /\\\@<![*!,]/ contained
 
 syntax match uniteMarkedLine /^\*.*/
+syntax match uniteNonMarkedLine /^-.*/     contains=uniteCandidateSourceName,uniteCandidateAbbr
+syntax match uniteCandidateSourceName /^- \zs[a-z_/-]\+/ contained
 
 highlight default link uniteSourceNames  Type
-highlight default link uniteSourcePrompt  Statement
+highlight default link uniteSourcePrompt  PreProc
 highlight default link uniteSourceSeparator  NONE
 
-highlight default link uniteMarkedLine  Special
+highlight default link uniteMarkedLine  Statement
+highlight default link uniteCandidateSourceName  Type
+highlight default link uniteCandidateAbbr  Pmenu
 
 " The following definitions are for <Plug>(unite-choose-action).
 highlight default link uniteChooseAction  NONE
