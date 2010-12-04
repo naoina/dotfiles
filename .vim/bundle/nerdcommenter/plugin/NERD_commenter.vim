@@ -1046,14 +1046,9 @@ function! NERDComment(isVisual, type) range
         endtry
 
     elseif a:type == 'toggle'
-        for l in getline(firstLine, lastLine)
-            let isAllComment = s:IsCommentedFromStartOfLine(s:Left(), l) || s:IsCommentedFromStartOfLine(s:Left({'alt': 1}), l)
-            if !isAllComment
-              break
-            endif
-        endfor
+        let theLine = getline(firstLine)
 
-        if s:IsInSexyComment(firstLine) || isAllComment
+        if s:IsInSexyComment(firstLine) || s:IsCommentedFromStartOfLine(s:Left(), theLine) || s:IsCommentedFromStartOfLine(s:Left({'alt': 1}), theLine)
             call s:UncommentLines(firstLine, lastLine)
         else
             call s:CommentLinesToggle(forceNested, firstLine, lastLine)
