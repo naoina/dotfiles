@@ -16,3 +16,4 @@ gamma = 100
 fade_ratio = 100
 brightness = 7
 contrast = 7
+logsize = 0
