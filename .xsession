@@ -1,10 +1,10 @@
 PATH="~/bin:$PATH"
 IMAGE_PATH="$HOME/work/media/image"
 
-# WM=xmonad
+WM=xmonad
 # WM=compiz-fusion
 # WM=awesome
-WM=i3
+# WM=i3
 WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper"
 
 export LANG=ja_JP.UTF-8
@@ -36,7 +36,7 @@ case "$WM" in
         ;;
     xmonad)
         $WALLPAPER_PICKER $IMAGE_PATH
-        xcompmgr &
+        # xcompmgr &
         ;;
     i3)
         $WALLPAPER_PICKER $IMAGE_PATH

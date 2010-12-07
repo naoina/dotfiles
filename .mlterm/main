@@ -1,5 +1,5 @@
 fg_color = gray
-use_transbg = true
+use_transbg = false
 wall_picture = 
 bg_color = black
 tabsize = 8
