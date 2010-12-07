@@ -159,7 +159,7 @@ function! s:auto_ctags()
 endfunction
 
 function! s:auto_generate_tags()
-  if !(b:modified && exists("*vimproc#system_bg"))
+  if !(exists("b:modified") && b:modified && exists("*vimproc#system_bg"))
     return
   endif
 
