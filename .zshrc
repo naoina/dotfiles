@@ -86,9 +86,9 @@ case "$OSTYPE" in
 	;;
 esac
 
-if [ -x "`whence mvn`" ]; then
-    alias mvn="`whence mvn` -DarchetypeGroupId=org.naniyueni -DarchetypeArtifactId=template -DarchetypeVersion=1.0 -DgroupId=org.naniyueni"
-fi
+# if [ -x "`whence mvn`" ]; then
+    # alias mvn="`whence mvn` -DarchetypeGroupId=org.naniyueni -DarchetypeArtifactId=template -DarchetypeVersion=1.0 -DgroupId=org.naniyueni"
+# fi
 
 [[ -x "`whence gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
 [[ -x "`whence powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
