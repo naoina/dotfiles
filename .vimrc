@@ -252,7 +252,7 @@ let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
 imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
-smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
+smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : "\<Tab>"
 cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
