@@ -142,59 +142,27 @@ function! s:mkdir(dir, perm)
   endif
 endfunction
 
-function! s:auto_ctags()
-  if exists("b:loaded_auto_ctags")
-    return
-  endif
-  let b:loaded_auto_ctags = 1
-
-  if executable("ctags") == 1 && tagfiles() != []
-    let b:tagsdir = fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
-
-    exec "setlocal tags=./tags,tags," . b:tagsdir . "/tags"
-
-    au BufWritePre <buffer> let b:modified = &modified
-    au BufWritePost,FileWritePost,FileChangedShellPost <buffer> call s:auto_generate_tags()
-  endif
-endfunction
-
-function! s:auto_generate_tags()
-  if !(exists("b:modified") && b:modified && exists("*vimproc#system_bg"))
-    return
-  endif
-
-  let opt = &ignorecase ? "--sort=foldcase " : " "
-
-  cd %:p:h
-  " Can not use a plain wildcard.
-  call vimproc#system_bg("ctags " . opt . substitute(glob("*"), "\n", " ", "g"))
-endfunction
-
 function! s:generate_all_tags()
-  let answer = confirm("Does generate tags file?", "&update\n&all\n&no", 3, "Question")
+  let answer = confirm("Does generate tags file?", "&yes\n&no", 2, "Question")
   let ctags_cmd = 'ctags ' . (&ignorecase ? '--sort=foldcase' : '')
 
   " terminate or no
-  if answer == 0 || answer == 3
-    echo 'Do not generate.'
+  if answer == 0 || answer == 2
+    echo 'Does not generate.'
     return
   endif
 
-  if !exists('b:tagsdir')
-    let b:tagsdir = getcwd()
+  if executable("ctags") != 1
+    echo "ctags not found."
+    return
   endif
 
-  " all
+  let b:tagsdir = tagfiles() == [] ? getcwd() : fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
+
+  " generate
   redraw! | echo 'Generating...'
-  if answer == 2
-    for d in split(glob(b:tagsdir . "/**/"), "\n")
-      exec "silent cd " . d
-      call vimproc#system(ctags_cmd . " *")
-    endfor
-  endif
-
-  exec 'silent cd' . b:tagsdir
-  call vimproc#system(ctags_cmd . ' -R --file-scope=no .')
+  exec 'silent cd ' . b:tagsdir
+  call vimproc#system(ctags_cmd . ' ' . (exists('g:ctags_opts') ? g:ctags_opts : '') . ' -R .')
   echo 'Done.'
 endfunction
 
@@ -218,7 +186,6 @@ au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call 
 au BufReadPost * normal '"
 
 au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
-au BufEnter * call s:auto_ctags()
 
 command! GenerateAllTags call s:generate_all_tags()
 nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
@@ -403,6 +370,7 @@ endfunction
 
 function s:php_setting()
   setlocal include=
+  let g:ctags_opts = '--langmap=PHP:.php.inc.php4'
 endfunction
 
 function s:html_setting()
