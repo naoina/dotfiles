@@ -1,6 +1,6 @@
 syntax: regexp
 
-^((?!\.vim|\.vimrc|\.zshrc|\.i3|bin|\.yaourtrc|\.xsession|\.tmux\.conf|\.lftp/rc|\.hgrc|\.mlterm|\.makepkg\.conf|\.Xdefaults|\.scim|\.anthy|\.dzen2).)+$
+^((?!\.vim|\.vimrc|\.zshrc|\.i3|bin|\.yaourtrc|\.xsession|\.tmux\.conf|\.lftp/rc|\.hgrc|\.mlterm|\.makepkg\.conf|\.Xdefaults|\.scim|\.anthy|\.dzen2|\.xmonad/xmonad.hs).)+$
 
 syntax: glob
 

@@ -36,6 +36,7 @@ case "$WM" in
         ;;
     xmonad)
         $WALLPAPER_PICKER $IMAGE_PATH
+        $HOME/.dzen2/status.sh &
         # xcompmgr &
         ;;
     i3)

@@ -7,6 +7,7 @@ GW=50       # width of the gauge
 HALFGW=`expr $GW / 2`
 GH=10       # height of the gauge
 H=23        # dzen height
+W=1400
 X=0         # x position
 Y=-1        # y position
 FN='M+2VM+IPAG circle'  # font
@@ -19,7 +20,7 @@ function battery() {
     STATEFILE='/proc/acpi/battery/BAT0/state' # battery's state file
     INFOFILE='/proc/acpi/battery/BAT0/info'   # battery's info file
     LOWBAT=25        # percentage of battery life marked as low
-    GFG='#999'  # color of the gauge
+    GFG=$FG          # color of the gauge
     LOWCOL='#ff4747' # color when battery is low
 
     # look up battery's data
@@ -144,15 +145,14 @@ function memory() {
     MEM[4]=`echo "${MEM[4]} / 1" | bc`
 
     MEM_BAR=`echo ${MEM[2]} | gdbar -s o -h $GH -w $HALFGW -fg $GFG -bg $GBG`
-    SWAP_BAR=`echo ${MEM[5]} | gdbar -s o -h $GH -w $HALFGW -fg $GFG -bg $GBG`
 
-    echo -n " Mem ${MEM[1]}/${MEM[0]}MB $MEM_BAR Swap ${MEM[4]}/${MEM[3]}MB $SWAP_BAR $SEP"
+    echo -n " Mem ${MEM[1]}/${MEM[0]}MB $MEM_BAR Swap ${MEM[4]}/${MEM[3]}MB $SEP"
 }
 
 while true; do
     # draw the bar and pipe everything into dzen
 
-    echo -n `date` $SEP # local datetime
+    echo -n " `date` $SEP" # local datetime
 
     cpu # cpu status
 
@@ -163,4 +163,4 @@ while true; do
     echo " $SEP `date -u` " # UTC datetime
 
     sleep $TIME_INT;
-done | dzen2 -expand left -h $H -ta c -y $Y -x $X -fg $FG -bg $BG -fn "$FN"
+done | dzen2 -h $H -w $W -ta r -y $Y -x $X -fg $FG -bg $BG -fn "$FN" -dock
