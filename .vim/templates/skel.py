@@ -1,3 +1,8 @@
+# First Created: @DATE@
+# Last Modified: @DATE@
+
+@LICENSE@
+
 def main():
     pass
 
