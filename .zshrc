@@ -90,6 +90,7 @@ esac
     # alias mvn="`whence mvn` -DarchetypeGroupId=org.naniyueni -DarchetypeArtifactId=template -DarchetypeVersion=1.0 -DgroupId=org.naniyueni"
 # fi
 
+
 [[ -x "`whence gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
 [[ -x "`whence powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
 [[ -x "`whence rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
@@ -106,6 +107,7 @@ alias wodim="wodim driveropts=burnfree"
 alias emacs="emacs -nw"
 # alias yaourt="yaourt --tmp /home/tmp"
 alias display="display -geometry +0+0"
+alias rhino="rlwrap java -jar /usr/share/java/js.jar"
 
 SCREEN_PROG="`whence screen`"
 [ -x "$SCREEN_PROG" ] && [ -n "$STY" ] && alias exit="$SCREEN_PROG -d $STY"
