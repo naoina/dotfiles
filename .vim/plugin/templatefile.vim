@@ -106,6 +106,12 @@ function! LoadTemplateFile()
     endwhile
     let java_pkg = substitute(java_pkg, '^\.\(.*\)#$', '\1.' . tolower(inc_gaurd), '')
     
+    let commentermode = &ft == "python" ? "alignLeft" : "sexy"
+    call cursor(1, 1)
+    let startpos = search("@LICENSE@", "nW")
+    silent! execute "%s/@LICENSE@/"       . license    . "/g"
+    silent! execute startpos . "," . (startpos + licenselineno) . 'call NERDComment(0, "' . commentermode . '")'
+
     silent! execute "%s/@DATE@/"          . date       . "/g"
     silent! execute "%s/@YEAR@/"          . year       . "/g"
     silent! execute "%s/@LASTDIR@/"       . lastdir    . "/g"
@@ -117,14 +123,6 @@ function! LoadTemplateFile()
     silent! execute "%s/@EMAIL@/"         . Email      . "/g"
     silent! execute "%s/@COMPANY@/"       . Company    . "/g"
     silent! execute "%s/@JAVA_PACKAGE@/"  . java_pkg   . "/g"
-    let license = substitute(license, "@YEAR@",   year,   "g")
-    let license = substitute(license, "@AUTHOR@", Author, "g")
-    let license = substitute(license, "@EMAIL@",  Email,  "g")
-
-    call cursor(1, 1)
-    let startpos = search("@LICENSE@", "nW")
-    silent! execute "%s/@LICENSE@/"       . license    . "/g"
-    silent! execute startpos . "," . (startpos + licenselineno) . 'call NERDComment(0, "sexy")'
 
     if exists ("*" . template_func)
         if exists("g:load_templates")
