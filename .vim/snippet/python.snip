@@ -1,124 +1,127 @@
 snippet def
-	def ${1:funcname}(${2:self}):
+	def ${1:funcname}(${2:self}${3}):
 		pass
 
 snippet class
-	class ${1:ClassName}(${2}):
-		def __init__(self):
-			pass
+	class ${1:ClassName}:
+		pass
 
-snippet defcontains
+snippet init
+	def __init_(self${1})
+		pass
+
+snippet contains
 abbr __contains__
 	def __contains__(self, ${1}):
 		pass
 
-snippet defiter
+snippet iter
 abbr __iter__
 	def __iter__(self):
 		pass
 
-snippet defreversed
+snippet reversed
 abbr __reversed__
 	def __reversed__(self):
 		pass
 
-snippet defgetitem
+snippet getitem
 abbr __getitem__
 	def __getitem__(self, ${1}):
 		pass
 
-snippet deflen
+snippet len
 abbr __len__
 	def __len__(self):
 		pass
 
-snippet defadd
+snippet add
 abbr __add__
 	def __add__(self, ${1}):
 		pass
 
-snippet defdel
+snippet del
 abbr __del__
 	def __del__(self):
 		pass
 
-snippet defdelitem
+snippet delitem
 abbr __delitem__
 	def __delitem__(self, ${1}):
 		pass
 
-snippet defeq
+snippet eq
 abbr __eq__
 	def __eq__(self, ${1}):
 		pass
 
-snippet defge
+snippet ge
 abbr __ge__
 	def __ge__(self, ${1}):
 		pass
 
-snippet defgetattribute
-alias defgetattr
+snippet getattribute
+alias getattr
 abbr __getattribute__
 	def __getattribute__(self, ${1}):
 		pass
 
-snippet defgt
+snippet gt
 abbr __gt__
 	def __gt__(self, ${1}):
 		pass
 
-snippet defiadd
+snippet iadd
 abbr __iadd__
 	def __iadd__(self, ${1}):
 		pass
 
-snippet defimul
+snippet imul
 abbr __imul__
 	def __imul__(self, ${1}):
 		pass
 
-snippet defle
+snippet le
 abbr __le__
 	def __le__(self, ${1}):
 		pass
 
-snippet deflt
+snippet lt
 abbr __lt__
 	def __lt__(self, ${1}):
 		pass
 
-snippet defmul
+snippet mul
 abbr __mul__
 	def __mul__(self, ${1}):
 		pass
 
-snippet defne
+snippet ne
 abbr __ne__
 	def __ne__(self, ${1}):
 		pass
 
-snippet defrepr
+snippet repr
 abbr __repr__
 	def __repr__(self):
 		pass
 
-snippet defrmul
+snippet rmul
 abbr __rmul__
 	def __rmul__(self, ${1}):
 		pass
 
-snippet defsetitem
+snippet setitem
 abbr __setitem__
 	def __setitem__(self, ${1:i}, ${2}):
 		pass
 
-snippet defsizeof
+snippet sizeof
 abbr __sizeof__
 	def __sizeof__(self):
 		pass
 
-snippet defstr
+snippet str
 abbr __str__
 	def __str__(self):
 		pass
