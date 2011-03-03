@@ -343,6 +343,23 @@ au MyAutoCmd FileType ruby call s:flymake_make('ruby\ -c\ %', "%f:%l:%m", 'setlo
 au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
 
 
+function! s:to_xxd()
+  silent %!xxd -g 1
+  setlocal ft=xxd
+endfunction
+
+function! s:from_xxd()
+  %!xxd -r
+endfunction
+
+augroup BinaryMode
+  au!
+  au BufReadPost * if &binary | call s:to_xxd() | endif
+  au BufWrite * if &binary | call s:from_xxd() | endif
+  au BufWritePost * if &binary | call s:to_xxd() | setlocal nomodified | endif
+augroup END
+
+
 " Filetypes setting
 au BufNewFile,BufRead *.as      setlocal filetype=actionscript
 au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
