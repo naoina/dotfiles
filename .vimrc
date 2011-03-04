@@ -119,6 +119,8 @@ noremap! <C-f> <RIGHT>
 noremap! <C-b> <LEFT>
 nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
+cnoremap <C-p> <UP>
+cnoremap <C-n> <DOWN>
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
@@ -367,6 +369,8 @@ au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
 au BufNewFile,BufRead *.inc     setlocal filetype=php
 au BufNewFile,BufRead *.snip    setlocal filetype=snippet
 au BufNewFile,BufRead *.wsgi    setlocal filetype=python
+au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
+au BufNewFile,BufRead *.scala   setlocal filetype=scala
 
 function s:txt_setting()
   setlocal textwidth=78
@@ -429,6 +433,11 @@ endfunction
 
 function s:vim_setting()
   setlocal shiftwidth=2
+endfunction
+
+function s:scala_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal cindent
 endfunction
 
 function! s:setting()
