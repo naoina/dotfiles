@@ -15,6 +15,9 @@ rebase =
 record =
 color =
 mq =
+eol =
+graphlog =
 
 [alias]
 show = diff -r -2:tip
+log = glog
