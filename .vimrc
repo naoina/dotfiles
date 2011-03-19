@@ -104,7 +104,7 @@ vnoremap gc :<C-u>normal gc<CR>
 onoremap gc :<C-u>normal gc<CR>
 nnoremap <C-s> <Nop>
 inoremap <C-s> <Nop>
-noremap  <C-o> o<ESC><UP>
+noremap  <C-m> o<ESC><UP>
 noremap  <C-j> <C-w>w
 noremap  <C-k> <C-w>W
 nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
