@@ -1,12 +1,12 @@
 {
 "embeddedFonts":
-[["M+2P+IPAG.ttf", "M+2P+IPAG.ttf", "M+2P+IPAG.ttf", "M+2VM+IPAG-circle.ttf"]],
+[["Migu-1P-regular.ttf", "Migu-1P-bold.ttf", "Migu-1M-regular.ttf", "Migu-1M-bold.ttf"]],
 "fontsAlias": {
-    "stdFont": "M+2P+IPAG",
-    "stdBold": "M+2P+IPAG",
-    "stdItalic": "M+2P+IPAG",
-    "stdBoldItalic": "M+2P+IPAG",
-    "stdMono": "M+2VM+IPAG-circle"
+    "stdFont": "Migu 1P",
+    "stdBold": "Migu 1P",
+    "stdItalic": "Migu 1P",
+    "stdBoldItalic": "Migu 1P",
+    "stdMono": "Migu 1M"
 },
 "styles": [
     ["base", {
