@@ -54,21 +54,21 @@ main = do
 
 
 home = "/home/naoina"
-myTerminal = "mlterm -e $HOME/bin/tmux.sh"
-myTerminalClass = "mlterm"
+myTerminal = "lilyterm -e $HOME/bin/tmux.sh"
+myTerminalClass = "Lilyterm"
 barFgColor = "#999"
 barBgColor = "#000"
-myWorkspaceBar = "dzen2 -expand right -h 23 -y -1 -fg '" ++ barFgColor ++ "' -bg '" ++ barBgColor ++ "' -fn 'M+2VM+IPAG circle'"
+myWorkspaceBar = "dzen2 -expand right -h 23 -y -1 -fg '" ++ barFgColor ++ "' -bg '" ++ barBgColor ++ "'"
 wsname = [show n | n <- [1..9]]
-autostartApps = ["xcompmgr", "chromium", "skype"]
+autostartApps = ["xcompmgr"]
 
 myStartupHook = do
     setWMName "LG3D"
-    {- mapM_ spawn autostartApps -}
+    mapM_ spawn autostartApps
 
 
 myLogHook h = do
-    fadeRatioLogHook 0xeeeeeeee 0xdddddddd
+    fadeRatioLogHook 0xffffffff 0xeeeeeeee
     dynamicLogWithPP $ workspacePP h
 
 
@@ -117,7 +117,7 @@ xPropMatches =
     [([(wM_CLASS, any ("Skype" ==))], exShift $ wsname !! 8)]
         where
           floatApps name = all (\f -> f name) (determines)
-          determines = [((head . words) myTerminal /=)]
+          determines = [(myTerminalClass `isSuffixOf`)]
                        ++
                        [not . (browser `isSuffixOf`) | browser <- ["Firefox", "Gran Paradiso", "Shiretoko"]]
                        ++
