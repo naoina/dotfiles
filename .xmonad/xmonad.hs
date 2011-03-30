@@ -117,7 +117,7 @@ xPropMatches =
     [([(wM_CLASS, any ("Skype" ==))], exShift $ wsname !! 8)]
         where
           floatApps name = all (\f -> f name) (determines)
-          determines = [(myTerminalClass `isSuffixOf`)]
+          determines = [not . (myTerminalClass `isSuffixOf`)]
                        ++
                        [not . (browser `isSuffixOf`) | browser <- ["Firefox", "Gran Paradiso", "Shiretoko"]]
                        ++
