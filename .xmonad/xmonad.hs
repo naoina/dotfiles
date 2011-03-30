@@ -56,6 +56,7 @@ main = do
 home = "/home/naoina"
 myTerminal = "lilyterm -e $HOME/bin/tmux.sh"
 myTerminalClass = "Lilyterm"
+myTerminalName  = "LilyTerm"
 barFgColor = "#999"
 barBgColor = "#000"
 myWorkspaceBar = "dzen2 -expand right -h 23 -y -1 -fg '" ++ barFgColor ++ "' -bg '" ++ barBgColor ++ "'"
@@ -117,7 +118,7 @@ xPropMatches =
     [([(wM_CLASS, any ("Skype" ==))], exShift $ wsname !! 8)]
         where
           floatApps name = all (\f -> f name) (determines)
-          determines = [not . (myTerminalClass `isSuffixOf`)]
+          determines = [not . (myTerminalName `isSuffixOf`)]
                        ++
                        [not . (browser `isSuffixOf`) | browser <- ["Firefox", "Gran Paradiso", "Shiretoko"]]
                        ++
