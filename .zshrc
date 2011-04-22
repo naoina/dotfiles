@@ -108,6 +108,7 @@ alias emacs="emacs -nw"
 # alias yaourt="yaourt --tmp /home/tmp"
 alias display="display -geometry +0+0"
 alias rhino="rlwrap java -jar /usr/share/java/js.jar"
+alias hg="hg --color true"
 
 SCREEN_PROG="`whence screen`"
 [ -x "$SCREEN_PROG" ] && [ -n "$STY" ] && alias exit="$SCREEN_PROG -d $STY"

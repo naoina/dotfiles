@@ -1,11 +1,11 @@
 PATH="~/bin:$PATH"
-IMAGE_PATH="$HOME/work/media/image"
+IMAGE_PATH="$HOME/media/image/wallpaper"
 
 WM=xmonad
 # WM=compiz-fusion
 # WM=awesome
 # WM=i3
-WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper"
+WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper.py"
 
 export LANG=ja_JP.UTF-8
 export LC_CTYPE=$LANG
@@ -15,9 +15,12 @@ export LC_TIME=C
 # export GTK_IM_MODULE=uim
 # export QT_IM_MODULE=uim
 # export XMODIFIERS=@im=uim
-export GTK_IM_MODULE=scim-bridge
-export QT_IM_MODULE=scim-bridge
-export XMODIFIERS=@im=SCIM
+# export GTK_IM_MODULE=scim-bridge
+# export QT_IM_MODULE=scim-bridge
+# export XMODIFIERS=@im=SCIM
+export GTK_IM_MODULE=ibus
+export QT_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
 
 xmodmap $HOME/.Xmodmap
 
@@ -26,7 +29,8 @@ xset s noblank
 xset r rate 250
 
 # uim-xim &
-scim -d
+# scim -d
+ibus-daemon &
 
 # By setting the window manager.
 case "$WM" in
