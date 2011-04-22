@@ -17,7 +17,13 @@ color =
 mq =
 eol =
 graphlog =
+bookmarks =
+hggit =
+svn = /home/naoina/hgsubversion/hgsubversion
 
 [alias]
 show = diff -r -2:tip
 log = glog
+
+[hgsubversion]
+externals = subrepos
