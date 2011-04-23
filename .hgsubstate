@@ -1,6 +1,6 @@
 533af4ea5eef633ab7ecfd3c0fc4f5c7c143c381 .vim/bundle/neocomplcache
 c8d8318257bc39c90a1c67bd794c4c9dd80ed5ad .vim/bundle/nerdcommenter
-HEAD .vim/bundle/scala-tool-support
+21921 .vim/bundle/scala-tool-support
 25e5e78f69d37681f2f0331e420b4cc19de96b37 .vim/bundle/unite.vim
 fd7cd35967f951a7685b150b7034cb5d03b91e81 .vim/bundle/vim-quickrun
 e0d348ca7474d970d7abdd87b59cf44efe617ee2 .vim/bundle/vim-surround
