@@ -1,6 +1,6 @@
 syntax: regexp
 
-^((?!\.vim|\.vimrc|\.zshrc|bin|\.yaourtrc|\.xsession|\.tmux\.conf|\.lftp/rc|\.hgrc|\.config/lilyterm.conf|\.makepkg\.conf|\.Xdefaults|\.dzen2|\.xmonad/xmonad.hs|\.rst2pdf|\.Xmodmap).)+$
+^((?!\.vim|\.vimrc|\.zshrc|bin|\.yaourtrc|\.xsession|\.tmux\.conf|\.lftp/rc|\.hgrc|\.config/lilyterm.conf|\.makepkg\.conf|\.Xdefaults|\.dzen2|\.xmonad/xmonad.hs|\.rst2pdf|\.Xmodmap|\.gtkrc-2.0).)+$
 
 syntax: glob
 
