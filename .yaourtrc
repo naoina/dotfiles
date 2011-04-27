@@ -1,1 +1,1 @@
-EXPORTDIR="/home/naoina/archlinux/custom/os/i686"
+EXPORTDIR="/home/naoina/archlinux/custom/os/`arch`"
