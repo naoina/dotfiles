@@ -1,1 +1,3 @@
+EXPORT=1
+EXPORTSRC=0
 EXPORTDIR="/home/naoina/archlinux/custom/os/`arch`"
