@@ -32,9 +32,8 @@ hi link xmlTagName xmlTag
 hi link xmlEndTag  xmlTag
 hi link htmlTag    xmlTag
 
-hi FullwidthSpace ctermbg=235
-
-match FullwidthSpace /　/
+hi FullwidthAndEOLSpace ctermbg=235
+match FullwidthAndEOLSpace /　\|\s\+$/
 
 runtime macros/matchit.vim
 call pathogen#runtime_append_all_bundles()
