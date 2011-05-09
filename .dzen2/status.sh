@@ -10,16 +10,17 @@ H=23        # dzen height
 W=1400
 X=0         # x position
 Y=-1        # y position
-FN='M+2VM+IPAG circle'  # font
+# FN='Migu 1M'  # font
 
 TIME_INT=1 # time intervall in seconds
 SEP='|' # status separator
-ICONDIR='/home/naoina/.dzen2/'
+DZEN_DIR='/home/naoina/.dzen2/'
 
 function battery() {
     STATEFILE='/proc/acpi/battery/BAT0/state' # battery's state file
     INFOFILE='/proc/acpi/battery/BAT0/info'   # battery's info file
     LOWBAT=25        # percentage of battery life marked as low
+    NOTIFYBAT=10     # percentage of battery life for notification
     GFG=$FG          # color of the gauge
     LOWCOL='#ff4747' # color when battery is low
 
@@ -35,10 +36,17 @@ function battery() {
     # Battery
     [ $RPERC -le $LOWBAT ] && GFG=$LOWCOL
 
+    if [ $RPERC -le $NOTIFYBAT -a ! -f "$DZEN_DIR/.bat_notify" ]; then
+        /usr/bin/notify-send "Low battery notification" "A current battery remaining is $NOTIFYBAT%.\nIncidentally, lower than 5% will immediatelly go into Hibernate mode."
+        touch "$DZEN_DIR/.bat_notify"
+    elif [ $RPERC -gt $NOTIFYBAT ]; then
+        rm -f "$DZEN_DIR/.bat_notify"
+    fi
+
     if [ $STATUS = 'discharging' ]; then
-        ICON="^i($ICONDIR/battery.xbm)"
+        ICON="^i($DZEN_DIR/battery.xbm)"
     else
-        ICON="^i($ICONDIR/ac_adapter.xbm)"
+        ICON="^i($DZEN_DIR/ac_adapter.xbm)"
     fi
 
     BAR=`echo $RPERC | gdbar -s o -h $GH -w $GW -fg $GFG -bg $GBG`
@@ -111,11 +119,11 @@ function cpu() {
 
     [ `echo "$CPU_TOTAL >= $HIGH_LOAD" | bc -l` -eq 1 ] && GFG=$HIGH_LOAD_COL
 
-    ICON="^i($ICONDIR/cpu.xbm)"
+    ICON="^i($DZEN_DIR/cpu.xbm)"
 
     BAR=`echo $CPU_TOTAL | gdbar -s o -h $GH -w $HALFGW -fg $GFG -bg $GBG`
 
-    TEMP=`cat /proc/acpi/thermal_zone/THM0/temperature | cut -d " " -f 14`
+    TEMP=`cat /proc/acpi/ibm/thermal | cut -d "	" -f 2 | cut -d " " -f 1`
 
     echo -n " CPU `printf '%5s' $CPU_TOTAL`% $BAR ${TEMP}C $SEP"
 }
@@ -163,4 +171,4 @@ while true; do
     echo " $SEP `date -u` " # UTC datetime
 
     sleep $TIME_INT;
-done | dzen2 -h $H -w $W -ta r -y $Y -x $X -fg $FG -bg $BG -fn "$FN" -dock
+done | dzen2 -expand left -h $H -ta r -y $Y -x $X -fg $FG -bg $BG -dock
