@@ -273,6 +273,36 @@ let g:quickrun_config = {
       \ },
 \}
 
+" For surround of kana's version.
+function! s:c_surround()
+  if exists("*SurroundRegister")
+    let g:surround_indent = 1
+
+    " For C like languages.
+    call SurroundRegister('g', 'if', "if (/* cond */) {\n\r\n}")
+    call SurroundRegister('g', 'while', "while (/*cond*/) {\n\r\n}")
+    call SurroundRegister('g', 'for', "for (/*cond*/) {\n\r\n}")
+    call SurroundRegister('g', 'tc', "try {\n\r\n} catch (/*Exception*/) {\n// TODO\n}")
+    call SurroundRegister('g', 'tf', "try {\n\r\n} finally {\n// TODO\n}")
+  endif
+endfunction
+
+function! s:cpp_surround()
+  call s:c_surround()
+endfunction
+
+function! s:java_surround()
+  call s:c_surround()
+endfunction
+
+function! s:php_surround()
+  call s:c_surround()
+endfunction
+
+function! s:actionscript_surround()
+  call s:c_surround()
+endfunction
+
 function! s:refresh()
   let save_ar = &autoread
   setlocal autoread
@@ -440,10 +470,14 @@ function s:scala_setting()
 endfunction
 
 function! s:setting()
-  let f = "s:" . &ft . "_setting()"
-  if exists("*" . f)
-    exec "call " . f
-  endif
+  let prefix = "s:" . &ft
+
+  for suffix in ["setting", "surround"]
+    let f = prefix . "_" . suffix . "()"
+    if exists("*" . f)
+      exec "call " . f
+    endif
+  endfor
 endfunction
 
 function! s:setting4like_c()
