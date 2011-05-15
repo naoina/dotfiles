@@ -30,7 +30,7 @@ bindkey -e
 # Set environment variables
 #
 #PATH="/sbin:/bin:/usr/sbin:/usr/lib/ccache/bin:/usr/bin"
-PATH="/opt/openoffice/program:$PATH" # for Arch Linux openoffice-base
+PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.gem/ruby/1.9.1/bin:$PATH"
 PATH="$HOME/bin:/usr/lib/ccache/bin:$PATH"
 export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
@@ -38,6 +38,7 @@ export CVS_RSH="ssh"
 export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
 export GIT_SSH="$HOME/bin/ssh-github"
+export VIRTUALENV_USE_DISTRIBUTE=1
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 
