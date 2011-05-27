@@ -1,6 +1,7 @@
 import XMonad
 
 import XMonad.Actions.DynamicWorkspaces
+import XMonad.Actions.OnScreen
 import XMonad.Actions.Promote
 import XMonad.Actions.RotSlaves
 import XMonad.Actions.SinkAll
@@ -116,6 +117,8 @@ xPropMatches =
     [([(wM_CLASS, any ("Gtk-gnutella" ==))], exShift $ wsname !! 2)]
     ++
     [([(wM_CLASS, any ("Skype" ==))], exShift $ wsname !! 8)]
+    ++
+    [([(wM_CLASS, any ("Eclipse" ==))], exShift $ wsname !! 4)]
         where
           floatApps name = all (\f -> f name) (determines)
           determines = [not . (myTerminalName `isSuffixOf`)]
@@ -147,7 +150,7 @@ keybind conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     {- , ((modMask, xK_n), sendMessage ToggleLayout) -}
     {- , ((modMask, xK_r), sendMessage NextLayout) -}
     , ((modMask .|. shiftMask, xK_c), kill)
-    , ((modMask .|. shiftMask, xK_r),
+    , ((modMask .|. controlMask .|. shiftMask, xK_r),
         broadcastMessage ReleaseResources >> restart "xmonad" True)
     , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
     , ((controlMask .|. shiftMask, xK_j), spawn "exec kasumi")
@@ -155,8 +158,17 @@ keybind conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
     ++
     [ ((modMask .|. m, k), f $ wsname !! n)
-        | (k, n) <- zip [xK_1..xK_9] [0..8]
+        | (k, n) <- zip [xK_1..xK_9] [0..]
         , (m, f) <- [(0, gcWorkspaceView), (shiftMask, gcWorkspaceShift)]
+    ]
+    {- [ ((modMask .|. m, k), windows $ f $ wsname !! n) -}
+        {- | (k, n) <- zip [xK_1..xK_9] [0..] -}
+        {- , (m, f) <- [(0, W.view), (shiftMask, W.shift)] -}
+    {- ] -}
+    ++
+    [ ((modMask .|. m, k), screenWorkspace n >>= flip whenJust (windows . f))
+        | (k, n) <- zip [xK_w, xK_e, xK_r] [0..]
+        , (m, f) <- [(0, W.view), (shiftMask, W.shift)]
     ]
         where
           focusDownSelect = dynamicLogString layoutPP >>= selectDown
@@ -191,13 +203,14 @@ gcWorkspace' dynWS f tag =
 
 
 gcWorkspaceView :: String -> X ()
-gcWorkspaceView = gcWorkspace' dynWS W.greedyView
+{- gcWorkspaceView = gcWorkspace' dynWS W.view -}
+gcWorkspaceView = gcWorkspace' dynWS (viewOnScreen 0)
     where
       dynWS tag nodup (W.Workspace t _ Nothing) = do
             when (tag /= t) removeWorkspace
             when nodup $ addWorkspace tag
       dynWS tag nodup _ | nodup = addWorkspace tag
-      dynWS tag _ _ = windows $ W.greedyView $ tag
+      dynWS tag _ _ = windows $ (viewOnScreen 0) $ tag
 
 
 gcWorkspaceShift :: String -> X ()
