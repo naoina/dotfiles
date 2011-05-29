@@ -5,4 +5,5 @@ c8d8318257bc39c90a1c67bd794c4c9dd80ed5ad .vim/bundle/nerdcommenter
 fd7cd35967f951a7685b150b7034cb5d03b91e81 .vim/bundle/vim-quickrun
 e0d348ca7474d970d7abdd87b59cf44efe617ee2 .vim/bundle/vim-surround
 17326680cd18ba9ba8a5e320efdfa4352f4c5f05 .vim/bundle/vimproc
-0b56b1492d233ae88a4ea2d91e4dd138de58995d hgsubversion
+0b56b1492d233ae88a4ea2d91e4dd138de58995d hg-extension/hgsubversion
+fb07da0f350d9759c337e4fcb93de9da7c1b0d45 hg-extension/histedit

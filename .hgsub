@@ -5,4 +5,5 @@
 .vim/bundle/vim-quickrun = [git]git://github.com/thinca/vim-quickrun.git
 .vim/bundle/vim-surround = [git]git://github.com/kana/vim-surround.git
 .vim/bundle/scala-tool-support = [svn]http://lampsvn.epfl.ch/svn-repos/scala/scala-tool-support/trunk/src/vim
-hgsubversion = http://bitbucket.org/durin42/hgsubversion
+hg-extension/hgsubversion = http://bitbucket.org/durin42/hgsubversion
+hg-extension/histedit = https://bitbucket.org/durin42/histedit

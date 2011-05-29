@@ -19,7 +19,8 @@ eol =
 graphlog =
 bookmarks =
 hggit =
-svn = /home/naoina/hgsubversion/hgsubversion
+svn = ~/hg-extension/hgsubversion/hgsubversion
+histedit = ~/hg-extension/histedit/hg_histedit.py
 
 [alias]
 show = diff -r -2:tip
