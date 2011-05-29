@@ -314,20 +314,25 @@ function! s:flymake_make(prg, fmt, opt)
 endfunction
 
 function! s:flymake_highlight()
-  if exists("b:flymakematchid")
-    call matchdelete(b:flymakematchid)
-    unlet b:flymakematchid
-    sign unplace 3
+  let offset = 10032
+  if exists("b:flymakematchids")
+    for matchid in b:flymakematchids
+      call matchdelete(matchid)
+      exec "sign unplace " . (offset + matchid)
+    endfor
+    unlet b:flymakematchids
   endif
 
+  let b:flymakematchids = []
   for line in readfile(&makeef)
     " hilight error line
     let lno = s:flymake_take_by_regex(line, "l", '\\d\\+')
-    let b:flymakematchid = matchadd("ErrorLine", '\%' . lno . "l.*")
+    let matchid = matchadd("ErrorLine", '\%' . lno . "l.*")
+    call add(b:flymakematchids, matchid)
 
     " put error sign
     let fname = s:flymake_take_by_regex(line, "f", '.*')
-    exec "sign place 3 line=" . lno . " name=error_flymake file=" . fname
+    exec "sign place " . (offset + matchid) . " line=" . lno . " name=error_flymake file=" . fname
   endfor
 endfunction
 
