@@ -62,6 +62,15 @@ function! LoadTemplateFile()
         " Template not found
     endif
 
+    let licensefile = expand($HOME . "/.vim/templates/LICENSE")
+    if filereadable(licensefile . "." . extension)
+      let licensefile = licensefile . "." . extension
+    endif
+
+    let ll = readfile(licensefile)
+    let licenselineno = len(ll)
+    let license = Escape(join(ll, ""))
+
     let date       = Escape(strftime("%F %T %z"))
     let year       = Escape(strftime("%Y"))
     let cwd        = Escape(getcwd())
@@ -86,12 +95,6 @@ function! LoadTemplateFile()
         let Company  = Escape("UNKNOWN Company")
     endif
 
-    let licensefile = expand($HOME . "/.vim/templates/LICENSE")
-    if filereadable(licensefile)
-      let ll = readfile(licensefile)
-      let licenselineno = len(ll)
-      let license = Escape(join(ll, ""))
-    endif
     " build variable for @JAVA_PACKAGE@ substitution
     " Suggested by Ondrej Jombik 'Nepto' <nepto AT platon.sk>
     " Algoritmus description:
