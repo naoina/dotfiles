@@ -6,11 +6,13 @@ ignore = .hg/hgignore
 [web]
 allow_archive = bz2 gz zip
 encoding = UTF-8
+cacerts = /etc/ssl/certs/ca-certificates.crt
 
 [merge-tools]
 checkconflicts = True
 
 [extensions]
+convert =
 rebase =
 record =
 color =
@@ -18,6 +20,7 @@ mq =
 eol =
 graphlog =
 bookmarks =
+transplant =
 hggit =
 svn = ~/hg-extension/hgsubversion/hgsubversion
 histedit = ~/hg-extension/histedit/hg_histedit.py
@@ -28,3 +31,6 @@ log = glog
 
 [hgsubversion]
 externals = subrepos
+
+[bookmarks]
+track.current = True
