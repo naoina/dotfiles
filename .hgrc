@@ -24,6 +24,7 @@ transplant =
 hggit =
 svn = ~/hg-extension/hgsubversion/hgsubversion
 histedit = ~/hg-extension/histedit/hg_histedit.py
+hgshelve = ~/hg-extension/hgshelve/hgshelve.py
 
 [alias]
 show = diff -r -2:tip
