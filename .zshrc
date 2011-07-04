@@ -109,6 +109,7 @@ alias emacs="emacs -nw"
 # alias yaourt="yaourt --tmp /home/tmp"
 alias display="display -geometry +0+0"
 alias rhino="rlwrap java -jar /usr/share/java/js.jar"
+alias hg="LC_ALL=C hg"
 
 SCREEN_PROG="`whence screen`"
 [ -x "$SCREEN_PROG" ] && [ -n "$STY" ] && alias exit="$SCREEN_PROG -d $STY"
@@ -120,12 +121,12 @@ TMUX_PROG="`whence tmux`"
 # Set prompt
 #
 PROMPT="[%~]
-[%n@%M(`arch`)]%# "
+[%n@%M(`uname -m`)]%# "
 
 # ulimit -c unlimited
 umask 072
 
-if [ "$PS1" ]; then
+if [ "$PS1" -a `uname -s` = "Linux" ]; then
     mkdir -p -m 0700 /dev/cgroup/cpu/user/$$ > /dev/null 2>&1
     echo $$ > /dev/cgroup/cpu/user/$$/tasks
     echo 1 > /dev/cgroup/cpu/user/$$/notify_on_release
