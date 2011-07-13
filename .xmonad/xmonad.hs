@@ -97,7 +97,7 @@ workspacePP h = defaultPP
 
 myLayoutHook = avoidStruts
              $ smartBorders
-             $ onWorkspace (wsname !! 1) (reflectHoriz Grid ||| reflectHoriz tiled ||| reflectVert (Mirror tiled)) $ Mirror tiled ||| reflectHoriz tiled ||| Full
+             $ Mirror tiled ||| reflectHoriz tiled ||| Full
              {- ThreeCol 1 (3/100) (1/2) -}
     where
       tiled = Tall nmaster delta ratio
@@ -119,6 +119,10 @@ xPropMatches =
     [([(wM_CLASS, any ("Skype" ==))], exShift $ wsname !! 8)]
     ++
     [([(wM_CLASS, any ("Eclipse" ==))], exShift $ wsname !! 4)]
+    ++
+    [([(wM_CLASS, any ("VirtualBox" ==))], exShift $ wsname !! 5)]
+    ++
+    [([(wM_CLASS, any ("libreoffice" `isPrefixOf`))], exShift $ wsname !! 7)]
         where
           floatApps name = all (\f -> f name) (determines)
           determines = [not . (myTerminalName `isSuffixOf`)]
