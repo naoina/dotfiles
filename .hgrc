@@ -1,5 +1,5 @@
 [ui]
-username = Naoya Inada <naoina@naniyueni.org>
+username = Naoya INADA <naoina@naniyueni.org>
 merge = /usr/bin/vimdiff
 ignore = .hg/hgignore
 
