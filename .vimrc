@@ -472,6 +472,11 @@ function s:scala_setting()
   setlocal cindent
 endfunction
 
+function s:rst_setting()
+  setlocal tabstop=3 softtabstop=3 shiftwidth=3
+  setlocal cindent
+endfunction
+
 
 " For surround of kana's version.
 function! s:c_surround()
