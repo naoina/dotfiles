@@ -8,3 +8,4 @@ c0675bdd57631a51f119c33c4838ae635aba7605 .vim/bundle/vimproc
 0b56b1492d233ae88a4ea2d91e4dd138de58995d hg-extension/hgsubversion
 fb07da0f350d9759c337e4fcb93de9da7c1b0d45 hg-extension/histedit
 23649f81c364d5d6f52d59c3a124c4a3c23c474f hg-extension/hgshelve
+0b7a2737eb95837b7ed7f427233371ffc81126ce hg-extension/hg-git

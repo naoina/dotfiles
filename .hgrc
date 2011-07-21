@@ -1,6 +1,5 @@
 [ui]
 username = Naoya INADA <naoina@naniyueni.org>
-merge = /usr/bin/vimdiff
 ignore = .hg/hgignore
 
 [web]
@@ -21,14 +20,16 @@ eol =
 graphlog =
 bookmarks =
 transplant =
-hggit =
+purge =
+hggit = ~/hg-extension/hg-git/hggit
 svn = ~/hg-extension/hgsubversion/hgsubversion
 histedit = ~/hg-extension/histedit/hg_histedit.py
 hgshelve = ~/hg-extension/hgshelve/hgshelve.py
 
 [alias]
-show = diff -r -2:tip
+show = diff -c tip
 log = glog
+resolve = resolve --tool /usr/bin/vimdiff
 
 [hgsubversion]
 externals = subrepos

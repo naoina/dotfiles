@@ -8,3 +8,4 @@
 hg-extension/hgsubversion = http://bitbucket.org/durin42/hgsubversion
 hg-extension/histedit = https://bitbucket.org/durin42/histedit
 hg-extension/hgshelve = https://bitbucket.org/tksoh/hgshelve
+hg-extension/hg-git = [git]git://github.com/schacon/hg-git.git
