@@ -2,7 +2,7 @@ syntax on
 filetype plugin indent on
 
 let g:author = "Naoya INADA"
-let g:email  = "naoina@naniyueni.org"
+let g:email  = "naoina@kuune.org"
 
 let $VIMLOCAL = $HOME . '/.vim'
 
