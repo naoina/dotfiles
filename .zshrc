@@ -110,6 +110,9 @@ alias emacs="emacs -nw"
 alias display="display -geometry +0+0"
 alias rhino="rlwrap java -jar /usr/share/java/js.jar"
 
+PROG="`whence virtualenv`"
+[ -x "$PROG" ] && alias virtualenv="$PROG --no-site-packages"
+
 SCREEN_PROG="`whence screen`"
 [ -x "$SCREEN_PROG" ] && [ -n "$STY" ] && alias exit="$SCREEN_PROG -d $STY"
 
