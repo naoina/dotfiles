@@ -4,7 +4,7 @@ abbr a href
 
 snippet img
 abbr img src
-	<img src="${1}" alt="${2}">${0}</img>
+	<img src="${1}" alt="${2}" />
 
 snippet table
 	<table>
@@ -26,14 +26,26 @@ snippet form
 		${0}
 	</form>
 
-snippet input
-	<input type="text" name="${1}" value="${2}" />
+snippet inputtext
+	<input type="text" name="${1}" value="" />
 
-snippet submit
+snippet inputpassword
+	<input type="password" name="${1}" value="${2}" />
+
+snippet inputcheckbox
+	<input type="checkbox" name="${1}" />
+
+snippet inputradio
+	<input type="radio" name="${1}" value="${2} />
+
+snippet inputsubmit
 	<input type="submit" name="submit" value="${0}" />
 
-snippet reset
+snippet inputreset
 	<input type="reset" name="reset" value="${0}" />
+
+snippet inputhidden
+	<input type="hidden" name="${1}" value="${2}" />
 
 snippet script
 	<script type="text/javascript">
@@ -57,3 +69,6 @@ snippet ul
 
 snippet li
 	<li>${1}</li>
+
+snippet textarea
+	<textarea name="${1}" rows="${2}" cols="${3}">${0}</textarea>

@@ -400,17 +400,17 @@ au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
 au BufNewFile,BufRead *.scala   setlocal filetype=scala
 
-function s:txt_setting()
+function! s:txt_setting()
   setlocal textwidth=78
 endfunction
 
-function s:help_setting()
+function! s:help_setting()
   setlocal textwidth=78
   setlocal tabstop=8 softtabstop=8 shiftwidth=8 noexpandtab
   setlocal nosmarttab
 endfunction
 
-function s:python_setting()
+function! s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
@@ -421,58 +421,75 @@ function s:python_setting()
   endif
 endfunction
 
-function s:php_setting()
+function! s:php_setting()
   setlocal include=
   let g:ctags_opts = '--langmap=PHP:.php.inc.php4'
 endfunction
 
-function s:html_setting()
+function! s:html_setting()
   call s:xml_setting()
 endfunction
 
-function s:snippet_setting()
+function! s:snippet_setting()
   setlocal noexpandtab
   snoremap <buffer><Tab> <Tab>
   inoremap <buffer><Tab> <Tab>
 endfunction
 
-function s:actionscript_setting()
+function! s:actionscript_setting()
   setlocal dictionary=$VIMLOCAL/dict/actionscript3.dict
 endfunction
 
-function s:c_setting()
+function! s:c_setting()
   setlocal foldmethod=indent foldminlines=2 foldnestmax=1
 endfunction
 
-function s:cpp_setting()
+function! s:cpp_setting()
   setlocal foldmethod=indent foldminlines=2 foldnestmax=2
 endfunction
 
-function s:java_setting()
+augroup EclimGroup
+  au!
+  au BufNewFile,BufRead <buffer> EclimDisable
+augroup End
+function! s:java_setting()
+  augroup EclimGroup
+    au!
+    au BufNewFile,BufRead <buffer> EclimEnable
+  augroup End
   setlocal foldmethod=indent foldlevel=1 foldnestmax=2
+  au BufWrite <buffer> JavaImportMissing
+  au BufWritePost <buffer> JavaImportClean
+  au BufWritePost <buffer> JavaImportSort
 endfunction
 
-function s:xml_setting()
+function! s:xml_setting()
   let g:xml_syntax_folding = 1
   setlocal foldmethod=syntax foldlevel=1
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal expandtab
 endfunction
 
-function s:ruby_setting()
+function! s:mvn_pom_setting()
+  augroup eclim_xml
+    au!
+  augroup End
+endfunction
+
+function! s:ruby_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
 endfunction
 
-function s:vim_setting()
+function! s:vim_setting()
   setlocal shiftwidth=2
 endfunction
 
-function s:scala_setting()
+function! s:scala_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal cindent
 endfunction
 
-function s:rst_setting()
+function! s:rst_setting()
   setlocal tabstop=3 softtabstop=3 shiftwidth=3
   setlocal cindent
 endfunction
