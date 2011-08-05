@@ -1,9 +1,11 @@
 PATH="~/bin:$PATH"
 IMAGE_PATH="$HOME/media/image/wallpaper"
 
-WM=xmonad
+# WM=qtile
+# WM=wmfs
+# WM=xmonad
 # WM=compiz-fusion
-# WM=awesome
+WM=awesome
 # WM=i3
 WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper.py"
 
@@ -35,6 +37,8 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 # scim -d
 ibus-daemon &
 
+$WALLPAPER_PICKER $IMAGE_PATH
+
 # By setting the window manager.
 case "$WM" in
     compiz-fusion)
@@ -42,12 +46,8 @@ case "$WM" in
         WM="fusion-icon"
         ;;
     xmonad)
-        $WALLPAPER_PICKER $IMAGE_PATH
         $HOME/.dzen2/status.sh &
         # xcompmgr &
-        ;;
-    i3)
-        $WALLPAPER_PICKER $IMAGE_PATH
         ;;
     *)
         ;;
