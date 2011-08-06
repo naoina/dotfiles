@@ -133,3 +133,5 @@ if [ "$PS1" -a `uname -s` = "Linux" ]; then
     echo $$ > /dev/cgroup/cpu/user/$$/tasks
     echo 1 > /dev/cgroup/cpu/user/$$/notify_on_release
 fi
+
+source $HOME/.zsh/incr-0.2.zsh
