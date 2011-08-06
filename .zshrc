@@ -134,4 +134,8 @@ if [ "$PS1" -a `uname -s` = "Linux" ]; then
     echo 1 > /dev/cgroup/cpu/user/$$/notify_on_release
 fi
 
-source $HOME/.zsh/incr-0.2.zsh
+source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
+zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+zstyle ':completion:*' completer _oldlist _complete
+zle -N zle-keymap-select auto-fu-zle-keymap-select
+zstyle ':auto-fu:var' postdisplay $''
