@@ -25,7 +25,7 @@ function battery() {
     LOWCOL='#ff4747' # color when battery is low
 
     # look up battery's data
-    BAT_FULL=`cat $INFOFILE|grep last|line|cut -d " " -f 9`;
+    BAT_FULL=`cat $INFOFILE|grep last|cut -d " " -f 9`;
     STATUS=`cat $STATEFILE|grep charging|cut -d " " -f 12`;
     RCAP=`cat $STATEFILE|grep remaining|cut -d " " -f 8`;
 
