@@ -223,8 +223,16 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Layout manipulation
-    awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
-    awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end),
+    awful.key({ modkey, "Shift"   }, "j",
+        function ()
+            i = awful.layout.get(mouse.screen) == awful.layout.suit.tile.bottom and -1 or 1
+            awful.client.swap.byidx(i)
+        end),
+    awful.key({ modkey, "Shift"   }, "k",
+        function ()
+            i = awful.layout.get(mouse.screen) == awful.layout.suit.tile.bottom and 1 or -1
+            awful.client.swap.byidx(i)
+        end),
     awful.key({ modkey, }, "w", function () awful.screen.focus(1) end),
     awful.key({ modkey, }, "e", function () awful.screen.focus(2) end),
     awful.key({ modkey,           }, "u", awful.client.urgent.jumpto),
@@ -253,26 +261,8 @@ globalkeys = awful.util.table.join(
 
     -- Prompt
     awful.key({ modkey }, "p",
-        function ()
-            local f_reader = io.popen( "dmenu_run -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
-            local command = assert(f_reader:read('*a'))
-            f_reader:close()
-            if command == "" then return end
-
-            -- Check throught the clients if the class match the command
-            local lower_command=string.lower(command)
-            for k, c in pairs(client.get()) do
-                local class=string.lower(c.class)
-                if string.match(class, lower_command) then
-                    for i, v in ipairs(c:tags()) do
-                        awful.tag.viewonly(v)
-                        c:raise()
-                        c.minimized = false
-                        return
-                    end
-                end
-            end
-            awful.util.spawn(command)
+        function()
+            awful.util.spawn("dmenu_run -b -nb '".. beautiful.bg_normal .."' -nf '".. beautiful.fg_normal .."' -sb '#955'")
         end),
 
     awful.key({ modkey }, "x",
@@ -372,7 +362,11 @@ awful.rules.rules = {
       properties = { tag = tags[1][9], ontop = true } },
     { rule = { class = terminal_class },
       properties = { floating = false } },
+    { rule = { class = "VirtualBox" },
+      properties = { tag = tags[1][6] } },
     { rule = { class = "Chromium" },
+      properties = { tag = tags[1][2], border_width = 0 } },
+    { rule = { class = "Firefox" },
       properties = { tag = tags[1][2], border_width = 0 } },
 }
 -- }}}
