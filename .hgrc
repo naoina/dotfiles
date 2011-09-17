@@ -1,6 +1,6 @@
 [ui]
 username = Naoya INADA <naoina@kuune.org>
-ignore = .hg/hgignore
+# ignore = .hg/hgignore
 
 [web]
 allow_archive = bz2 gz zip

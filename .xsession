@@ -35,7 +35,7 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 
 # uim-xim &
 # scim -d
-ibus-daemon &
+ibus-daemon --xim &
 
 $WALLPAPER_PICKER $IMAGE_PATH
 

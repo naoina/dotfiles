@@ -1,6 +1,11 @@
 [user]
-	name = Naoya Inada
-	email = naoina@naniyueni.org
+	name = Naoya INADA
+	email = naoina@kuune.org
 [alias]
 	ci = commit
 	st = status
+[color]
+	ui = auto
+[core]
+	editor = /usr/bin/vim
+	quotepath = false
