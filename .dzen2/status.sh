@@ -17,17 +17,17 @@ SEP='|' # status separator
 DZEN_DIR='/home/naoina/.dzen2/'
 
 function battery() {
-    STATEFILE='/proc/acpi/battery/BAT0/state' # battery's state file
-    INFOFILE='/proc/acpi/battery/BAT0/info'   # battery's info file
     LOWBAT=25        # percentage of battery life marked as low
     NOTIFYBAT=10     # percentage of battery life for notification
     GFG=$FG          # color of the gauge
     LOWCOL='#ff4747' # color when battery is low
+    STATUSDIR="/sys/class/power_supply"
+    BATDIR="$STATUSDIR/BAT0"
 
     # look up battery's data
-    BAT_FULL=`cat $INFOFILE|grep last|cut -d " " -f 9`;
-    STATUS=`cat $STATEFILE|grep charging|cut -d " " -f 12`;
-    RCAP=`cat $STATEFILE|grep remaining|cut -d " " -f 8`;
+    BAT_FULL=`cat $BATDIR/charge_full 2>/dev/null || cat $BATDIR/energy_full`
+    STATUS=`cat $STATUSDIR/AC/online`
+    RCAP=`cat $BATDIR/charge_now 2>/dev/null || cat $BATDIR/energy_now`
 
     # calculate remaining power
     RPERCT=`expr $RCAP \* 100`;
@@ -43,7 +43,7 @@ function battery() {
         rm -f "$DZEN_DIR/.bat_notify"
     fi
 
-    if [ $STATUS = 'discharging' ]; then
+    if [ $STATUS -eq 0 ]; then
         ICON="^i($DZEN_DIR/battery.xbm)"
     else
         ICON="^i($DZEN_DIR/ac_adapter.xbm)"
