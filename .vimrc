@@ -85,7 +85,7 @@ set iminsert=1
 set cinkeys+=;
 set ambiwidth=double
 set foldopen=block,hor,jump,mark,percent,quickfix,search,tag,undo
-set foldlevel=99
+set foldlevel=0
 set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
@@ -446,11 +446,26 @@ function! s:help_setting()
   setlocal nosmarttab
 endfunction
 
+function! PythonFoldexpr(lnum)
+  let line = getline(a:lnum)
+  if line =~ '^\s*\(class\|def\)\s'
+    return indent(a:lnum) / &sw
+  elseif line =~ '^\s*$'
+    let nextlnum = nextnonblank(a:lnum)
+    return nextlnum == 0 ? 0 : indent(nextlnum) / &sw
+  elseif indent(a:lnum) == 0
+    return 0
+  endif
+
+  return indent(search('^\s*\(class\|def\)\s', 'bn')) / &sw + 1
+endfunction
+
 function! s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
-  setlocal foldmethod=indent
+  setlocal foldmethod=expr
+  setlocal foldexpr=PythonFoldexpr(v:lnum)
 
   " if executable("pep8")
     " call s:flymake_make('pep8\ -r\ %', '%f:%l:%c:\ %m', '')
