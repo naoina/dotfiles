@@ -13,12 +13,14 @@ zstyle ':completion::complete:*' use-cache 1
 
 setopt EXTENDED_GLOB AUTO_PUSHD LISTPACKED \
        AUTOREMOVESLASH HIST_IGNORE_ALL_DUPS HIST_IGNORE_DUPS \
-       SHARE_HISTORY APPEND_HISTORY
+       SHARE_HISTORY APPEND_HISTORY NUMERIC_GLOB_SORT
 setopt NO_BEEP
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE="10000"
 SAVEHIST="10000"
+REPORTTIME=3
+WORDCHARS=${WORDCHARS:s,/,,}
 
 NULL="/dev/null"
 
@@ -126,7 +128,7 @@ PROMPT="[%~]
 [%n@%M(`uname -m`)]%# "
 
 # ulimit -c unlimited
-umask 072
+umask 022
 
 if [ "$PS1" -a `uname -s` = "Linux" ]; then
     mkdir -p -m 0700 /dev/cgroup/cpu/user/$$ > /dev/null 2>&1
