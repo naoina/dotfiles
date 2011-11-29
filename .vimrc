@@ -257,6 +257,7 @@ let g:acp_ignorecaseOption = 0
 
 " For neocomplcache, script_id=2620
 let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_auto_select = 1
 let g:neocomplcache_min_keyword_length = 4
 let g:neocomplcache_min_syntax_length  = 4
 let g:neocomplcache_auto_completion_start_length = 1
@@ -264,8 +265,9 @@ let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
-imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : "\<Tab>"
-smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : "\<Tab>"
+imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
+smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : pumvisible() ? "\<CR>" : "\<Tab>"
+
 cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
@@ -273,35 +275,36 @@ let g:unite_data_directory = s:cachedir
 " let g:unite_enable_split_vertically = 1
 let g:unite_winheight = 8
 let g:unite_split_rule = "botright"
+let g:unite_source_history_yank_enable = 1
 " let g:unite_enable_start_insert = 1
-nnoremap <silent><C-u> :Unite buffer file register file_mru<CR>
+nnoremap <C-c>ub :Unite buffer file file_mru<CR>
+nnoremap <C-c>uh :Unite history/yank<CR>
+nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 
 function! s:unite_setting()
   if exists("b:did_unite_setting") && b:did_unite_setting
     return
   endif
   let b:did_unite_setting = 1
-  let timeoutlen_save = &timeoutlen
-  let &timeoutlen = 1
-
-  augroup Unite
-    au!
-  augroup END
-  au Unite BufEnter <buffer> setlocal timeoutlen=1
-  exec "au Unite BufLeave <buffer> setlocal timeoutlen=" . timeoutlen_save
-  unlet timeoutlen_save
 
   nmap <buffer><Esc> <Plug>(unite_exit)
   imap <buffer><Esc> <Plug>(unite_exit)
-
 endfunction
 
-" For yankring, script_id=1234.
-let g:yankring_history_dir    = s:cachedir
-let g:yankring_history_file   = "yankring_history"
-let g:yankring_replace_n_pkey = ''
-let g:yankring_replace_n_nkey = ''
-noremap <Leader>p :YRShow<CR>
+" For vimshell
+let g:vimshell_temporary_directory = s:cachedir
+let g:vimshell_prompt = "[" . $USER . "@" . hostname() . "(" . substitute(system('uname -m'), "\n", "", "") . ")]% "
+let g:vimshell_user_prompt = "'[' . substitute(getcwd(), $HOME, '~', '') . ']'"
+nmap <C-c>vs <Plug>(vimshell_switch)
+nmap <C-c>vc <Plug>(vimshell_create)
+nmap <C-c>vp <Plug>(vimshell_split_create)
+
+function! s:vimshell_setting()
+    if exists('b:did_vimshell_setting') && b:did_vimshell_setting
+        return
+    endif
+    let b:did_vimshell_setting = 1
+endfunction
 
 " For ShowMarks, script_id=152
 let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -469,19 +472,17 @@ function! s:cpp_setting()
   setlocal foldmethod=indent foldminlines=2 foldnestmax=2
 endfunction
 
-augroup EclimGroup
-  au!
-  au BufNewFile,BufRead <buffer> EclimDisable
-augroup End
 function! s:java_setting()
-  augroup EclimGroup
-    au!
-    au BufNewFile,BufRead <buffer> EclimEnable
-  augroup End
-  setlocal foldmethod=indent foldlevel=1 foldnestmax=2
-  au BufWrite <buffer> JavaImportMissing
-  au BufWritePost <buffer> JavaImportClean
-  au BufWritePost <buffer> JavaImportSort
+  if exists(':EclimEnable')
+    augroup EclimGroup
+      au!
+      au BufNewFile,BufRead <buffer> EclimEnable
+    augroup End
+    setlocal foldmethod=indent foldlevel=1 foldnestmax=2
+    au BufWrite <buffer> JavaImportMissing
+    au BufWritePost <buffer> JavaImportClean
+    au BufWritePost <buffer> JavaImportSort
+  endif
 endfunction
 
 function! s:xml_setting()
@@ -514,7 +515,6 @@ function! s:rst_setting()
   setlocal tabstop=3 softtabstop=3 shiftwidth=3
   setlocal cindent
 endfunction
-
 
 " For surround of kana's version.
 function! s:c_surround()
