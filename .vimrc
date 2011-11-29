@@ -4,7 +4,28 @@ filetype plugin indent on
 let g:author = "Naoya INADA"
 let g:email  = "naoina@kuune.org"
 
-let $VIMLOCAL = $HOME . '/.vim'
+let $VIMLOCAL = expand('~/.vim')
+
+filetype off
+
+if has('vim_starting')
+  set runtimepath+=$VIMLOCAL/bundle/neobundle.vim
+
+  call neobundle#rc($VIMLOCAL . '/bundle')
+endif
+
+NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
+NeoBundle 'git://github.com/Shougo/unite.vim.git'
+NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
+NeoBundle 'git://github.com/Shougo/vimshell.git'
+NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
+NeoBundle 'git://github.com/kana/vim-surround.git'
+
+filetype plugin on
+filetype indent on
 
 colorscheme desert
 
@@ -36,8 +57,8 @@ hi FullwidthAndEOLSpace ctermbg=235
 match FullwidthAndEOLSpace /　\|\s\+$/
 
 runtime macros/matchit.vim
-call pathogen#runtime_append_all_bundles()
-call pathogen#helptags()
+" call pathogen#runtime_append_all_bundles()
+" call pathogen#helptags()
 
 set backupdir=$VIMLOCAL/backup
 set directory=$VIMLOCAL/swap
