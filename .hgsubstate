@@ -1,10 +1,4 @@
-85d6e0911d73643eb165bbdab629fa9ebf9e858f .vim/bundle/neocomplcache
-5a9371437f97eef12325c04607de5e58b7168432 .vim/bundle/nerdcommenter
 21921 .vim/bundle/scala-tool-support
-32e4424aaaef65edcd8ca2d694e4bc0290461981 .vim/bundle/unite.vim
-d5ed98e09f0c66a590b366c9bf9c196e6f5ee501 .vim/bundle/vim-quickrun
-e0d348ca7474d970d7abdd87b59cf44efe617ee2 .vim/bundle/vim-surround
-c0675bdd57631a51f119c33c4838ae635aba7605 .vim/bundle/vimproc
 0b56b1492d233ae88a4ea2d91e4dd138de58995d hg-extension/hgsubversion
 fb07da0f350d9759c337e4fcb93de9da7c1b0d45 hg-extension/histedit
 23649f81c364d5d6f52d59c3a124c4a3c23c474f hg-extension/hgshelve
