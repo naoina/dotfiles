@@ -1,12 +1,7 @@
-/*
- * First Created: @DATE@
- * Last Modified: @DATE@
- */
-
 @LICENSE@
 
 
-package org.naniyueni;
+package org.kuune;
 
 
 public class @FILE@ {

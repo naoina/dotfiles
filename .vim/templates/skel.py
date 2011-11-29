@@ -1,5 +1,4 @@
-# First Created: @DATE@
-# Last Modified: @DATE@
+# -*- coding: utf-8 -*-
 
 @LICENSE@
 
