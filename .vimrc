@@ -404,8 +404,8 @@ augroup MyAutoCmd
   au!
 augroup End
 
-au MyAutoCmd FileType ruby call s:flymake_make('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
-au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
+" au MyAutoCmd FileType ruby call s:flymake_make('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
+" au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')
 
 
 function! s:to_xxd()
@@ -452,9 +452,9 @@ function! s:python_setting()
   setlocal expandtab
   setlocal foldmethod=indent
 
-  if executable("pep8")
-    call s:flymake_make('pep8\ -r\ %', '%f:%l:%c:\ %m', '')
-  endif
+  " if executable("pep8")
+    " call s:flymake_make('pep8\ -r\ %', '%f:%l:%c:\ %m', '')
+  " endif
 endfunction
 
 function! s:php_setting()
