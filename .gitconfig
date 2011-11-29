@@ -3,9 +3,19 @@
 	email = naoina@kuune.org
 [alias]
 	ci = commit
-	st = status
+    co = checkout
+    st = status
+    resolve = mergetool
+    glog = log --graph
 [color]
 	ui = auto
 [core]
 	editor = /usr/bin/vim
 	quotepath = false
+[merge]
+    tool = git-vimdiff
+[mergetool]
+    prompt = false
+[mergetool "git-vimdiff"]
+	cmd = git-vimdiff.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
+	trustExitCode = true
