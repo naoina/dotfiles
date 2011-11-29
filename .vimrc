@@ -328,7 +328,17 @@ function! s:refresh()
   let &autoread = save_ar
   unlet save_ar
 endfunction
-command! Refresh call s:refresh()
+command! Refresh :call s:refresh()
+
+function! s:tohtml_and_browse()
+  TOhtml
+  let tempfile = tempname()
+  write `=tempfile`
+  exec "!" . s:webbrowser . " " . tempfile
+  bdelete!
+  call delete(tempfile)
+endfunction
+command! TOhtmAndBrowse :call s:tohtml_and_browse()
 
 " Simplicity flymake.
 function! s:flymake_run(cmd, prg, fmt)
