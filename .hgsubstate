@@ -1,5 +1,5 @@
 21921 .vim/bundle/scala-tool-support
-0b56b1492d233ae88a4ea2d91e4dd138de58995d hg-extension/hgsubversion
-fb07da0f350d9759c337e4fcb93de9da7c1b0d45 hg-extension/histedit
-23649f81c364d5d6f52d59c3a124c4a3c23c474f hg-extension/hgshelve
-0b7a2737eb95837b7ed7f427233371ffc81126ce hg-extension/hg-git
+85649cf7ae9690b25c3a5b752d987c780545543c hg-extension/hg-git
+244a50c40d93873006c875c5d2ae64fcbc987216 hg-extension/hgshelve
+3292ff0380f30222b776febb4414005316edcd0d hg-extension/hgsubversion
+446d13ee8f9eef42a4b0b65d4a11b599eaef068a hg-extension/histedit
