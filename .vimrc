@@ -232,6 +232,7 @@ au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call 
 au BufReadPost * normal '"
 
 au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
+au CursorMovedI * if pumvisible() == 0|pclose|endif
 
 command! GenerateAllTags call s:generate_all_tags()
 nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
