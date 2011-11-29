@@ -434,6 +434,7 @@ au BufNewFile,BufRead *.snip    setlocal filetype=snippet
 au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
 au BufNewFile,BufRead *.scala   setlocal filetype=scala
+au BufNewFile,BufRead *.mako    setlocal filetype=html
 
 function! s:txt_setting()
   setlocal textwidth=78
