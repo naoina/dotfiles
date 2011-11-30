@@ -509,6 +509,11 @@ function! s:java_setting()
     au BufWrite <buffer> JavaImportMissing
     au BufWritePost <buffer> JavaImportClean
     au BufWritePost <buffer> JavaImportSort
+  else
+    " javacomplete, script_id=1785
+    setlocal omnifunc=javacomplete#Complete
+    " conflict with neocomplcache.
+    " setlocal completefunc=javacomplete#CompleteParamsInfo
   endif
 endfunction
 
