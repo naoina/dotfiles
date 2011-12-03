@@ -506,7 +506,6 @@ function! s:java_setting()
       au!
       au BufNewFile,BufRead <buffer> EclimEnable
     augroup End
-    setlocal foldmethod=indent foldlevel=1 foldnestmax=2
     au BufWrite <buffer> JavaImportMissing
     au BufWritePost <buffer> JavaImportClean
     au BufWritePost <buffer> JavaImportSort
@@ -516,6 +515,8 @@ function! s:java_setting()
     " conflict with neocomplcache.
     " setlocal completefunc=javacomplete#CompleteParamsInfo
   endif
+
+  setlocal foldmethod=indent foldlevel=1 foldnestmax=2
 endfunction
 
 function! s:xml_setting()
