@@ -133,6 +133,7 @@ nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
 nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
 nnoremap <silent><C-d> :bw!<CR>
+nnoremap QQ :q!<CR>
 noremap! <C-a> <HOME>
 noremap! <C-e> <END>
 noremap! <C-f> <RIGHT>
@@ -154,8 +155,8 @@ if &diff
   nnoremap <silent><C-d> :diffget<CR>
   nnoremap <silent><C-n> ]czz
   nnoremap <silent><C-p> [czz
-  nnoremap <silent>ZZ    :wqall!<CR>
-  nnoremap <silent>ZQ    :qall!<CR>
+  nnoremap <silent>ZZ    :xa!<CR>
+  nnoremap <silent>QQ    :cq!<CR>
 endif
 
 " VCS aware(mercurial, git, etc...) version of gf commands
