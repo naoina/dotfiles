@@ -26,6 +26,21 @@ NULL="/dev/null"
 
 bindkey -e
 
+# For VCS (git, hg, etc...)
+autoload -Uz vcs_info
+zstyle ':vcs_info:*' enable git svn bzr hg
+zstyle ':vcs_info:*' formats '(%s:%b)'
+zstyle ':vcs_info:*' actionformats '(%s:%b[%a])'
+zstyle ':vcs_info:(svn|bzr):*' branchformat '%b:r%r'
+zstyle ':vcs_info:bzr:*' use-simple true
+precmd () {
+    psvar=()
+    LANG=en_US.UTF-8 vcs_info
+    [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+}
+PROMPT="%F{green}%1v%f[%~]
+[%n@%M(`uname -m`)]%# "
+
 #[[ -e "/etc/zsh/zprofile" ]] && source /etc/zsh/zprofile
 
 #
@@ -120,12 +135,6 @@ SCREEN_PROG="`whence screen`"
 
 TMUX_PROG="`whence tmux`"
 [ -x "$TMUX_PROG" ] && [ -n "$TMUX" ] && alias exit="$TMUX_PROG detach"
-
-#
-# Set prompt
-#
-PROMPT="[%~]
-[%n@%M(`uname -m`)]%# "
 
 # ulimit -c unlimited
 umask 022
