@@ -186,17 +186,38 @@ naughty.config.default_preset.timeout       = 0
 naughty.config.default_preset.screen        = 1
 naughty.config.default_preset.position      = "bottom_right"
 naughty.config.default_preset.margin        = 4
--- naughty.config.default_preset.height        = 16
--- naughty.config.default_preset.width         = 300
+naughty.config.default_preset.height        = 80
+naughty.config.default_preset.width         = 300
 naughty.config.default_preset.gap           = 1
 naughty.config.default_preset.ontop         = true
-naughty.config.default_preset.font          = "Migu 1M 20" or beautiful.font or "Verdana 8"
+naughty.config.default_preset.font          = "Migu 1M 12" or beautiful.font or "Verdana 8"
 naughty.config.default_preset.icon          = nil
 naughty.config.default_preset.icon_size     = 16
-naughty.config.default_preset.fg            = beautiful.fg_focus or '#ffffff'
-naughty.config.default_preset.bg            = beautiful.bg_focus or '#535d6c'
-naughty.config.presets.normal.border_color  = beautiful.border_focus or '#535d6c'
+-- naughty.config.default_preset.fg            = beautiful.fg_focus or '#ffffff'
+-- naughty.config.default_preset.bg            = beautiful.bg_focus or '#535d6c'
+-- naughty.config.default_preset.border_color  = beautiful.border_focus or '#535d6c'
 naughty.config.default_preset.border_width  = 1
+naughty.config.default_preset.hover_timeout = nil
+-- Urgency level specification
+-- low
+naughty.config.presets.low.timeout          = naughty.config.default_preset.timeout
+naughty.config.presets.low.height           = naughty.config.default_preset.height
+naughty.config.presets.low.width            = naughty.config.default_preset.width
+naughty.config.presets.low.position         = naughty.config.default_preset.position
+naughty.config.presets.low.font             = naughty.config.default_preset.font
+naughty.config.presets.critical.fg          = naughty.config.default_preset.fg
+naughty.config.presets.critical.bg          = naughty.config.default_preset.bg
+naughty.config.default_preset.border_width  = naughty.config.default_preset.border_width
+naughty.config.default_preset.hover_timeout = naughty.config.default_preset.hover_timeout
+-- critical
+naughty.config.presets.critical.timeout     = 0
+naughty.config.presets.critical.height      = naughty.config.default_preset.height
+naughty.config.presets.critical.width       = naughty.config.default_preset.width
+naughty.config.presets.critical.position    = naughty.config.default_preset.position
+naughty.config.presets.critical.font        = naughty.config.default_preset.font
+naughty.config.presets.critical.fg          = '#eeeeee'
+naughty.config.presets.critical.bg          = '#ff0000'
+naughty.config.default_preset.border_width  = naughty.config.default_preset.border_width
 naughty.config.default_preset.hover_timeout = nil
 
 -- {{{ Mouse bindings

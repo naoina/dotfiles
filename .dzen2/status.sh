@@ -37,7 +37,7 @@ function battery() {
     [ $RPERC -le $LOWBAT ] && GFG=$LOWCOL
 
     if [ $RPERC -le $NOTIFYBAT -a ! -f "$DZEN_DIR/.bat_notify" ]; then
-        /usr/bin/notify-send "Low battery notification" "A current battery remaining is $NOTIFYBAT%.\nIncidentally, lower than 5% will immediatelly go into Hibernate mode."
+        /usr/bin/notify-send -u critical "Low battery notification" "A current battery remaining is $NOTIFYBAT%.\nIncidentally, lower than 5% will immediatelly go into Hibernate mode."
         touch "$DZEN_DIR/.bat_notify"
     elif [ $RPERC -gt $NOTIFYBAT ]; then
         rm -f "$DZEN_DIR/.bat_notify"
