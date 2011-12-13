@@ -3,10 +3,13 @@
 	email = naoina@kuune.org
 [alias]
 	ci = commit
+    cia = commit --amend -C HEAD
     co = checkout
     st = status
     resolve = mergetool
     glog = log --graph
+	dic = diff --cached
+    di = diff
 [color]
 	ui = auto
 [core]
