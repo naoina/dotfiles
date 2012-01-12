@@ -15,24 +15,24 @@ if [[ -z $@ || $# != "4" ]] ; then
     exit 1
 fi
 
-BASE=$1
-LOCAL=$2
-REMOTE=$3
-MERGED=$4
+BASE="$1"
+LOCAL="$2"
+REMOTE="$3"
+MERGED="$4"
 
 # sed -e '/<<<<<<</,/=======/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
 # sed -e '/=======/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
 
 VIMDIFFCMD="vimdiff -f"
 if [ -f "$BASE" ]; then
-    $VIMDIFFCMD -f $LOCAL $BASE $REMOTE
+    $VIMDIFFCMD -f "$LOCAL" "$BASE" "$REMOTE"
 else
-    $VIMDIFFCMD -f $LOCAL $REMOTE
+    $VIMDIFFCMD -f "$LOCAL" "$REMOTE"
 fi
 
 EC=$?
 
 # Overwrite $MERGED
-[[ $EC == "0" ]] && cat $LOCAL > $MERGED
+[[ $EC == "0" ]] && cat "$LOCAL" > "$MERGED"
 
 exit $EC

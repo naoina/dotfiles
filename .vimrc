@@ -108,65 +108,11 @@ set fileencodings=ucs-bom,utf-8,japan,sjis,utf-8
 set fileformat=unix
 set fileformats=unix,dos,mac
 
-" Mappings.
-noremap j  gj
-noremap k  gk
-noremap gj j
-noremap gk k
-" noremap 0  ^
-" noremap ^  0
-noremap '  `
-noremap `  '
-" noremap J  gJ
-" noremap gJ J
-nnoremap gc `[v`]
-vnoremap gc :<C-u>normal gc<CR>
-onoremap gc :<C-u>normal gc<CR>
-nnoremap <C-s> <Nop>
-inoremap <C-s> <Nop>
-" noremap  <C-m> o<ESC><UP>
-noremap  <C-j> <C-w>w
-noremap  <C-k> <C-w>W
-nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
-inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
-nnoremap <SPACE> za
-nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
-nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
-nnoremap <silent><C-d> :bw!<CR>
-nnoremap QQ :q!<CR>
-noremap! <C-a> <HOME>
-noremap! <C-e> <END>
-noremap! <C-f> <RIGHT>
-noremap! <C-b> <LEFT>
-nnoremap <C-]> g<C-]>
-nnoremap <silent>yu :%y +<CR>
-cnoremap <C-p> <UP>
-cnoremap <C-n> <DOWN>
-
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
 command! EncSJIS      e ++enc=cp932
 command! EncISO2022JP e ++enc=iso-2022-jp
 command! EncEUCJP     e ++enc=euc-jp
-
-" diff mode mappings.
-if &diff
-  nmap     <silent><C-l> :diffupdate<CR>
-  nnoremap <silent><C-d> :diffget<CR>
-  nnoremap <silent><C-n> ]czz
-  nnoremap <silent><C-p> [czz
-  nnoremap <silent>ZZ    :xa!<CR>
-  nnoremap <silent>QQ    :cq!<CR>
-endif
-
-" VCS aware(mercurial, git, etc...) version of gf commands
-nnoremap <expr> gf  <SID>do_vcs_diff_aware_gf('gf')
-nnoremap <expr> gF  <SID>do_vcs_diff_aware_gf('gF')
-nnoremap <expr> <C-w>f  <SID>do_vcs_diff_aware_gf('<C-w>f')
-nnoremap <expr> <C-w><C-f>  <SID>do_vcs_diff_aware_gf('<C-w><C-f>')
-nnoremap <expr> <C-w>F  <SID>do_vcs_diff_aware_gf('<C-w>F')
-nnoremap <expr> <C-w>gf  <SID>do_vcs_diff_aware_gf('<C-w>gf')
-nnoremap <expr> <C-w>gF  <SID>do_vcs_diff_aware_gf('<C-w>gF')
 
 function! s:do_vcs_diff_aware_gf(command)
   let target_path = expand('<cfile>')
@@ -236,7 +182,6 @@ au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
 au CursorMovedI * if pumvisible() == 0|pclose|endif
 
 command! GenerateAllTags call s:generate_all_tags()
-nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
@@ -245,9 +190,6 @@ let timestamp_rep    = '%F %T %z'
 " For NERD_commenter, script_id=1218.
 " let NERDCreateDefaultMappings = 0
 let NERDSpaceDelims = 1
-nmap <C-_> <Plug>NERDCommenterToggle
-vmap <C-_> <Plug>NERDCommenterToggle
-imap <C-_> <C-o><Plug>NERDCommenterToggle
 
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
@@ -267,8 +209,6 @@ let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
-imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
-smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : pumvisible() ? "\<CR>" : "\<Tab>"
 
 cabbrev snippet NeoComplCachePrintSnippets
 
@@ -279,9 +219,6 @@ let g:unite_winheight = 8
 let g:unite_split_rule = "botright"
 let g:unite_source_history_yank_enable = 1
 " let g:unite_enable_start_insert = 1
-nnoremap <C-c>ub :Unite buffer file file_mru<CR>
-nnoremap <C-c>uh :Unite history/yank<CR>
-nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 
 function! s:unite_setting()
   if exists("b:did_unite_setting") && b:did_unite_setting
@@ -297,9 +234,6 @@ endfunction
 let g:vimshell_temporary_directory = s:cachedir
 let g:vimshell_prompt = "[" . $USER . "@" . hostname() . "(" . substitute(system('uname -m'), "\n", "", "") . ")]% "
 let g:vimshell_user_prompt = "'[' . substitute(getcwd(), $HOME, '~', '') . ']'"
-nmap <C-c>vs <Plug>(vimshell_switch)
-nmap <C-c>vc <Plug>(vimshell_create)
-nmap <C-c>vp <Plug>(vimshell_split_create)
 
 function! s:vimshell_setting()
     if exists('b:did_vimshell_setting') && b:did_vimshell_setting
@@ -603,5 +537,76 @@ endfunction
 
 au MyAutoCmd FileType c,cpp,java,javascript,php,actionscript call s:setting4like_c()
 au MyAutoCmd FileType * call s:setting()
+
+" Mappings.
+noremap j  gj
+noremap k  gk
+noremap gj j
+noremap gk k
+" noremap 0  ^
+" noremap ^  0
+noremap '  `
+noremap `  '
+" noremap J  gJ
+" noremap gJ J
+nnoremap gc `[v`]
+vnoremap gc :<C-u>normal gc<CR>
+onoremap gc :<C-u>normal gc<CR>
+nnoremap <C-s> <Nop>
+inoremap <C-s> <Nop>
+" noremap  <C-m> o<ESC><UP>
+noremap  <C-j> <C-w>w
+noremap  <C-k> <C-w>W
+nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
+inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
+nnoremap <SPACE> za
+nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
+nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
+nnoremap <silent><C-d> :bw!<CR>
+nnoremap QQ :q!<CR>
+noremap! <C-a> <HOME>
+noremap! <C-e> <END>
+noremap! <C-f> <RIGHT>
+noremap! <C-b> <LEFT>
+nnoremap <C-]> g<C-]>
+nnoremap <silent>yu :%y +<CR>
+cnoremap <C-p> <UP>
+cnoremap <C-n> <DOWN>
+
+nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
+
+" diff mode mappings.
+if &diff
+  nmap     <silent><C-l> :diffupdate<CR>
+  nnoremap <silent><C-g> :diffget<CR>
+  nnoremap <silent><C-n> ]czz
+  nnoremap <silent><C-p> [czz
+  nnoremap <silent>ZZ    :xa!<CR>
+  nnoremap <silent>QQ    :cq!<CR>
+endif
+
+" VCS aware(mercurial, git, etc...) version of gf commands
+nnoremap <expr> gf  <SID>do_vcs_diff_aware_gf('gf')
+nnoremap <expr> gF  <SID>do_vcs_diff_aware_gf('gF')
+nnoremap <expr> <C-w>f  <SID>do_vcs_diff_aware_gf('<C-w>f')
+nnoremap <expr> <C-w><C-f>  <SID>do_vcs_diff_aware_gf('<C-w><C-f>')
+nnoremap <expr> <C-w>F  <SID>do_vcs_diff_aware_gf('<C-w>F')
+nnoremap <expr> <C-w>gf  <SID>do_vcs_diff_aware_gf('<C-w>gf')
+nnoremap <expr> <C-w>gF  <SID>do_vcs_diff_aware_gf('<C-w>gF')
+
+nmap <C-_> <Plug>NERDCommenterToggle
+vmap <C-_> <Plug>NERDCommenterToggle
+imap <C-_> <C-o><Plug>NERDCommenterToggle
+
+imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
+smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : pumvisible() ? "\<CR>" : "\<Tab>"
+
+nnoremap <C-c>ub :Unite buffer file file_mru<CR>
+nnoremap <C-c>uh :Unite history/yank<CR>
+nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
+
+nmap <C-c>vs <Plug>(vimshell_switch)
+nmap <C-c>vc <Plug>(vimshell_create)
+nmap <C-c>vp <Plug>(vimshell_split_create)
 
 " vim: set ft=vim sw=2 :

@@ -13,14 +13,15 @@ zstyle ':completion::complete:*' use-cache 1
 
 setopt EXTENDED_GLOB AUTO_PUSHD LISTPACKED \
        AUTOREMOVESLASH HIST_IGNORE_ALL_DUPS HIST_IGNORE_DUPS \
-       SHARE_HISTORY APPEND_HISTORY NUMERIC_GLOB_SORT
+       SHARE_HISTORY APPEND_HISTORY NUMERIC_GLOB_SORT \
+       HIST_REDUCE_BLANKS
 setopt NO_BEEP
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE="10000"
 SAVEHIST="10000"
 REPORTTIME=3
-WORDCHARS=${WORDCHARS:s,/,,}
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 
 NULL="/dev/null"
 
@@ -109,32 +110,27 @@ esac
 # fi
 
 
-[[ -x "`whence gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
-[[ -x "`whence powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
-[[ -x "`whence rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
-[[ -x "`whence mplayer`" ]] && alias mplayer="`whence mplayer` -softvol"
-[[ -x "`whence ctags`" ]] && alias ctags="ctags --sort=foldcase"
+[[ -x "`whence -p gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
+[[ -x "`whence -p powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
+[[ -x "`whence -p rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
+[[ -x "`whence -p mplayer`" ]] && alias mplayer="`whence mplayer` -softvol"
+[[ -x "`whence -p ctags`" ]] && alias ctags="ctags --sort=foldcase"
+[[ -x "`whence -p tree`" ]] && alias tree="tree --charset ascii"
+[[ -x "`whence -p cdrecord`" ]] && alias cdrecord="cdrecord driveropts=burnfree"
+[[ -x "`whence -p wodim`" ]] && alias wodim="wodim driveropts=burnfree"
+[[ -x "`whence -p emacs`" ]] && alias emacs="emacs -nw"
+[[ -x "`whence -p display`" ]] && alias display="display -geometry +0+0"
+[[ -x "`whence -p rhino`" ]] && alias rhino="rlwrap java -jar /usr/share/java/js.jar"
+[[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
+[[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && alias exit="screen -d $STY"
+[[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && alias exit="tmux detach"
 
 alias ll="ls -l"
 alias lz="ll -Z"
 alias df="df -h"
 alias du="du -h"
 alias gprof="gprof -b"
-alias cdrecord="cdrecord driveropts=burnfree"
-alias wodim="wodim driveropts=burnfree"
-alias emacs="emacs -nw"
 # alias yaourt="yaourt --tmp /home/tmp"
-alias display="display -geometry +0+0"
-alias rhino="rlwrap java -jar /usr/share/java/js.jar"
-
-PROG="`whence virtualenv`"
-[ -x "$PROG" ] && alias virtualenv="$PROG --no-site-packages"
-
-SCREEN_PROG="`whence screen`"
-[ -x "$SCREEN_PROG" ] && [ -n "$STY" ] && alias exit="$SCREEN_PROG -d $STY"
-
-TMUX_PROG="`whence tmux`"
-[ -x "$TMUX_PROG" ] && [ -n "$TMUX" ] && alias exit="$TMUX_PROG detach"
 
 # ulimit -c unlimited
 umask 022
@@ -144,6 +140,8 @@ if [ "$PS1" -a `uname -s` = "Linux" ]; then
     echo $$ > /dev/cgroup/cpu/user/$$/tasks
     echo 1 > /dev/cgroup/cpu/user/$$/notify_on_release
 fi
+
+source $HOME/.zsh/git-completion.bash
 
 source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
 zle-line-init () {auto-fu-init;}; zle -N zle-line-init

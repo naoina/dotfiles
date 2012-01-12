@@ -160,7 +160,7 @@ for s = 1, screen.count() do
     mywibox[s] = awful.wibox({
         position = "bottom",
         screen = s,
-        bg = "black"
+        bg = "black",
     })
     -- Add widgets to the wibox - order matters
     mywibox[s].widgets = {
@@ -176,7 +176,15 @@ end
 
 -- Dzen2 status bar
 awful.util.spawn("pkill dzen2")
-awful.util.spawn(os.getenv("HOME") .. "/.dzen2/status.sh")
+timer = timer({ timeout = 1 })
+timer:add_signal("timeout",
+    function ()
+        if timer.started then
+            timer:stop()
+            awful.util.spawn(os.getenv("HOME") .. "/.dzen2/status.sh")
+        end
+    end)
+timer:start()
 
 -- Startup applications
 awful.util.spawn("xcompmgr")
@@ -375,6 +383,8 @@ awful.rules.rules = {
                      keys = clientkeys,
                      size_hints_honor = false,
                      buttons = clientbuttons } },
+    { rule = { class = "dzen2" },
+      properties = { sticky = true } },
     { rule = { class = "Eclipse" },
       properties = { tag = tags[1][5] } },
     { rule = { class = "Libreoffice" },

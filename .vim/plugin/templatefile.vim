@@ -109,11 +109,11 @@ function! LoadTemplateFile()
     endwhile
     let java_pkg = substitute(java_pkg, '^\.\(.*\)#$', '\1.' . tolower(inc_gaurd), '')
     
-    let commentermode = &ft == "python" ? "alignLeft" : "sexy"
+    let commentermap = &ft == "python" ? "cl" : "cs"
     call cursor(1, 1)
     let startpos = search("@LICENSE@", "nW")
     silent! execute "%s/@LICENSE@/"       . license    . "/g"
-    silent! execute startpos . "," . (startpos + licenselineno) . 'call NERDComment(0, "' . commentermode . '")'
+    silent! execute startpos . "," . (startpos + licenselineno) . 'norm \' . commentermap
 
     silent! execute "%s/@DATE@/"          . date       . "/g"
     silent! execute "%s/@YEAR@/"          . year       . "/g"
