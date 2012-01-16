@@ -14,7 +14,8 @@ if has('vim_starting')
   call neobundle#rc($VIMLOCAL . '/bundle')
 endif
 
-NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+" NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+NeoBundle 'git://github.com/naoina/neocomplcache.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
@@ -23,6 +24,11 @@ NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
+NeoBundle 'git://github.com/tpope/vim-fugitive.git'
+NeoBundle 'git://github.com/thinca/vim-template.git'
+NeoBundle 'git://github.com/scrooloose/syntastic.git'
+NeoBundle 'https://bitbucket.org/anyakichi/vim-csutil'
+NeoBundle 'git://github.com/mattn/gist-vim.git'
 
 filetype plugin on
 filetype indent on
@@ -101,7 +107,7 @@ au QuickFixCmdPost vimgrep cw
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 au FileType * setlocal formatoptions+=cqmM
 
-set statusline=%<[%n]\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
+set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,japan,sjis,utf-8
@@ -169,6 +175,13 @@ function! s:clear_undo()
   setlocal nomodified
 endfunction
 
+function! s:autocd()
+    let dir = fnameescape(expand('%:p:h'))
+    if isdirectory(dir)
+        lcd `=dir`
+    endif
+endfunction
+
 call s:mkdir(&directory, 0700)
 call s:mkdir(&backupdir, 0700)
 call s:mkdir(s:cachedir, 0700)
@@ -178,18 +191,72 @@ au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call 
 " Auto restore last cursor position.
 au BufReadPost * normal '"
 
-au BufEnter * exec "lcd " . fnameescape(expand("%:p:h"))
+au BufEnter * call s:autocd()
 au CursorMovedI * if pumvisible() == 0|pclose|endif
 
 command! GenerateAllTags call s:generate_all_tags()
+
+" For gist-vim
+let [g:github_user, g:github_token] = readfile($VIMLOCAL . '/.github.token')
+let g:gist_detect_filetype = 1
+let g:gist_private = 0
+
+" For csutil
+let g:csutil_no_mappings = 1
+
+" For syntastic.
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_quiet_warnings = 0
+
+" For vim-template.
+let g:template_basedir = $VIMLOCAL . '/templates'
+let g:template_files = '**'
+let g:template_free_pattern = 'skel'
+let g:comment_oneline_only_ft = {
+    \ 'python': 1,
+    \ 'ruby': 1,
+    \ 'sh': 1,
+    \ }
+autocmd User plugin-template-loaded call s:template_keywords()
+function! s:template_keywords()
+  let firstline = search("@LICENSE@", "cnW")
+  if firstline != 0
+    let license = readfile(g:template_basedir . '/LICENSE')
+    let lastline = firstline + len(license)
+    let type = has_key(g:comment_oneline_only_ft, &ft) ? 'AlignLeft' : 'Sexy'
+
+    %s/@LICENSE@/\=license/ge
+    execute firstline . "," . lastline . 'call NERDComment("n", "' . type . '")'
+    unlet license
+  endif
+
+  %s/@AUTHOR@/\=g:author/ge
+  %s/@EMAIL@/\=g:email/ge
+  %s/@YEAR@/\=strftime('%Y')/ge
+  %s/@FILE@/\=expand('%:t:r')/ge
+
+  call cursor(1, 0)
+  if search('<CURSOR>', 'c')
+    normal! "_da<
+  endif
+
+  " clear undo
+  let old_undolevels = &undolevels
+  setlocal undolevels=-1
+  exec "normal a \<BS>\<Esc>"
+  let &undolevels = old_undolevels
+  unlet old_undolevels
+  setlocal nomodified
+endfunction
 
 " For timestamp, script_id=923.
 let timestamp_regexp = '\v\C%(<Last %([cC]hanged?|[mM]odified)\s*:\s+)@<=\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+\d{4}|TIMESTAMP'
 let timestamp_rep    = '%F %T %z'
 
 " For NERD_commenter, script_id=1218.
-" let NERDCreateDefaultMappings = 0
-let NERDSpaceDelims = 1
+let g:NERDCreateDefaultMappings = 0
+let g:NERDSpaceDelims = 1
+let g:NERDDefaultNesting = 0
 
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
@@ -209,6 +276,8 @@ let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
+let g:neocomplcache_snippets_disable_runtime_snippets = 1
+" let g:neocomplcache_enable_debug = 1
 
 cabbrev snippet NeoComplCachePrintSnippets
 
@@ -381,26 +450,11 @@ function! s:help_setting()
   setlocal nosmarttab
 endfunction
 
-function! PythonFoldexpr(lnum)
-  let line = getline(a:lnum)
-  if line =~ '^\s*\(class\|def\)\s'
-    return indent(a:lnum) / &sw
-  elseif line =~ '^\s*$'
-    let nextlnum = nextnonblank(a:lnum)
-    return nextlnum == 0 ? 0 : indent(nextlnum) / &sw
-  elseif indent(a:lnum) == 0
-    return 0
-  endif
-
-  return indent(search('^\s*\(class\|def\)\s', 'bn')) / &sw + 1
-endfunction
-
 function! s:python_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
-  setlocal foldmethod=expr
-  setlocal foldexpr=PythonFoldexpr(v:lnum)
+  setlocal omnifunc=pythoncomplete#Complete
 
   " if executable("pep8")
     " call s:flymake_make('pep8\ -r\ %', '%f:%l:%c:\ %m', '')
@@ -608,5 +662,11 @@ nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nmap <C-c>vs <Plug>(vimshell_switch)
 nmap <C-c>vc <Plug>(vimshell_create)
 nmap <C-c>vp <Plug>(vimshell_split_create)
+
+nnoremap gst :<C-u>Gstatus<CR>
+nnoremap gb :<C-u>Gblame<CR>
+vnoremap gb :<C-u>Gblame<CR>
+
+nmap <C-]>c <Plug>(csutil-find-c)
 
 " vim: set ft=vim sw=2 :

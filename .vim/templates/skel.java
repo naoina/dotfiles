@@ -7,6 +7,6 @@ package org.kuune;
 public class @FILE@ {
 
     public @FILE@() {
-        // do nothing.
+        // do nothing.<CURSOR>
     }
 } // End of @FILE@ class.

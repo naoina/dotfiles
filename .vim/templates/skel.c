@@ -1,2 +1,2 @@
 @LICENSE@
-
+<CURSOR>

@@ -6,7 +6,7 @@ __author__ = "@AUTHOR@ <@EMAIL@>"
 
 __all__ = [
 ]
-
+<CURSOR>
 
 def main():
     pass
