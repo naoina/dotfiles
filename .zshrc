@@ -11,11 +11,19 @@ compinit
 
 zstyle ':completion::complete:*' use-cache 1
 
-setopt EXTENDED_GLOB AUTO_PUSHD LISTPACKED \
-       AUTOREMOVESLASH HIST_IGNORE_ALL_DUPS HIST_IGNORE_DUPS \
-       SHARE_HISTORY APPEND_HISTORY NUMERIC_GLOB_SORT \
-       HIST_REDUCE_BLANKS
-setopt NO_BEEP
+setopt extended_glob
+setopt auto_pushd
+setopt listpacked
+setopt autoremoveslash
+setopt hist_ignore_all_dups
+setopt hist_ignore_dups
+setopt share_history
+setopt append_history
+setopt numeric_glob_sort
+setopt hist_reduce_blanks
+
+setopt no_complete_aliases
+setopt no_beep
 
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE="10000"
@@ -86,8 +94,6 @@ fi
 #
 # Set aliases
 #
-
-setopt complete_aliases
 
 case "$OSTYPE" in
     linux*)
