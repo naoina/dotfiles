@@ -6,7 +6,12 @@ __author__ = "@AUTHOR@ <@EMAIL@>"
 
 __all__ = [
 ]
+
+import logging
+
+logger = logging.getLogger(__name__)
 <CURSOR>
+
 
 def main():
     pass
