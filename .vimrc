@@ -237,7 +237,7 @@ function! s:template_keywords()
 
   call cursor(1, 0)
   if search('<CURSOR>', 'c')
-    normal! "_da<
+    normal! "_da<zz
   endif
 
   " clear undo
@@ -626,6 +626,10 @@ nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
 cnoremap <C-p> <UP>
 cnoremap <C-n> <DOWN>
+
+" for snippet's select mode
+snoremap j j
+snoremap k k
 
 nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
 
