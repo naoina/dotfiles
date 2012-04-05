@@ -12,7 +12,6 @@ import logging
 logger = logging.getLogger(__name__)
 <CURSOR>
 
-
 def main():
     pass
 

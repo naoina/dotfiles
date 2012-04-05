@@ -66,8 +66,8 @@ end
 beautiful.init(os.getenv("HOME") .. "/.config/awesome/theme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
-terminal = "lilyterm -e " .. os.getenv("HOME") .. "/bin/tmux.sh"
-terminal_class = "Lilyterm"
+terminal = "mlterm -e " .. os.getenv("HOME") .. "/bin/tmux.sh"
+terminal_class = "mlterm"
 editor = os.getenv("EDITOR") or "vi"
 editor_cmd = "xterm -e " .. editor
 

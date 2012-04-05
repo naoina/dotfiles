@@ -22,6 +22,22 @@ prev_word '^'
 	if ${1:cond}:
 		${2:pass}
 
+snippet elif
+prev_word '^'
+	elif ${1:cond}:
+		${2:pass}
+
+snippet else
+prev_word '^'
+	else:
+		${2:pass}
+
+snippet try
+	try:
+		${1:pass}
+	except ${2:Exception}:
+		${3:pass}
+
 snippet while
 abbr while {cond}
 prev_word '^'
@@ -33,10 +49,22 @@ prev_word '^'
 	def ${1:funcname}(${2}):
 		${3:raise NotImplementedError}
 
+snippet deft
+abbr def test_function(...): ...
+prev_word '^'
+	def test_${1:funcname}(${2}):
+		${3:self.fail("not yet implements")}
+
 snippet class
 prev_word '^'
 	class ${1:ClassName}(${2:object}):
-		pass
+		${0:pass}
+
+snippet classt
+abbr class TestClassName
+prev_word '^'
+	class Test${1:ClassName}(unittest.TestCase):
+		${0:pass}
 
 snippet new
 prev_word '^'
@@ -544,3 +572,8 @@ abbr __exit__
 prev_word '^'
 	def __exit__(self, exc_type, exc_value, traceback):
 		${1:raise NotImplementedError}
+
+snippet pdb
+abbr import pdb; pdb.set_trace()
+prev_word '^'
+	import pdb; pdb.set_trace()

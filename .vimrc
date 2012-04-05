@@ -1,7 +1,6 @@
 syntax on
-filetype plugin indent on
 
-let g:author = "Naoya INADA"
+let g:author = "Naoya Inada"
 let g:email  = "naoina@kuune.org"
 
 let $VIMLOCAL = expand('~/.vim')
@@ -15,52 +14,41 @@ if has('vim_starting')
 endif
 
 " NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-NeoBundle 'git://github.com/naoina/neocomplcache.git'
+NeoBundle 'git://github.com/naoina/neocomplcache.git', {'type': 'nosync'}
+" NeoBundle 'git://github.com/Shougo/neocomplcache-snippets-complete.git'
+NeoBundle 'git://github.com/naoina/neocomplcache-snippets-complete.git', {'type': 'nosync'}
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
+NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
+NeoBundle 'git://github.com/h1mesuke/unite-outline.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git'
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
-NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
 NeoBundle 'git://github.com/tpope/vim-fugitive.git'
 NeoBundle 'git://github.com/thinca/vim-template.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
 NeoBundle 'https://bitbucket.org/anyakichi/vim-csutil'
 NeoBundle 'git://github.com/mattn/gist-vim.git'
+NeoBundle 'git://github.com/cespare/mxml.vim.git'
+NeoBundle 'git://github.com/kakkyz81/evervim.git'
+NeoBundle 'git://github.com/othree/html5.vim.git'
+NeoBundle 'git://github.com/Rykka/ColorV.git'
 
-filetype plugin on
-filetype indent on
+" for colorschemes
+NeoBundle 'git://github.com/godlygeek/csapprox.git'
+NeoBundle 'git://github.com/altercation/vim-colors-solarized.git'
+NeoBundle 'git://github.com/vim-scripts/Mahewincs.git'
+NeoBundle 'git://github.com/vim-scripts/vombato-colorscheme.git'
 
-colorscheme desert
+filetype plugin indent on
 
 set t_Co=256
+colorscheme original
 
-hi LineNr     ctermfg=197
-hi Constant   ctermfg=3
-hi String     ctermfg=darkred
-hi Identifier ctermfg=37
-hi Pmenu      ctermbg=234
-hi PmenuSel   ctermbg=236 cterm=bold
-hi Function   ctermfg=yellow
-hi Visual     cterm=reverse
-hi SpecialKey ctermfg=darkblue
-hi NonText    ctermfg=235
-hi CursorLine ctermbg=234 cterm=none
-hi Search     ctermfg=grey ctermbg=55 cterm=bold
-hi Todo       ctermfg=232 ctermbg=226 cterm=bold
-
-hi link Number  String
-hi link Boolean keyword
-
-hi xmlTag ctermfg=37 cterm=bold
-hi link xmlTagName xmlTag
-hi link xmlEndTag  xmlTag
-hi link htmlTag    xmlTag
-
-hi FullwidthAndEOLSpace ctermbg=235
-match FullwidthAndEOLSpace /　\|\s\+$/
+hi FullwidthAndEOLSpace guibg=#262626
+match FullwidthAndEOLSpace "\(　\|\s\)\+$"
 
 runtime macros/matchit.vim
 " call pathogen#runtime_append_all_bundles()
@@ -205,13 +193,13 @@ let g:gist_private = 0
 let g:csutil_no_mappings = 1
 
 " For syntastic.
-let g:syntastic_auto_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
 let g:syntastic_quiet_warnings = 0
 
 " For vim-template.
 let g:template_basedir = $VIMLOCAL . '/templates'
 let g:template_files = '**'
-let g:template_free_pattern = 'skel'
+let g:template_free_pattern = 'skel-\?'
 let g:comment_oneline_only_ft = {
     \ 'python': 1,
     \ 'ruby': 1,
@@ -277,13 +265,14 @@ let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
 let g:neocomplcache_snippets_disable_runtime_snippets = 1
+let g:neocomplcache_enable_prefetch = 1
 " let g:neocomplcache_enable_debug = 1
-
-cabbrev snippet NeoComplCachePrintSnippets
 
 " For unite
 let g:unite_data_directory = s:cachedir
-" let g:unite_enable_split_vertically = 1
+let g:unite_update_time = 100
+let g:unite_enable_split_vertically = 1
+let g:unite_winwidth = 60
 let g:unite_winheight = 8
 let g:unite_split_rule = "botright"
 let g:unite_source_history_yank_enable = 1
@@ -337,9 +326,10 @@ command! Refresh :call s:refresh()
 
 function! s:tohtml_and_browse()
   TOhtml
+  let webbrowser = 'chromium'
   let tempfile = tempname()
   write `=tempfile`
-  exec "!" . s:webbrowser . " " . tempfile
+  exec "!" . webbrowser . " " . tempfile
   bdelete!
   call delete(tempfile)
 endfunction
@@ -476,6 +466,10 @@ function! s:snippet_setting()
   inoremap <buffer><Tab> <Tab>
 endfunction
 
+function! s:javascript_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+endfunction
+
 function! s:actionscript_setting()
   setlocal dictionary=$VIMLOCAL/dict/actionscript3.dict
 endfunction
@@ -512,6 +506,14 @@ function! s:xml_setting()
   setlocal foldmethod=syntax foldlevel=1
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal expandtab
+endfunction
+
+function! s:css_setting()
+  setlocal foldmethod=indent
+endfunction
+
+function! s:scss_setting()
+  call s:css_setting()
 endfunction
 
 function! s:mvn_pom_setting()
@@ -562,6 +564,16 @@ endfunction
 
 function! s:actionscript_surround()
   call s:c_surround()
+endfunction
+
+function! s:javascript_surround()
+  call s:c_surround()
+endfunction
+
+function! s:python_surround()
+  call SurroundRegister('g', 'te', "try:\n\r\nexcept ${1:Exception}:\n${2:pass}")
+  call SurroundRegister('g', 'tf', "try:\n\r\nexcept ${1:Exception}:\n${2:pass}\nfinally:\n${3:pass}")
+  call SurroundRegister('g', 'if', "if ${1:cond}:\n\r")
 endfunction
 
 function! s:call_if_exists(funcname)
@@ -659,9 +671,10 @@ imap <C-_> <C-o><Plug>NERDCommenterToggle
 imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
 smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : pumvisible() ? "\<CR>" : "\<Tab>"
 
-nnoremap <C-c>ub :Unite buffer file file_mru<CR>
+nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
+nnoremap <C-c>uo :Unite outline<CR>
 
 nmap <C-c>vs <Plug>(vimshell_switch)
 nmap <C-c>vc <Plug>(vimshell_create)

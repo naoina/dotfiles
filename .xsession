@@ -28,7 +28,7 @@ xmodmap $HOME/.Xmodmap
 
 # Default settings.
 xset s noblank
-xset r rate 250
+xset r rate 250 50
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 8 1
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 8 2
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4 5
@@ -36,6 +36,14 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 # uim-xim &
 # scim -d
 ibus-daemon --xim &
+
+if [ -x `which udiskie` ]; then
+    udiskie &
+elif [ -x `which devmon` ]; then
+    AFTER_CMD="notify-send '%f mounted on %d'"
+    devmon --mount-options umask=022 --exec-on-drive "$AFTER_CMD" &
+fi
+
 
 $WALLPAPER_PICKER $IMAGE_PATH
 

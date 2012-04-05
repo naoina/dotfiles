@@ -58,13 +58,18 @@ PROMPT="%F{green}%1v%f[%~]
 #PATH="/sbin:/bin:/usr/sbin:/usr/lib/ccache/bin:/usr/bin"
 PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.gem/ruby/1.9.1/bin:$PATH"
-PATH="$HOME/bin:/usr/lib/ccache/bin:$PATH"
+PATH="/usr/lib/colorgcc/bin/:$HOME/bin:/usr/lib/ccache/bin:$PATH"
 export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
+export CCACHE_PATH="/usr/bin"
+export CCACHE_DIR="/tmp/ccache"
+export GREP_OPTIONS="--color=auto -I"
 export CVS_RSH="ssh"
 export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
 export GIT_SSH="$HOME/bin/ssh-github"
 export VIRTUALENV_USE_DISTRIBUTE=1
+export WORKON_HOME="$HOME/work/virtualenv"
+[ -f "$HOME/.local/bin/virtualenvwrapper.sh" ] && . "$HOME/.local/bin/virtualenvwrapper.sh"
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 

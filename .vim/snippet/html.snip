@@ -1,3 +1,28 @@
+snippet id
+	id="${0}"
+
+snippet class
+alias c
+	class="${0}"
+
+snippet css
+abbr <link rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="${0}" />
+
+snippet js
+abbr <script>
+	<script type="text/javascript" src="${0}"></script>
+
+snippet style
+	<style></style>
+	<style><!--
+	--><style>
+
+snippet script
+	<script type="text/javascript"><!--
+		${0}
+	--></script>
+
 snippet a
 abbr a href
 	<a href="${1}">${0}</a>
@@ -18,16 +43,29 @@ snippet td
 
 snippet tr
 	<tr>
-		<td>${0}</td>
+		${0}
 	</tr>
+
+snippet th
+	<th>${0}</th>
 
 snippet form
 	<form action="" method="post">
-		${0}
+		<fieldset>
+			${0}
+		</fieldset>
 	</form>
 
+snippet fieldset
+	<fieldset>
+		${0}
+	</fieldset>
+
+snippet legend
+	<legend>${0}</legend>
+
 snippet inputtext
-	<input type="text" name="${1}" value="" />
+	<input type="text" name="${1}" value="${2}" />
 
 snippet inputpassword
 	<input type="password" name="${1}" value="${2}" />
@@ -47,12 +85,32 @@ snippet inputreset
 snippet inputhidden
 	<input type="hidden" name="${1}" value="${2}" />
 
-snippet script
-	<script type="text/javascript">
-	<!--
-		${0}
-	-->
-	</script>
+snippet inputrange
+	<input type="range" name="${1}" />
+
+snippet inputemail
+	<input type="email" name="${1}" />
+
+snippet label
+	<label for="${1}">${0}</label>
+
+snippet h1
+	<h1>${0}</h1>
+
+snippet h2
+	<h2>${0}</h2>
+
+snippet h3
+	<h3>${0}</h3>
+
+snippet h4
+	<h4>${0}</h4>
+
+snippet h5
+	<h5>${0}</h5>
+
+snippet h6
+	<h6>${0}</h6>
 
 snippet select
 	<select name="${1}">
@@ -64,11 +122,58 @@ snippet option
 
 snippet ul
 	<ul>
-		<li>${1}</li>
+		<li>${0}</li>
 	</ul>
 
 snippet li
-	<li>${1}</li>
+	<li>${0}</li>
 
 snippet textarea
 	<textarea name="${1}" rows="${2}" cols="${3}">${0}</textarea>
+
+snippet div
+	<div>${0}</div>
+
+snippet p
+	<p>${0}</p>
+
+snippet span
+	<span>${0}</span>
+
+snippet br
+	<br />
+
+snippet dl
+	<dl>
+		${0}
+	</dl>
+
+snippet dt
+	<dt>${0}</dt>
+
+snippet dd
+	<dd>${0}</dd>
+
+snippet button
+	<button>${0}</button>
+
+snippet section
+	<section>${0}</section>
+
+snippet header
+	<header>${0}</header>
+
+snippet footer
+	<footer>${0}</footer>
+
+snippet article
+	<article>${0}</article>
+
+snippet nav
+	<nav>${0}</nav>
+
+snippet aside
+	<aside>${0}</aside>
+
+snippet iframe
+	<iframe src="${1}">${0}</iframe>

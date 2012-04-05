@@ -1,0 +1,12 @@
+include c_like.snip
+
+snippet function
+alias f
+abbr function() {}
+	function(${1}) {
+		${0:// not yet implemented}
+	}
+
+snippet var
+alias v
+	var ${1:varname}${2: = <\`3:value\`>};
