@@ -1,5 +1,3 @@
-let g:javaScript_fold = 1
-
 syn match   myJavaScriptOperator  '\(==\|!=\|>=\|<=\|>\|<\|=\)' skipwhite
 syn match   myjavaScriptParens  '[()]'
 hi def link myJavaScriptOperator  Operator

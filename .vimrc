@@ -35,6 +35,12 @@ NeoBundle 'git://github.com/cespare/mxml.vim.git'
 NeoBundle 'git://github.com/kakkyz81/evervim.git'
 NeoBundle 'git://github.com/othree/html5.vim.git'
 NeoBundle 'git://github.com/Rykka/ColorV.git'
+NeoBundle 'git://github.com/mattn/webapi-vim.git'
+NeoBundle 'git://github.com/klen/python-mode.git'
+NeoBundle 'git://github.com/tpope/vim-rails.git'
+NeoBundle 'git://github.com/vim-scripts/mako.vim.git'
+NeoBundle 'git://github.com/vim-scripts/mako.vim--Torborg.git'
+NeoBundle 'git://github.com/alfredodeza/pytest.vim.git'
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
@@ -51,8 +57,6 @@ hi FullwidthAndEOLSpace guibg=#262626
 match FullwidthAndEOLSpace "\(　\|\s\)\+$"
 
 runtime macros/matchit.vim
-" call pathogen#runtime_append_all_bundles()
-" call pathogen#helptags()
 
 set backupdir=$VIMLOCAL/backup
 set directory=$VIMLOCAL/swap
@@ -83,7 +87,7 @@ set foldlevel=0
 set browsedir=buffer
 set grepprg=grep\ -nH
 set writeany
-set pastetoggle=<F3>
+set pastetoggle=<F9>
 " set clipboard=unnamed
 set tags=tags;
 
@@ -195,6 +199,10 @@ let g:csutil_no_mappings = 1
 " For syntastic.
 " let g:syntastic_auto_loc_list = 1
 let g:syntastic_quiet_warnings = 0
+let g:syntastic_mode_map = {
+  \ 'mode': 'active',
+  \ 'passive_filetypes': ['java'],
+\}
 
 " For vim-template.
 let g:template_basedir = $VIMLOCAL . '/templates'
@@ -300,20 +308,19 @@ function! s:vimshell_setting()
     let b:did_vimshell_setting = 1
 endfunction
 
-" For ShowMarks, script_id=152
-let g:showmarks_include = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-hi SignColumn   ctermbg=NONE guibg=NONE
-hi ShowMarksHLl cterm=bold ctermfg=20
-hi ShowMarksHLu cterm=bold ctermfg=20
-hi ShowMarksHLo cterm=bold ctermfg=20
-hi ShowMarksHLm cterm=bold ctermfg=20
-
 " For quickfun
 let g:quickrun_config = {
       \ '*': {
       \   'split': 'vertical 50',
       \ },
 \}
+
+" For python-mode
+let g:pymode_run = 0
+let g:pymode_doc = 0
+let g:pymode_lint = 0
+let g:pymode_folding = 0
+let g:pymode_utils_whitespaces = 0
 
 function! s:refresh()
   let save_ar = &autoread
@@ -394,6 +401,12 @@ function! s:flymake_take_by_regex(line, c, regex)
   return substitute(a:line, substitute(fmt, "%" . a:c, '\\(' . a:regex . '\\)', ""), '\1', "")
 endfunction
 
+function! s:colorv_autopreview()
+  if exists(':ColorVAutoPreview')
+    ColorVAutoPreview
+  endif
+endfunction
+
 augroup MyAutoCmd
   au!
 augroup End
@@ -428,7 +441,7 @@ au BufNewFile,BufRead *.snip    setlocal filetype=snippet
 au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
 au BufNewFile,BufRead *.scala   setlocal filetype=scala
-au BufNewFile,BufRead *.mako    setlocal filetype=html
+au BufNewFile,BufRead *.mako    setlocal filetype=mako
 
 function! s:txt_setting()
   setlocal textwidth=78
@@ -441,14 +454,26 @@ function! s:help_setting()
 endfunction
 
 function! s:python_setting()
-  setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  setlocal tabstop=8 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
   setlocal omnifunc=pythoncomplete#Complete
+  nnoremap <silent><buffer>K :RopeShowDoc<CR>
+  nnoremap <silent><buffer><C-]> :RopeGotoDefinition<CR>
+  nnoremap <silent><buffer>F :RopeFindOccurrences<CR>
+
+  if executable('py.test') && exists(':Pytest')
+      nnoremap <silent><buffer><leader>f :Pytest method<CR>
+      nnoremap <silent><buffer><leader>c :Pytest class<CR>
+  endif
 
   " if executable("pep8")
     " call s:flymake_make('pep8\ -r\ %', '%f:%l:%c:\ %m', '')
   " endif
+endfunction
+
+function! s:mako_setting()
+    call s:html_setting()
 endfunction
 
 function! s:php_setting()
@@ -458,6 +483,7 @@ endfunction
 
 function! s:html_setting()
   call s:xml_setting()
+  call s:colorv_autopreview()
 endfunction
 
 function! s:snippet_setting()
@@ -468,6 +494,7 @@ endfunction
 
 function! s:javascript_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal foldmethod=indent foldminlines=2
 endfunction
 
 function! s:actionscript_setting()
@@ -510,6 +537,7 @@ endfunction
 
 function! s:css_setting()
   setlocal foldmethod=indent
+  call s:colorv_autopreview()
 endfunction
 
 function! s:scss_setting()
@@ -524,10 +552,16 @@ endfunction
 
 function! s:ruby_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  inoremap <Bar> <Bar><Bar><LEFT>
+endfunction
+
+function! s:eruby_setting()
+  call s:ruby_setting()
 endfunction
 
 function! s:vim_setting()
   setlocal shiftwidth=2
+  call s:colorv_autopreview()
 endfunction
 
 function! s:scala_setting()
@@ -571,9 +605,17 @@ function! s:javascript_surround()
 endfunction
 
 function! s:python_surround()
-  call SurroundRegister('g', 'te', "try:\n\r\nexcept ${1:Exception}:\n${2:pass}")
-  call SurroundRegister('g', 'tf', "try:\n\r\nexcept ${1:Exception}:\n${2:pass}\nfinally:\n${3:pass}")
-  call SurroundRegister('g', 'if', "if ${1:cond}:\n\r")
+  " template string must be double-quote.
+  call SurroundRegister('b', 'te', "try:\n\r\nexcept Exception:\npass")
+  call SurroundRegister('b', 'tf', "try:\n\r\nexcept Exception:\npass\nfinally:\npass")
+  call SurroundRegister('b', 'if', "if cond:\n\r")
+endfunction
+
+function! s:mako_surround()
+  call SurroundRegister('b', 'd', "<%def name=\"\" %>\n\r\n</%def>")
+  call SurroundRegister('b', 'b', "<%block name=\"\" %>\n\r\n</%block>")
+  call SurroundRegister('b', 'if', "% if cond:\n\r\n% endif")
+  call SurroundRegister('b', 'for', "% for i in L:\n\r\n% endfor")
 endfunction
 
 function! s:call_if_exists(funcname)
@@ -605,6 +647,7 @@ au MyAutoCmd FileType c,cpp,java,javascript,php,actionscript call s:setting4like
 au MyAutoCmd FileType * call s:setting()
 
 " Mappings.
+noremap Q <Nop>
 noremap j  gj
 noremap k  gk
 noremap gj j
@@ -628,7 +671,7 @@ inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
 nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
-nnoremap <silent><C-d> :bw!<CR>
+nnoremap <silent><expr><C-d> ":e #\<CR>:bw! #\<CR>"
 nnoremap QQ :q!<CR>
 noremap! <C-a> <HOME>
 noremap! <C-e> <END>

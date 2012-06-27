@@ -4,9 +4,9 @@ snippet function
 alias f
 abbr function() {}
 	function(${1}) {
-		${0:// not yet implemented}
+		${0:// TODO: not yet implemented}
 	}
 
 snippet var
 alias v
-	var ${1:varname}${2: = <\`3:value\`>};
+	var ${1:varname}${2: = ${3:value\}};

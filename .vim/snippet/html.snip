@@ -14,14 +14,14 @@ abbr <script>
 	<script type="text/javascript" src="${0}"></script>
 
 snippet style
-	<style></style>
 	<style><!--
-	--><style>
+		${0}
+	--></style>
 
 snippet script
 	<script type="text/javascript"><!--
 		${0}
-	--></script>
+	//--></script>
 
 snippet a
 abbr a href
@@ -50,7 +50,7 @@ snippet th
 	<th>${0}</th>
 
 snippet form
-	<form action="" method="post">
+	<form action="" method="post" enctype="multipart/form-data">
 		<fieldset>
 			${0}
 		</fieldset>

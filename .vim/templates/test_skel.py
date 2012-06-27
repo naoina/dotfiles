@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 
-@LICENSE@
-
-__author__ = "@AUTHOR@ <@EMAIL@>"
-
-import unittest
+import pytest
 
 
-class Test<CURSOR>(unittest.TestCase):
+class Test<CURSOR>(objest):
     pass
-
-
-def main():
-    unittest.main()
-
-if __name__ == '__main__':
-    main()

@@ -6,6 +6,7 @@ IMAGE_PATH="$HOME/media/image/wallpaper"
 # WM=xmonad
 # WM=compiz-fusion
 WM=awesome
+#WM=fluxbox
 # WM=i3
 WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper.py"
 
@@ -35,11 +36,9 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 
 # uim-xim &
 # scim -d
-ibus-daemon --xim &
+ibus-daemon --xim -d
 
-if [ -x `which udiskie` ]; then
-    udiskie &
-elif [ -x `which devmon` ]; then
+if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send '%f mounted on %d'"
     devmon --mount-options umask=022 --exec-on-drive "$AFTER_CMD" &
 fi

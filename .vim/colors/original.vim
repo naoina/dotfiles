@@ -10,7 +10,6 @@ let g:colors_name = 'original'
 
 hi Normal       guifg=gray      guibg=black
 hi LineNr       guifg=#ff005f
-hi Constant     guifg=#8700af
 hi String       guifg=#af0000
 hi Identifier   guifg=#00afaf
 hi CursorLine                   guibg=#1c1c1c gui=none
@@ -23,6 +22,7 @@ hi Search       guifg=gray      guibg=#5f00af gui=bold
 hi Todo         guifg=#080808   guibg=#ffff00 gui=bold
 hi Comment      guifg=#00afd7
 hi Statement    guifg=#00d700                 gui=bold
+hi Constant     guifg=#00d700                 gui=bold
 hi Type         guifg=#00d700                 gui=none
 hi Function     guifg=#afd75f                 gui=none
 hi Folded       guifg=#6c6c6c   guibg=bg      gui=bold

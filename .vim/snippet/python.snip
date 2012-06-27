@@ -53,7 +53,7 @@ snippet deft
 abbr def test_function(...): ...
 prev_word '^'
 	def test_${1:funcname}(${2}):
-		${3:self.fail("not yet implements")}
+		${0:assert 0}
 
 snippet class
 prev_word '^'
@@ -573,7 +573,27 @@ prev_word '^'
 	def __exit__(self, exc_type, exc_value, traceback):
 		${1:raise NotImplementedError}
 
+snippet with
+abbr with ...
+prev_word '^'
+	with ${1}${2: as ${3:ctx\}}:
+		${0:raise NotImplementedError}
+
+snippet isinstance
+alias is
+prev_word '^'
+	isinstance(${1:inst}, ${2:cls})
+
+snippet doc
+abbr """
+	"""${0}
+	"""
+
 snippet pdb
 abbr import pdb; pdb.set_trace()
 prev_word '^'
 	import pdb; pdb.set_trace()
+
+snippet here
+prev_word '^'
+	here = os.path.abspath(os.path.dirname(__file__))

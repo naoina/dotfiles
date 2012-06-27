@@ -1,0 +1,64 @@
+include html.snip
+
+snippet _
+abbr gettext()
+	${_(u"${1}")}
+
+snippet if
+abbr % if cond: ... % endif
+prev_word '^'
+	% if ${1:cond}:
+		${0}
+	% endif
+
+snippet elif
+abbr % elif cond:
+	% elif ${1:cond}:
+		${0}
+
+snippet else
+abbr % else:
+	% else:
+		${0}
+
+snippet for
+abbr % for i in L: ... % endfor
+prev_word '^'
+	% for ${1:i} in ${2:L}:
+		${0}
+	% endfor
+
+snippet inherit
+abbr <%inherit />
+	<%inherit file="${1}" />
+
+snippet block
+abbr <%block>
+	<%block name="${1:name}">
+		${0}
+	</%block>
+
+snippet include
+abbr <%include />
+	<%include file="${1:file}"${2: args="${3\}"} />
+
+snippet page
+abbr <%page />
+	<%page args="${1:args}" />
+
+snippet def
+abbr <%def>
+	<%def name="${1:funcname}(${2:args})">
+		${0}
+	</%def>
+
+snippet doc
+abbr <%doc>
+	<%doc>
+		${0}
+	</%doc>
+
+snippet return
+alias ret
+abbr <% return %>
+	<% return %>

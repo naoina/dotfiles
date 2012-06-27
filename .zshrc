@@ -57,7 +57,7 @@ PROMPT="%F{green}%1v%f[%~]
 #
 #PATH="/sbin:/bin:/usr/sbin:/usr/lib/ccache/bin:/usr/bin"
 PATH="$HOME/.local/bin:$PATH"
-PATH="$HOME/.gem/ruby/1.9.1/bin:$PATH"
+PATH="$HOME/.rbenv/bin:$HOME/.gem/ruby/1.9.1/bin:$PATH"
 PATH="/usr/lib/colorgcc/bin/:$HOME/bin:/usr/lib/ccache/bin:$PATH"
 export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
 export CCACHE_PATH="/usr/bin"
@@ -66,10 +66,9 @@ export GREP_OPTIONS="--color=auto -I"
 export CVS_RSH="ssh"
 export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
-export GIT_SSH="$HOME/bin/ssh-github"
+# export GIT_SSH="$HOME/bin/ssh-github"
 export VIRTUALENV_USE_DISTRIBUTE=1
 export WORKON_HOME="$HOME/work/virtualenv"
-[ -f "$HOME/.local/bin/virtualenvwrapper.sh" ] && . "$HOME/.local/bin/virtualenvwrapper.sh"
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 
@@ -120,6 +119,7 @@ esac
     # alias mvn="`whence mvn` -DarchetypeGroupId=org.naniyueni -DarchetypeArtifactId=template -DarchetypeVersion=1.0 -DgroupId=org.naniyueni"
 # fi
 
+[[ -x "`whence -p rbenv`" ]] && eval "$(rbenv init -)"
 
 [[ -x "`whence -p gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
 [[ -x "`whence -p powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
@@ -132,9 +132,13 @@ esac
 [[ -x "`whence -p emacs`" ]] && alias emacs="emacs -nw"
 [[ -x "`whence -p display`" ]] && alias display="display -geometry +0+0"
 [[ -x "`whence -p rhino`" ]] && alias rhino="rlwrap java -jar /usr/share/java/js.jar"
-[[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
 [[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && alias exit="screen -d $STY"
 [[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && alias exit="tmux detach"
+if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
+    . "`whence -p virtualenvwrapper.sh`"
+else
+    [[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
+fi
 
 alias ll="ls -l"
 alias lz="ll -Z"
@@ -145,12 +149,6 @@ alias gprof="gprof -b"
 
 # ulimit -c unlimited
 umask 022
-
-if [ "$PS1" -a `uname -s` = "Linux" ]; then
-    mkdir -p -m 0700 /dev/cgroup/cpu/user/$$ > /dev/null 2>&1
-    echo $$ > /dev/cgroup/cpu/user/$$/tasks
-    echo 1 > /dev/cgroup/cpu/user/$$/notify_on_release
-fi
 
 source $HOME/.zsh/git-completion.bash
 
