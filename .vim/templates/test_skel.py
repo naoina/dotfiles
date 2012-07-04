@@ -3,5 +3,5 @@
 import pytest
 
 
-class Test<CURSOR>(objest):
+class Test<CURSOR>(object):
     pass
