@@ -40,7 +40,7 @@ ibus-daemon --xim -d
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send '%f mounted on %d'"
-    devmon --mount-options umask=022 --exec-on-drive "$AFTER_CMD" &
+    devmon --exec-on-drive "$AFTER_CMD" &
 fi
 
 
