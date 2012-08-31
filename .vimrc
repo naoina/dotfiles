@@ -274,6 +274,7 @@ let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
 let g:neocomplcache_snippets_disable_runtime_snippets = 1
 let g:neocomplcache_enable_prefetch = 1
+let g:neocomplcache_force_overwrite_completefunc = 1
 " let g:neocomplcache_enable_debug = 1
 
 " For unite
@@ -510,6 +511,8 @@ function! s:cpp_setting()
 endfunction
 
 function! s:java_setting()
+  setlocal textwidth=100
+
   if exists(':EclimEnable')
     augroup EclimGroup
       au!
@@ -612,8 +615,8 @@ function! s:python_surround()
 endfunction
 
 function! s:mako_surround()
-  call SurroundRegister('b', 'd', "<%def name=\"\" %>\n\r\n</%def>")
-  call SurroundRegister('b', 'b', "<%block name=\"\" %>\n\r\n</%block>")
+  call SurroundRegister('b', 'd', "<%def name=\"\">\n\r\n</%def>")
+  call SurroundRegister('b', 'b', "<%block name=\"\">\n\r\n</%block>")
   call SurroundRegister('b', 'if', "% if cond:\n\r\n% endif")
   call SurroundRegister('b', 'for', "% for i in L:\n\r\n% endfor")
 endfunction

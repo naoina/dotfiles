@@ -47,7 +47,9 @@ prev_word '^'
 snippet def
 prev_word '^'
 	def ${1:funcname}(${2}):
-		${3:raise NotImplementedError}
+		"""
+		"""
+		${0:raise NotImplementedError}
 
 snippet deft
 abbr def test_function(...): ...
