@@ -13,20 +13,27 @@ if has('vim_starting')
   call neobundle#rc($VIMLOCAL . '/bundle')
 endif
 
-" NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-NeoBundle 'git://github.com/naoina/neocomplcache.git', {'type': 'nosync'}
-" NeoBundle 'git://github.com/Shougo/neocomplcache-snippets-complete.git'
-NeoBundle 'git://github.com/naoina/neocomplcache-snippets-complete.git', {'type': 'nosync'}
+NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+" NeoBundle 'git://github.com/naoina/neocomplcache.git', {'type': 'nosync'}
+NeoBundle 'git://github.com/Shougo/neosnippet.git'
+" NeoBundle 'git://github.com/naoina/neocomplcache-snippets-complete.git', {'type': 'nosync'}
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/unite.vim.git'
 NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
 NeoBundle 'git://github.com/h1mesuke/unite-outline.git'
-NeoBundle 'git://github.com/Shougo/vimproc.git'
+NeoBundle 'git://github.com/Shougo/vimproc.git', {
+        \ 'build': {
+        \     'windows': 'make -f make_mingw32.mak',
+        \     'cygwin': 'make -f make_cygwin.mak',
+        \     'mac': 'make -f make_mac.mak',
+        \     'unix': 'make -f make_unix.mak',
+        \     },
+        \ }
 NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
-NeoBundle 'git://github.com/tpope/vim-fugitive.git'
+NeoBundle 'git://github.com/tpope/vim-fugitive.git', {'augroup': 'fugitive'}
 NeoBundle 'git://github.com/thinca/vim-template.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
 NeoBundle 'https://bitbucket.org/anyakichi/vim-csutil'
@@ -42,6 +49,11 @@ NeoBundle 'git://github.com/vim-scripts/mako.vim.git'
 NeoBundle 'git://github.com/vim-scripts/mako.vim--Torborg.git'
 NeoBundle 'git://github.com/alfredodeza/pytest.vim.git'
 NeoBundle 'git://github.com/jiangmiao/simple-javascript-indenter.git'
+NeoBundle 'git://github.com/davidhalter/jedi-vim.git', {
+        \ 'build': {
+        \     'unix': 'git submodule update --init',
+        \     },
+        \ }
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
@@ -327,6 +339,10 @@ let g:pymode_utils_whitespaces = 0
 " For simple-javascript-indenter
 let g:SimpleJsIndenter_BriefMode = 1
 
+" For jedi-vim
+let g:jedi#get_definition_command = '<C-]>'
+let g:jedi#use_tabs_not_buffers = 0
+
 function! s:refresh()
   let save_ar = &autoread
   setlocal autoread
@@ -462,10 +478,6 @@ function! s:python_setting()
   setlocal tabstop=8 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
-  setlocal omnifunc=pythoncomplete#Complete
-  nnoremap <silent><buffer>K :RopeShowDoc<CR>
-  nnoremap <silent><buffer><C-]> :RopeGotoDefinition<CR>
-  nnoremap <silent><buffer>F :RopeFindOccurrences<CR>
 
   if executable('py.test') && exists(':Pytest')
       nnoremap <silent><buffer><leader>f :Pytest method<CR>
