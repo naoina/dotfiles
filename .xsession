@@ -28,6 +28,7 @@ export XMODIFIERS=@im=ibus
 xmodmap $HOME/.Xmodmap
 
 # Default settings.
+xgamma -rgamma 1.0 -ggamma 1.0 -bgamma 0.65
 xset s noblank
 xset r rate 250 50
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 8 1
@@ -44,7 +45,7 @@ if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
 fi
 
 
-$WALLPAPER_PICKER $IMAGE_PATH
+#$WALLPAPER_PICKER $IMAGE_PATH
 
 # By setting the window manager.
 case "$WM" in

@@ -21,6 +21,10 @@ MONITOR_HEIGHT=`echo $GEOMETRY | cut -d "x" -f 2`
 
 for t in {stylus,eraser,cursor}; do
     DEVICE="`xsetwacom list | grep "$t" | sed -r 's/.*\sid: ([0-9]+)\s.*/\1/'`"
+    if [ "$DEVICE" = "" ]; then
+        continue
+    fi
+
     AREA="`xsetwacom get "$DEVICE" Area`"
     TOPX=`echo "$AREA" | cut -d " " -f 1`
     TOPY=`echo "$AREA" | cut -d " " -f 2`
@@ -32,4 +36,5 @@ for t in {stylus,eraser,cursor}; do
 
     xsetwacom set "$DEVICE" MapToOutput $MONITOR
     xsetwacom set "$DEVICE" Area $TOPX $TOPY $BOTTOMX $BOTTOMY
+    # xsetwacom set 14 Area 0 400 33834 27300  # for DTU-710
 done

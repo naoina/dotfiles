@@ -41,6 +41,7 @@ NeoBundle 'git://github.com/tpope/vim-rails.git'
 NeoBundle 'git://github.com/vim-scripts/mako.vim.git'
 NeoBundle 'git://github.com/vim-scripts/mako.vim--Torborg.git'
 NeoBundle 'git://github.com/alfredodeza/pytest.vim.git'
+NeoBundle 'git://github.com/jiangmiao/simple-javascript-indenter.git'
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
@@ -323,6 +324,9 @@ let g:pymode_lint = 0
 let g:pymode_folding = 0
 let g:pymode_utils_whitespaces = 0
 
+" For simple-javascript-indenter
+let g:SimpleJsIndenter_BriefMode = 1
+
 function! s:refresh()
   let save_ar = &autoread
   setlocal autoread
@@ -575,6 +579,11 @@ endfunction
 function! s:rst_setting()
   setlocal tabstop=3 softtabstop=3 shiftwidth=3
   setlocal cindent
+endfunction
+
+function! s:yaml_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal autoindent
 endfunction
 
 " For surround of kana's version.
