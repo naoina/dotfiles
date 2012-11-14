@@ -22,3 +22,5 @@
 [mergetool "git-vimdiff"]
 	cmd = git-vimdiff.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
+[push]
+	default = simple
