@@ -33,6 +33,7 @@ hi Define       guifg=#af00af                 gui=none
 hi Structure    guifg=#00af5f                 gui=none
 hi StatusLine                                 gui=reverse
 hi StatusLineNC                               gui=reverse,bold
+hi SignColumn                   guibg=black
 
 hi link Number      String
 hi link Boolean     Keyword
