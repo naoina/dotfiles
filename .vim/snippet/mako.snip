@@ -2,28 +2,31 @@ include html.snip
 
 snippet _
 abbr gettext()
+options word
 	${_(u"${1}")}
 
 snippet if
 abbr % if cond: ... % endif
-prev_word '^'
+options head
 	% if ${1:cond}:
 		${0}
 	% endif
 
 snippet elif
 abbr % elif cond:
+options head
 	% elif ${1:cond}:
 		${0}
 
 snippet else
 abbr % else:
+options head
 	% else:
 		${0}
 
 snippet for
 abbr % for i in L: ... % endfor
-prev_word '^'
+options head
 	% for ${1:i} in ${2:L}:
 		${0}
 	% endfor

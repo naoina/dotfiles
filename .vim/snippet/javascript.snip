@@ -3,10 +3,20 @@ include c_like.snip
 snippet function
 alias f
 abbr function () {}
+options word
 	function(${1}) {
 		${0:// TODO: not implemented yet}
 	}
 
 snippet var
 alias v
-	var ${1:varname}${2: = ${3:value\}};
+options head
+	var ${1:varname}${2: = ${3:value\}}
+
+snippet =
+options word
+	${1:varname} = ${2:value};
+
+snippet ,
+options word
+	, ${1:varname} = ${2:value}

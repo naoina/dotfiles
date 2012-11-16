@@ -284,11 +284,15 @@ let g:neocomplcache_auto_completion_start_length = 1
 let g:neocomplcache_enable_ignore_case = 1
 let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
-let g:neocomplcache_snippets_dir  = $VIMLOCAL . '/snippet'
-let g:neocomplcache_snippets_disable_runtime_snippets = 1
 let g:neocomplcache_enable_prefetch = 1
 let g:neocomplcache_force_overwrite_completefunc = 1
 " let g:neocomplcache_enable_debug = 1
+
+" For neosnippet
+let g:neosnippet#snippets_directory = $VIMLOCAL . '/snippet'
+let g:neosnippet#disable_runtime_snippets = {
+      \ '_': 1,
+      \ }
 
 " For unite
 let g:unite_data_directory = s:cachedir
@@ -735,8 +739,8 @@ nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle
 imap <C-_> <C-o><Plug>NERDCommenterToggle
 
-imap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
-smap <expr><Tab> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_jump)" : pumvisible() ? "\<CR>" : "\<Tab>"
+imap <expr><Tab> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
+smap <expr><Tab> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
 
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>

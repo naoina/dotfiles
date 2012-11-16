@@ -1,14 +1,17 @@
 snippet function
+options head
 	${1:public }function ${2:funcname}(${3}) {
 		// TODO: implementation
 	}
 
 snippet foreach
+options head
 	foreach (${1:/* arr */} as ${2:$v}) {
 		${0:// TODO: implementation}
 	}
 
 snippet class
+options head
 	class ${1:`join(map(split(expand("%:t:r"), "_"), 'toupper(v:val[0]) . v:val[1:]'), '')`} {
 		function ${2:__construct}(${3}) {
 			// TODO: implementation
@@ -16,6 +19,7 @@ snippet class
 	}
 
 snippet if
+options head
 	if (${1:/* condition */}) {
 		${0}
 	}
@@ -31,20 +35,24 @@ snippet elseif
 	}
 
 snippet for
+options head
 	for ($i = 0; $i < ${1} $i++) {
 		${0: // TODO: implementation}
 	}
 
 snippet while
+options head
 	while (${1:/* cond */}) {
 		${0:// TODO: implementation}
 	}
 
 snippet req
 abbr require_once
+options head
 	require_once dirname(__FILE__) . '${1}';
 
 snippet switch
+options head
 	switch (${1:/* var */}) {
 		case ${2}:
 			${0:// TODO:implementation}
@@ -57,11 +65,13 @@ snippet case
 		break;
 
 snippet array
+options head
 	$${1} = array(
 		'${2}' => ${3},
 	);
 
 snippet =>
+options word
 	'${1}' => ${2},
 
 snippet c
@@ -84,23 +94,30 @@ snippet post
 	$_POST['${1}']
 
 snippet get
+options word
 	$_GET['${1}']
 
 snippet request
+options word
 	$_REQUEST['${1}']
 
 snippet server
+options word
 	$_SERVER['${1}']
 
 snippet session
+options word
 	$_SESSION['${1}']
 
 snippet cookie
+options word
 	$_COOKIE['${1}']
 
 
 snippet rf
+options head
 	return false;
 
 snippet rt
+options head
 	return true;

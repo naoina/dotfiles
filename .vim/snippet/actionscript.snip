@@ -1,5 +1,5 @@
 snippet class
-prev_word '^'
+options head
 	${1:public} class ${2:ClassName} {
 		public $2() {
 			${0:// not yet implements.}
@@ -8,59 +8,59 @@ prev_word '^'
 
 snippet function
 alias fun
-prev_word '^'
+options head
 	${1:public} function ${2:funcname}(${3}):${4:void} {
 		${0:// not yet implements.}
 	}
 
 snippet var
 alias v
-prev_word '^'
+options head
 	var ${1:varname}:${2:int}${0: = $\{3:value\}};
 
 snippet public
 alias pub
-prev_word '^'
+options head
 	public 
 
 snippet protedted
 alias prot
-prev_word '^'
+options head
 	protected 
 
 snippet private
 alias pr
-prev_word '^'
+options head
 	private 
 
 snippet if
-prev_word '^'
+options head
 	if (${1:condition}) {
 		${0:// not yet implements.}
 	}
 
 snippet while
-prev_word '^'
+options head
 	while (${1:condition}) {
 		${0:// not yet implements.}
 	}
 
 snippet for
-prev_word '^'
+options head
 	for (${1:var i:int = 0}; ${2:condition}; ${3:i++}) {
 		${0:// not yet implements.}
 	}
 
 snippet do
 abbr do-while
-prev_word '^'
+options head
 	do {
 		${0:// not yet implements.}
 	} while (${1:condition});
 
 snippet switch
 alias sw
-prev_word '^'
+options head
 	switch (${1:condition}) {
 		case ${2:pattern}:
 			${0:// not yet implements.}
@@ -71,48 +71,48 @@ prev_word '^'
 
 snippet case
 abbr switch-case
-prev_word '^'
+options head
 	case ${1:pattern}:
 		${0:// not yet implements.}
 		break;
 
 snippet getter
 abbr funciton get ...
-prev_word '^'
+options head
 	${1:public} function get ${2:funcname}():${3:int} {
 		${0:// not yet implements.}
 	}
 
 snippet setter
 abbr funciton set ...
-prev_word '^'
+options head
 	${1:public} function set ${2:funcname}(${3:value}):${4:void} {
 		${0:// not yet implements.}
 	}
 
 snippet co
 abbr const
-prev_word '^'
+options head
 	${1:public} static const ${2:varname}:${3:int} = ${0};
 
 snippet cos
 abbr const String
-prev_word '^'
+options head
 	${1:public} static const ${2:varname}:String = "${0}";
 
 snippet import
 alias i
-prev_word '^'
+options head
 	import ${0:package};
 
 snippet trace
 alias tr
 abbr trace(...)
-prev_word '^'
+options head
 	trace(${1:args});
 
 snippet over
 alias ov
 abbr override
-prev_word '^'
+options head
 	override 

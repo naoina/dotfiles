@@ -3,6 +3,7 @@ include c_like.snip
 snippet class
 alias cl
 abbr class
+options head
 	class ${1:`expand("%:t:r")`} {
 		public $1() {
 			${0:// TODO: implementation}
@@ -12,6 +13,7 @@ abbr class
 snippet interface
 alias in
 abbr interface
+options head
 	interface `expand("%:t:r")` {
 		${0:// TODO: implementation}
 	}
@@ -28,6 +30,7 @@ snippet pro
 snippet method
 alias m
 abbr method
+options head
 	${1:public} ${2:void} ${3:methodName}(${4}) {
 		${0:// TODO: implementation}
 	}
@@ -45,18 +48,22 @@ snippet =
 	${1:String} ${2} = ${3};
 
 snippet co
+options head
 	public static final ${1:String} ${2} = ${3};
 
 snippet cos
+options head
 	public static final String ${1} = "${2}";
 
 snippet as
 abbr assert
+options head
 	assert ${1};
 
 snippet foreach
 alias fore
 abbr foreach
+options head
 	for (${1} : ${2}) {
 		${0:// TODO: implementation}
 	}
@@ -69,6 +76,7 @@ abbr catch
 	}
 
 snippet main
+options head
 	public static void main(String[] args) {
 		${0:// TODO: implementation}
 	}
