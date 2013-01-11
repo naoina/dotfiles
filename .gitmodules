@@ -1,3 +1,6 @@
 [submodule ".rbenv"]
 	path = .rbenv
 	url = git://github.com/sstephenson/rbenv.git
+[submodule ".zsh/z"]
+	path = .zsh/z
+	url = git://github.com/rupa/z.git
