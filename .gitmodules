@@ -4,3 +4,6 @@
 [submodule ".nvm"]
 	path = .nvm
 	url = git://github.com/creationix/nvm.git
+[submodule ".zsh/fabric-zsh-autocomplete"]
+	path = .zsh/fabric-zsh-autocomplete
+	url = git://github.com/vhbit/fabric-zsh-autocomplete.git
