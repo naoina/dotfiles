@@ -1,8 +1,10 @@
-themehome = os.getenv("HOME") .. "/.config/awesome/theme"
+local awful = require('awful')
+
+themehome = awful.util.getdir("config") .. "/theme"
 
 theme = {}
 
-theme.font          = "Migu 1M 10"
+theme.font          = "Migu 1C bold 8"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
@@ -16,7 +18,7 @@ theme.fg_minimize   = "#ffffff"
 
 theme.border_width  = "2"
 theme.border_normal = "#000000"
-theme.border_focus  = "deeppink"
+theme.border_focus  = "#ff1493"
 theme.border_marked = "#91231c"
 
 -- There are other variable sets
@@ -89,5 +91,7 @@ theme.layout_spiral  = themehome .. "/layouts/spiralw.png"
 theme.layout_dwindle = themehome .. "/layouts/dwindlew.png"
 
 theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
+
+theme.bg_systray = "#000000"
 
 return theme
