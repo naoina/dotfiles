@@ -150,7 +150,6 @@ alias gprof="gprof -b"
 # ulimit -c unlimited
 umask 022
 
-source $HOME/.zsh/z/z.sh
 source $HOME/.zsh/git-completion.bash
 
 source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
