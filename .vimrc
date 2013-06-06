@@ -4,6 +4,7 @@ let g:author = "Naoya Inada"
 let g:email  = "naoina@kuune.org"
 
 let $VIMLOCAL = expand('~/.vim')
+let s:cachedir = $VIMLOCAL . '/cache'
 
 filetype off
 
@@ -13,14 +14,43 @@ if has('vim_starting')
   call neobundle#rc($VIMLOCAL . '/bundle')
 endif
 
-NeoBundle 'git://github.com/Shougo/neocomplcache.git'
-" NeoBundle 'git://github.com/naoina/neocomplcache.git', {'type': 'nosync'}
+" NeoBundle 'git://github.com/Shougo/neocomplcache.git', {
+        " \ 'depends': [
+        " \     'git://github.com/Shougo/neosnippet.git',
+        " \     ],
+        " \ }
+
+NeoBundle 'git://github.com/Shougo/neocomplete.vim.git'
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#enable_auto_select = 1
+let g:neocomplete#min_keyword_length = 4
+let g:neocomplete#sources#syntax#min_keyword_length  = 4
+let g:neocomplete#auto_completion_start_length = 1
+let g:neocomplete#enable_ignore_case = 1
+let g:neocomplete#enable_smart_case  = 1
+let g:neocomplete#data_directory = s:cachedir
+let g:neocomplete#enable_prefetch = 1
+let g:neocomplete#force_overwrite_completefunc = 1
+let g:neocomplete#enable_refresh_always = 1
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.python = '[^. \t]\.\w*'
+
+" NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
+        " \ 'build': {
+        " \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer',
+        " \     },
+        " \ }
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_key_list_select_completion = ['<Enter>']
+let g:ycm_global_ycm_extra_conf = $VIMLOCAL . '/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+
 NeoBundle 'git://github.com/Shougo/neosnippet.git'
-" NeoBundle 'git://github.com/naoina/neocomplcache-snippets-complete.git', {'type': 'nosync'}
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
-NeoBundle 'git://github.com/Shougo/unite.vim.git'
-NeoBundle 'git://github.com/ujihisa/unite-colorscheme.git'
-NeoBundle 'git://github.com/h1mesuke/unite-outline.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \ 'build': {
         \     'windows': 'make -f make_mingw32.mak',
@@ -29,31 +59,169 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \     'unix': 'make -f make_unix.mak',
         \     },
         \ }
-NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
-NeoBundle 'git://github.com/Shougo/vimshell.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
 NeoBundle 'git://github.com/tpope/vim-fugitive.git', {'augroup': 'fugitive'}
+NeoBundle 'git://github.com/phleet/vim-mercenary.git', {'augroup': 'mercenary'}
 NeoBundle 'git://github.com/thinca/vim-template.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
 NeoBundle 'https://bitbucket.org/anyakichi/vim-csutil'
-NeoBundle 'git://github.com/mattn/gist-vim.git'
-NeoBundle 'git://github.com/cespare/mxml.vim.git'
-NeoBundle 'git://github.com/kakkyz81/evervim.git'
-NeoBundle 'git://github.com/othree/html5.vim.git'
-NeoBundle 'git://github.com/Rykka/ColorV.git'
 NeoBundle 'git://github.com/mattn/webapi-vim.git'
-NeoBundle 'git://github.com/klen/python-mode.git'
-NeoBundle 'git://github.com/tpope/vim-rails.git'
-NeoBundle 'git://github.com/vim-scripts/mako.vim.git'
-NeoBundle 'git://github.com/vim-scripts/mako.vim--Torborg.git'
-NeoBundle 'git://github.com/alfredodeza/pytest.vim.git'
-NeoBundle 'git://github.com/jiangmiao/simple-javascript-indenter.git'
-NeoBundle 'git://github.com/davidhalter/jedi-vim.git', {
+NeoBundle 'git://github.com/rking/ag.vim.git'
+NeoBundle 'git://github.com/tpope/vim-rails.git'  " should not be used the NeoBundleLazy
+NeoBundle 'git://github.com/tpope/vim-markdown.git'
+NeoBundle 'git://github.com/xolox/vim-session.git', {
+        \ 'depends': [
+        \     'git://github.com/xolox/vim-misc.git',
+        \     ],
+        \ }
+let g:session_directory = s:cachedir . '/session'
+let g:session_autosave = 'no'
+let g:session_command_aliases = 1
+function! s:open_session()
+  let g:session_current_name = substitute(expand('%:p:h'), '[/]', '$', 'g')
+endfunction
+function! s:save_session()
+  if exists('g:session_current_name')
+    exec 'silent SaveSession ' . g:session_current_name
+  endif
+endfunction
+function! s:remove_session()
+  if exists('g:session_current_name')
+    exec 'silent DeleteSession ' . g:session_current_name
+  endif
+  unlet g:session_current_name
+endfunction
+au VimEnter * nested call s:open_session()
+au BufWritePost * call s:save_session()
+au VimLeavePre * call s:remove_session()
+
+NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', {
+        \ 'autoload': {
+        \     'commands': ['Unite'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/ujihisa/unite-colorscheme.git', {
+        \ 'autoload': {
+        \     'unite_sources': ['colorscheme'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', {
+        \ 'autoload': {
+        \     'unite_sources': ['outline'],
+        \     },
+        \ }
+
+NeoBundleLazy 'git://github.com/scrooloose/nerdtree.git', {
+        \ 'autoload': {
+        \     'commands': ['NERDTree', 'NERDTreeToggle'],
+        \     },
+        \ }
+let g:NERDTreeShowHidden = 1
+let g:NERDTreeWinPos = 'right'
+let g:NERDTreeIgnore = [
+        \ '\~$', '\.bak$',
+        \ '\.pyc$',
+        \ ]
+nnoremap <C-e> :<C-u>NERDTreeToggle<CR>
+
+NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', {
+      \ 'autoload': {
+      \     'mappings': '<Plug>(quickrun)',
+      \     'commands': ['QuickRun'],
+      \     },
+      \ }
+let g:quickrun_config = {
+      \ '*': {
+      \     'split': 'vertical 50',
+      \     },
+      \ }
+
+NeoBundleLazy 'git://github.com/nathanaelkane/vim-indent-guides.git', {
+        \ 'autoload': {
+        \     'commands': ['IndentGuidesToggle', 'IndentGuidesEnable'],
+        \     },
+        \ }
+let g:indent_guides_auto_colors = 0
+let g:indent_guides_guide_size = 1
+let g:indent_guides_start_level = 1
+let g:indent_guides_enable_on_vim_startup = 0
+let g:indent_guides_exclude_filetypes = ['help']
+nnoremap <silent><C-g> :<C-u>IndentGuidesToggle<CR>
+inoremap <silent><C-g> <C-o>:<C-u>IndentGuidesToggle<CR>
+
+NeoBundleLazy 'git://github.com/mattn/gist-vim.git', {
+        \ 'autoload': {
+        \     'commands': 'Gist',
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/cespare/mxml.vim.git', {
+        \ 'autoload': {
+        \     'filetypes': ['mxml'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/othree/html5.vim.git', {
+      \ 'autoload': {
+      \     'filetypes': ['html', 'htmldjango', 'mako', 'erb'],
+      \     },
+      \ }
+NeoBundleLazy 'git://github.com/Rykka/colorv.vim.git', {
+        \ 'autoload': {
+        \     'filetypes': ['html', 'htmldjango', 'mako', 'erb', 'css'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/mattn/zencoding-vim.git', {
+        \ 'autoload': {
+        \     'filetypes': ['html', 'xml', 'htmldjango', 'mako', 'erb'],
+        \     },
+        \ }
+NeoBundle 'git://github.com/vim-scripts/mako.vim.git'  " should not be used the NeoBundleLazy
+NeoBundleLazy 'git://github.com/vim-scripts/mako.vim--Torborg.git', {
+        \ 'autoload': {
+        \     'filetypes': ['mako'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/jiangmiao/simple-javascript-indenter.git', {
+        \ 'autoload': {
+        \     'filetypes': ['javascript'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/alfredodeza/pytest.vim.git', {
+        \ 'autoload': {
+        \     'filetypes': ['python'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/klen/python-mode.git', {
+      \ 'autoload': {
+      \     'filetypes': ['python'],
+      \     },
+      \ }
+NeoBundleLazy 'git://github.com/davidhalter/jedi-vim.git', {
         \ 'build': {
         \     'unix': 'git submodule update --init',
         \     },
+        \ 'autoload': {
+        \     'filetypes': ['python'],
+        \     },
+        \ 'depends': 'git://github.com/jmcantrell/vim-virtualenv.git',
         \ }
+NeoBundleLazy 'git://github.com/jmcantrell/vim-virtualenv.git', {
+        \ 'autoload': {
+        \     'filetypes': ['python'],
+        \     },
+        \ }
+NeoBundleLazy 'git://github.com/kchmck/vim-coffee-script.git', {
+        \ 'autoload': {
+        \     'filetypes': ['coffee'],
+        \     },
+        \ }
+let g:coffee_compile_vert = 1
+
+" NeoBundleLazy 'git://github.com/Rip-Rip/clang_complete.git', {
+        " \ 'autoload': {
+        " \     'filetypes': ['c', 'cpp', 'objc'],
+        " \     },
+        " \ }
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
@@ -73,7 +241,7 @@ runtime macros/matchit.vim
 
 set backupdir=$VIMLOCAL/backup
 set directory=$VIMLOCAL/swap
-let s:cachedir = $VIMLOCAL . '/cache'
+set noswapfile
 
 set backup
 set viminfo='1000,<500,f1
@@ -115,7 +283,7 @@ au FileType * setlocal formatoptions+=cqmM
 set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 
 set fileencoding=utf-8
-set fileencodings=ucs-bom,utf-8,japan,sjis,utf-8
+set fileencodings=ucs-bom,utf-8,japan,sjis,utf-16,utf-8
 set fileformat=unix
 set fileformats=unix,dos,mac
 
@@ -144,30 +312,6 @@ function! s:mkdir(dir, perm)
   if !isdirectory(a:dir)
     call mkdir(a:dir, "p", a:perm)
   endif
-endfunction
-
-function! s:generate_all_tags()
-  let answer = confirm("Does generate tags file?", "&yes\n&no", 2, "Question")
-  let ctags_cmd = 'ctags ' . (&ignorecase ? '--sort=foldcase' : '')
-
-  " terminate or no
-  if answer == 0 || answer == 2
-    echo 'Does not generate.'
-    return
-  endif
-
-  if executable("ctags") != 1
-    echo "ctags not found."
-    return
-  endif
-
-  let b:tagsdir = tagfiles() == [] ? getcwd() : fnameescape(fnamemodify(get(tagfiles(), -1, ""), ":p:h"))
-
-  " generate
-  redraw! | echo 'Generating...'
-  exec 'silent cd ' . b:tagsdir
-  call vimproc#system(ctags_cmd . ' ' . (exists('g:ctags_opts') ? g:ctags_opts : '') . ' -R .')
-  echo 'Done.'
 endfunction
 
 function! s:clear_undo()
@@ -199,8 +343,6 @@ au BufReadPost * normal '"
 au BufEnter * call s:autocd()
 au CursorMovedI * if pumvisible() == 0|pclose|endif
 
-command! GenerateAllTags call s:generate_all_tags()
-
 " For gist-vim
 let [g:github_user, g:github_token] = readfile($VIMLOCAL . '/.github.token')
 let g:gist_detect_filetype = 1
@@ -214,8 +356,10 @@ let g:csutil_no_mappings = 1
 let g:syntastic_quiet_warnings = 0
 let g:syntastic_mode_map = {
   \ 'mode': 'active',
-  \ 'passive_filetypes': ['java'],
+  \ 'passive_filetypes': ['java', 'html'],
 \}
+let g:syntastic_javascript_checkers = ['jshint']
+let g:syntastic_python_checkers = ['flake8']
 
 " For vim-template.
 let g:template_basedir = $VIMLOCAL . '/templates'
@@ -270,11 +414,6 @@ let g:NERDDefaultNesting = 0
 " For xmledit, script_id=301.
 let xml_use_xhtml = 1
 
-" For autocomplpop, script_id=1879.
-let g:acp_enableAtStartup = 0
-let g:acp_behaviorKeywordLength = 2
-let g:acp_ignorecaseOption = 0
-
 " For neocomplcache, script_id=2620
 let g:neocomplcache_enable_at_startup = 1
 let g:neocomplcache_enable_auto_select = 1
@@ -287,6 +426,10 @@ let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_enable_prefetch = 1
 let g:neocomplcache_force_overwrite_completefunc = 1
 " let g:neocomplcache_enable_debug = 1
+" if !exists('g:neocomplcache_omni_functions')
+    " let g:neocomplcache_force_omni_patterns = {}
+" endif
+" let g:neocomplcache_force_omni_patterns.python = '[^. \t]\.\w*'
 
 " For neosnippet
 let g:neosnippet#snippets_directory = $VIMLOCAL . '/snippet'
@@ -326,26 +469,25 @@ function! s:vimshell_setting()
     let b:did_vimshell_setting = 1
 endfunction
 
-" For quickfun
-let g:quickrun_config = {
-      \ '*': {
-      \   'split': 'vertical 50',
-      \ },
-\}
-
 " For python-mode
 let g:pymode_run = 0
 let g:pymode_doc = 0
 let g:pymode_lint = 0
 let g:pymode_folding = 0
+let g:pymode_indent = 1
 let g:pymode_utils_whitespaces = 0
+let g:pymode_rope = 0
+let g:pymode_syntax = 0
 
 " For simple-javascript-indenter
 let g:SimpleJsIndenter_BriefMode = 1
 
 " For jedi-vim
+let g:jedi#auto_initialization = 1
 let g:jedi#get_definition_command = '<C-]>'
 let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#popup_on_dot = 0
+let g:jedi#auto_vim_configuration = 0
 
 function! s:refresh()
   let save_ar = &autoread
@@ -460,13 +602,14 @@ augroup END
 " Filetypes setting
 au BufNewFile,BufRead *.as      setlocal filetype=actionscript
 au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
-
 au BufNewFile,BufRead *.inc     setlocal filetype=php
 au BufNewFile,BufRead *.snip    setlocal filetype=snippet
 au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
 au BufNewFile,BufRead *.scala   setlocal filetype=scala
 au BufNewFile,BufRead *.mako    setlocal filetype=mako
+au BufNewFile,BufRead *.coffee  setlocal filetype=coffee
+au BufNewFile,BufRead .bowerrc  setlocal filetype=javascript
 
 function! s:txt_setting()
   setlocal textwidth=78
@@ -482,6 +625,8 @@ function! s:python_setting()
   setlocal tabstop=8 softtabstop=4 shiftwidth=4
   setlocal textwidth=79
   setlocal expandtab
+
+  inoreabbrev slef self
 
   if executable('py.test') && exists(':Pytest')
       nnoremap <silent><buffer><leader>f :Pytest method<CR>
@@ -505,6 +650,10 @@ endfunction
 function! s:html_setting()
   call s:xml_setting()
   call s:colorv_autopreview()
+endfunction
+
+function! s:htmldjango_setting()
+  call s:html_setting()
 endfunction
 
 function! s:snippet_setting()
@@ -537,10 +686,8 @@ function! s:java_setting()
     augroup EclimGroup
       au!
       au BufNewFile,BufRead <buffer> EclimEnable
+      " au BufWritePost <buffer> JavaImportOrganize
     augroup End
-    au BufWrite <buffer> JavaImportMissing
-    au BufWritePost <buffer> JavaImportClean
-    au BufWritePost <buffer> JavaImportSort
   else
     " javacomplete, script_id=1785
     setlocal omnifunc=javacomplete#Complete
@@ -575,6 +722,7 @@ endfunction
 
 function! s:ruby_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal foldmethod=indent
   inoremap <Bar> <Bar><Bar><LEFT>
 endfunction
 
@@ -600,6 +748,13 @@ endfunction
 function! s:yaml_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal autoindent
+endfunction
+
+function! s:coffee_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setlocal foldmethod=indent
+
+  nnoremap <silent><buffer><C-c><C-c> :CoffeeCompile<CR>
 endfunction
 
 " For surround of kana's version.
@@ -691,11 +846,10 @@ vnoremap gc :<C-u>normal gc<CR>
 onoremap gc :<C-u>normal gc<CR>
 nnoremap <C-s> <Nop>
 inoremap <C-s> <Nop>
-" noremap  <C-m> o<ESC><UP>
 noremap  <C-j> <C-w>w
 noremap  <C-k> <C-w>W
-nnoremap <silent><C-l> :nohls<CR>:Refresh<CR>
-inoremap <silent><C-l> <C-o>:nohls<CR><C-o>:Refresh<CR>
+nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>Refresh<CR>
+inoremap <silent><C-l> <C-\><C-o>:<C-u>nohls<CR><C-\><C-o>:<C-u>Refresh<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
 nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
@@ -713,8 +867,6 @@ cnoremap <C-n> <DOWN>
 " for snippet's select mode
 snoremap j j
 snoremap k k
-
-nnoremap <silent><C-g> :<C-u>GenerateAllTags<CR>
 
 " diff mode mappings.
 if &diff
@@ -739,8 +891,8 @@ nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle
 imap <C-_> <C-o><Plug>NERDCommenterToggle
 
-imap <expr><Tab> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
-smap <expr><Tab> neosnippet#expandable() ? "\<Plug>(neosnippet_jump_or_expand)" : pumvisible() ? "\<CR>" : "\<Tab>"
+imap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
+smap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
 
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>

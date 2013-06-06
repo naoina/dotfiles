@@ -39,3 +39,7 @@ hi link Number      String
 hi link Boolean     Keyword
 hi link Operator    Statement
 hi link Conditional Statement
+
+" for vim-indent-guides
+hi IndentGuidesOdd              guibg=#303030
+hi IndentGuidesEven             guibg=#121212
