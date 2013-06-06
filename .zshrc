@@ -135,6 +135,7 @@ esac
 [[ -x "`whence -p rhino`" ]] && alias rhino="rlwrap java -jar /usr/share/java/js.jar"
 [[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && alias exit="screen -d $STY"
 [[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && alias exit="tmux detach"
+[[ -x "`whence -p dig`" ]] && alias dig="dig +noedns"
 if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
     . "`whence -p virtualenvwrapper.sh`"
 else
