@@ -1,7 +1,7 @@
-fg_color = gray
+fg_color = black
 use_transbg = false
 wall_picture = 
-bg_color = black
+bg_color = white
 tabsize = 8
 use_anti_alias = true
 type_engine = xft
@@ -18,3 +18,4 @@ brightness = 7
 contrast = 7
 logsize = 0
 fontsize = 16
+receive_string_via_ucs = true

@@ -103,8 +103,15 @@ fi
 case "$OSTYPE" in
     linux*)
 	alias ls="/bin/ls -A --color=auto"
-	export LS_COLORS='no=00:fi=00:di=01;36:ln=00;35:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:'
-	zstyle ':completion:*' list-colors 'di=01;36' 'ln=00;35' 'so=01;35' 'ex=01;32' 'bd=40;33;01' 'cd=40;33;01'
+
+    if [ -f "$HOME/.dircolors" ]; then
+        eval "$(dircolors $HOME/.dircolors)"
+    else
+        export LS_COLORS='no=00:fi=00:di=01;36:ln=00;35:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=01;05;37;41:mi=01;05;37;41:su=37;41:sg=30;43:tw=30;42:ow=34;42:st=37;44:ex=01;32:'
+    fi
+
+    zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
 	alias -g pg="-pg -g -static -lc_p"
 	;;
     freebsd*)
