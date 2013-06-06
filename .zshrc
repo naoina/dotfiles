@@ -159,3 +159,13 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 zstyle ':auto-fu:var' postdisplay $''
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
+
+function http_server {
+    DIR=${1:="."}
+
+    if [ -x "`whence python3`" ]; then
+        (cd $DIR && python3 -m http.server)
+    elif [ -x "`whence python2`" ]; then
+        (cd $DIR && python2 -m SimpleHTTPServer)
+    fi
+}
