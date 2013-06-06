@@ -7,7 +7,7 @@
     co = checkout
     st = status
     resolve = mergetool
-    glog = log --graph
+    glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
 	dic = diff --cached
     di = diff
 [color]
