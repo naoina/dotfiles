@@ -46,9 +46,10 @@ precmd () {
     psvar=()
     LANG=en_US.UTF-8 vcs_info
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
+    [[ -n "$SSH_AUTH_SOCK" ]] && psvar[2]="{`basename $SSH_AUTH_SOCK`}"
 }
 PROMPT="%F{green}%1v%f[%~]
-[%n@%M(`uname -m`)]%# "
+[%n@%M(`uname -m`)%2v]%# "
 
 #[[ -e "/etc/zsh/zprofile" ]] && source /etc/zsh/zprofile
 
@@ -159,6 +160,11 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 zstyle ':auto-fu:var' postdisplay $''
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
+
+function ssh-agent {
+    eval `command ssh-agent`
+    command ssh-add
+}
 
 function http_server {
     DIR=${1:="."}
