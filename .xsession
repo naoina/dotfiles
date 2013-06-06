@@ -33,8 +33,10 @@ xmodmap $HOME/.Xmodmap
 
 # Default settings.
 xgamma -rgamma 1.0 -ggamma 1.0 -bgamma 0.65
-xset s noblank
+xset s off
 xset r rate 250 50
+xset b off
+xset -dpms
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation" 8 1
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Button" 8 2
 xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4 5
