@@ -628,7 +628,7 @@ client.connect_signal("unfocus",
     function(c)
         c.border_color = beautiful.border_normal
         if c.class == terminal_class then
-            c.opacity = 0.90
+            c.opacity = 0.85
         end
     end)
 -- }}}
