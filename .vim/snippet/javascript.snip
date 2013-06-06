@@ -1,5 +1,15 @@
 include c_like.snip
 
+snippet document
+alias d
+options word
+	document
+
+snippet window
+alias w
+options word
+	window
+
 snippet function
 alias f
 abbr function () {}
@@ -20,3 +30,115 @@ options word
 snippet ,
 options word
 	, ${1:varname} = ${2:value}
+
+snippet log
+options head
+	console.log(${0});
+
+snippet error
+alias	err
+options head
+	console.error(${0});
+
+snippet amd
+options head
+	(function(define) {
+	
+	${0}
+	
+	})(typeof define === 'function' ? define : function(deps, factory) {
+		window.${1:ClassName} = factory();
+	});
+
+snippet define
+alias def
+options head
+	define([${1}], function(${2}) {
+		function ${3:ModuleName}() {
+			${0}
+		}
+
+		return ${3:ModuleName};
+	});
+
+snippet require
+alias req
+options head
+	require([${1}], function(${2}) {
+		${0}
+	});
+
+
+# for tests
+snippet describe
+alias de
+options head
+	describe("${1:describe}", function() {
+		${0}
+	});
+
+snippet it
+options head
+	it("should ${1}", function(${2:done}) {
+		${0:done();}
+	});
+
+snippet beforeEach
+alias be
+options head
+	beforeEach(function(${1:done}) {
+		${0:done();}
+	});
+
+snippet before
+options head
+	before(function(${1:done}) {
+		${0:done();}
+	});
+
+snippet afterEach
+alias af
+options head
+	afterEach(function(${1:done}) {
+		${0:done();}
+	});
+
+snippet after
+options head
+	after(function(${1:done}) {
+		${0:done();}
+	})
+
+snippet expect
+alias p
+options head
+	expect(${1}).to.be(${2});
+
+snippet eql
+alias eq
+options head
+	expect(${1}).to.eql({
+		${0}
+	});
+
+
+snippet describeComponent
+alias dec
+options head
+	describeComponent('${1:component}', function() {
+		${0}
+	});
+
+snippet describeMixin
+alias dem
+options head
+	describeMixin('${1:mixin}', function() {
+		${0}
+	});
+
+snippet describeModule
+alias deM
+options head
+	describeModule('${1:module}', function() {
+		${0}
+	});

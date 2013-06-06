@@ -1,11 +1,76 @@
 snippet def
 options head
 	def ${1:funcname}
-		${2:# TODO: not implemented yet}
+		${0:# TODO: not implemented yet}
 	end
 
 snippet class
 options head
 	class ${1:ClassName}
-		${2:# TODO: not implemented yet}
+		${0:# TODO: not implemented yet}
+	end
+
+snippet module
+options head
+	module ${1:ModuleName}
+		${0:# TODO: not implemented yet}
+	end
+
+snippet require
+alias r
+options head
+	require '${0}'
+
+snippet do
+	do
+		${0}
+	end
+
+snippet #
+options word
+	#{${0:varname}}
+
+snippet =>
+options word
+	${1:key} => ${2:value}
+
+# for rspec
+snippet describe
+alias de
+options head
+	describe "${1}" do
+		${0}
+	end
+
+snippet context
+alias co
+options head
+	context "${1}" do
+		${0}
+	end
+
+snippet it
+options head
+	it "should ${1}" do
+		${0}
+	end
+
+snippet before
+alias be
+options head
+	before(:each) do
+		${0}
+	end
+
+snippet after
+alias af
+options head
+	after(:each) do
+		${0}
+	end
+
+snippet if
+options head
+	if ${1:cond}
+		${0}
 	end

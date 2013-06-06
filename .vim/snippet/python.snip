@@ -5,8 +5,8 @@ options head
 	import ${1:module}
 
 snippet from
-alias f
-abbr from {module} import {target}
+alias fr
+abbr from ... import ...
 options head
 	from ${1:module} import ${2:target}
 
@@ -46,10 +46,15 @@ options head
 		${2:pass}
 
 snippet def
+alias	f
 options head
 	def ${1:funcname}(${2}):
-		"""
-		"""
+		${0:raise NotImplementedError}
+
+snippet defm
+alias	m
+options head
+	def ${1:methodname}(self, ${2}):
 		${0:raise NotImplementedError}
 
 snippet deft
@@ -581,7 +586,7 @@ options head
 snippet with
 abbr with ...
 options head
-	with ${1}${2: as ${3:ctx\}}:
+	with ${1}:
 		${0:raise NotImplementedError}
 
 snippet isinstance
@@ -591,6 +596,7 @@ options head
 
 snippet doc
 abbr """
+options word
 	"""${0}
 	"""
 
@@ -602,3 +608,21 @@ options head
 snippet here
 options head
 	here = os.path.abspath(os.path.dirname(__file__))
+
+snippet args
+abbr *args
+alias ar
+	*args
+
+snippet kwargs
+abbr **kwargs
+alias kw
+	**kwargs
+
+snippet ak
+abbr *args, **kwargs
+	*args, **kwargs
+
+snippet assert
+alias as
+	assert ${0}

@@ -2,7 +2,7 @@ snippet class
 options head
 	${1:public} class ${2:ClassName} {
 		public $2() {
-			${0:// not yet implements.}
+			${0:// not implemented yet.}
 		}
 	}
 
@@ -10,7 +10,7 @@ snippet function
 alias fun
 options head
 	${1:public} function ${2:funcname}(${3}):${4:void} {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet var
@@ -36,26 +36,26 @@ options head
 snippet if
 options head
 	if (${1:condition}) {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet while
 options head
 	while (${1:condition}) {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet for
 options head
 	for (${1:var i:int = 0}; ${2:condition}; ${3:i++}) {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet do
 abbr do-while
 options head
 	do {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	} while (${1:condition});
 
 snippet switch
@@ -63,7 +63,7 @@ alias sw
 options head
 	switch (${1:condition}) {
 		case ${2:pattern}:
-			${0:// not yet implements.}
+			${0:// not implemented yet.}
 			break;
 		default:
 			break;
@@ -73,21 +73,21 @@ snippet case
 abbr switch-case
 options head
 	case ${1:pattern}:
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 		break;
 
 snippet getter
 abbr funciton get ...
 options head
 	${1:public} function get ${2:funcname}():${3:int} {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet setter
 abbr funciton set ...
 options head
 	${1:public} function set ${2:funcname}(${3:value}):${4:void} {
-		${0:// not yet implements.}
+		${0:// not implemented yet.}
 	}
 
 snippet co
@@ -116,3 +116,8 @@ alias ov
 abbr override
 options head
 	override 
+
+snippet ex
+abbr ExternalInterface.call
+options head
+	ExternalInterface.call('console.log', '${0}');

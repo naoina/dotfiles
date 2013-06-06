@@ -7,11 +7,11 @@ alias c
 
 snippet css
 abbr <link rel="stylesheet">
-	<link rel="stylesheet" type="text/css" href="${0}" />
+	<link href="${0}" rel="stylesheet">
 
 snippet js
 abbr <script>
-	<script type="text/javascript" src="${0}"></script>
+	<script src="${0}"></script>
 
 snippet style
 	<style><!--
@@ -19,17 +19,19 @@ snippet style
 	--></style>
 
 snippet script
-	<script type="text/javascript"><!--
+	<script><!--
 		${0}
 	//--></script>
 
 snippet a
 abbr a href
+options word
 	<a href="${1}">${0}</a>
 
 snippet img
 abbr img src
-	<img src="${1}" alt="${2}" />
+options word
+	<img src="${0}" alt="${1}" />
 
 snippet table
 	<table>
@@ -74,7 +76,7 @@ snippet inputcheckbox
 	<input type="checkbox" name="${1}" />
 
 snippet inputradio
-	<input type="radio" name="${1}" value="${2} />
+	<input type="radio" name="${1}" value="${2}" />
 
 snippet inputsubmit
 	<input type="submit" name="submit" value="${0}" />
@@ -98,21 +100,27 @@ snippet label
 	<label for="${1}">${0}</label>
 
 snippet h1
+options word
 	<h1>${0}</h1>
 
 snippet h2
+options word
 	<h2>${0}</h2>
 
 snippet h3
+options word
 	<h3>${0}</h3>
 
 snippet h4
+options word
 	<h4>${0}</h4>
 
 snippet h5
+options word
 	<h5>${0}</h5>
 
 snippet h6
+options word
 	<h6>${0}</h6>
 
 snippet select
@@ -124,27 +132,34 @@ snippet option
 	<option value="${1}">${0}</option>
 
 snippet ul
-	<ul>
-		<li>${0}</li>
+	<ul class="${1}">
+		<li class="${2}">${0}</li>
 	</ul>
 
 snippet li
-	<li>${0}</li>
+	<li class="${1}">${0}</li>
 
 snippet textarea
 	<textarea name="${1}" rows="${2}" cols="${3}">${0}</textarea>
 
 snippet div
-	<div>${0}</div>
+	<div class="${1}">${0}</div>
 
 snippet p
-	<p>${0}</p>
+options word
+	<p class="${1}">${0}</p>
 
 snippet span
-	<span>${0}</span>
+options word
+	<span class="${1}">${0}</span>
 
 snippet br
-	<br />
+options word
+	<br>
+
+snippet pre
+options word
+	<pre>${0}</pre>
 
 snippet dl
 	<dl>
@@ -158,7 +173,7 @@ snippet dd
 	<dd>${0}</dd>
 
 snippet button
-	<button>${0}</button>
+	<button type="${1}" class="${2}">${0}</button>
 
 snippet section
 	<section>${0}</section>
@@ -179,4 +194,38 @@ snippet aside
 	<aside>${0}</aside>
 
 snippet iframe
-	<iframe src="${1}">${0}</iframe>
+	<iframe src="${0}">${1}</iframe>
+
+snippet video
+	<video src="${0}" width="${1}" height="${2}">${3}</video>
+
+snippet audio
+	<audio src="${0}">${1}</audio>
+
+snippet canvas
+	<canvas width="${1}" height="${2}"></canvas>
+
+snippet strong
+options word
+	<strong>${0}</strong>
+
+snippet small
+options word
+	<small>${0}</small>
+
+snippet code
+options word
+	<code>${0}</code>
+
+snippet i
+options word
+	<i class="${1}">${0}</i>
+
+snippet html
+	<!DOCTYPE html>
+	<html>
+		<head>
+		</head>
+		<body>
+		</body>
+	</html
