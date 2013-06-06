@@ -21,9 +21,13 @@ export LC_TIME=C
 # export GTK_IM_MODULE=scim-bridge
 # export QT_IM_MODULE=scim-bridge
 # export XMODIFIERS=@im=SCIM
-export GTK_IM_MODULE=ibus
-export QT_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
+# export GTK_IM_MODULE=ibus
+# export QT_IM_MODULE=ibus
+# export XMODIFIERS=@im=ibus
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
+
 
 xmodmap $HOME/.Xmodmap
 
@@ -37,7 +41,8 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 
 # uim-xim &
 # scim -d
-ibus-daemon --xim -d
+# ibus-daemon --xim -d
+fcitx
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send '%f mounted on %d'"
