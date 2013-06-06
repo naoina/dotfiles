@@ -28,6 +28,13 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
+if [ -x "`which google-chrome`" ]; then
+    export BROWSER="google-chrome"
+elif [ -x "`which chromium`" ]; then
+    export BROWSER="chromium"
+elif [ -x "`which firefox`" ]; then
+    export BROWSER="firefox"
+fi
 
 xmodmap $HOME/.Xmodmap
 
