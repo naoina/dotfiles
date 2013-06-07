@@ -232,7 +232,7 @@ NeoBundle 'git://github.com/vim-scripts/vombato-colorscheme.git'
 filetype plugin indent on
 
 set t_Co=256
-colorscheme original
+colorscheme naoina
 
 hi FullwidthAndEOLSpace guibg=#262626
 match FullwidthAndEOLSpace "\(　\|\s\)\+$"

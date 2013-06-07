@@ -6,7 +6,7 @@ if exists('syntax_on')
   syntax reset
 endif
 
-let g:colors_name = 'original'
+let g:colors_name = 'naoina'
 
 hi Normal       guifg=gray      guibg=black
 hi LineNr       guifg=#ff005f
