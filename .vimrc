@@ -167,7 +167,7 @@ NeoBundleLazy 'git://github.com/othree/html5.vim.git', {
       \ }
 NeoBundleLazy 'git://github.com/Rykka/colorv.vim.git', {
         \ 'autoload': {
-        \     'filetypes': ['html', 'htmldjango', 'mako', 'erb', 'css'],
+        \     'filetypes': ['html', 'htmldjango', 'mako', 'erb', 'css', 'vim'],
         \     },
         \ }
 NeoBundleLazy 'git://github.com/mattn/zencoding-vim.git', {
@@ -225,13 +225,12 @@ let g:coffee_compile_vert = 1
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
-NeoBundle 'git://github.com/altercation/vim-colors-solarized.git'
-NeoBundle 'git://github.com/vim-scripts/Mahewincs.git'
-NeoBundle 'git://github.com/vim-scripts/vombato-colorscheme.git'
+NeoBundle 'git://github.com/flazz/vim-colorschemes.git'
 
 filetype plugin indent on
 
 set t_Co=256
+set background=light
 colorscheme naoina
 
 hi FullwidthAndEOLSpace guibg=#262626
