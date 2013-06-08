@@ -1,4 +1,15 @@
 {
+  "globals": {
+    "describe": true,
+    "it": true,
+    "expect": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "sinon": true
+  },
+
   "asi"         : false, // if automatic semicolon insertion should be tolerated
   "bitwise"     : false, // if bitwise operators should not be allowed
   "boss"        : true, // if advanced usage of assignments should be allowed
