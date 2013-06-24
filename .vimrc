@@ -337,7 +337,12 @@ call s:mkdir(s:cachedir, 0700)
 au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call s:clear_undo() | endif
 
 " Auto restore last cursor position.
-au BufReadPost * normal '"
+function! s:restore_cursor()
+  if line("'\"") > 1 && line("'\"") <= line("$")
+    normal! g`"
+  endif
+endfunction
+au BufReadPost * call s:restore_cursor()
 
 au BufEnter * call s:autocd()
 au CursorMovedI * if pumvisible() == 0|pclose|endif
