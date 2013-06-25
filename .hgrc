@@ -21,10 +21,6 @@ graphlog =
 bookmarks =
 transplant =
 purge =
-hggit = ~/hg-extension/hg-git/hggit
-svn = ~/hg-extension/hgsubversion/hgsubversion
-histedit = ~/hg-extension/histedit/hg_histedit.py
-hgshelve = ~/hg-extension/hgshelve/hgshelve.py
 
 [alias]
 show = diff -c tip
