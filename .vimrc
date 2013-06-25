@@ -59,6 +59,27 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \     'unix': 'make -f make_unix.mak',
         \     },
         \ }
+
+NeoBundle 'https://github.com/kana/vim-smartinput.git'
+let s:bundle = neobundle#get('vim-smartinput')
+function! s:bundle.hooks.on_source(bundle)
+    call smartinput#map_to_trigger('i', '#', '#', '#')
+    call smartinput#define_rule({
+            \ 'at': '\%#',
+            \ 'char': '#',
+            \ 'input': '#{}<Left>',
+            \ 'filetype': ['ruby'],
+            \ 'syntax': ['String', 'Delimiter'],
+            \ })
+    call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
+    call smartinput#define_rule({
+            \ 'at': '\({\|\<do\>\)\s*\%#',
+            \ 'char': '<Bar>',
+            \ 'input': '<Bar><Bar><Left>',
+            \ 'filetype': ['ruby'],
+            \ })
+endfunction
+
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
 NeoBundle 'git://github.com/tpope/vim-fugitive.git', {'augroup': 'fugitive'}
@@ -727,7 +748,6 @@ endfunction
 function! s:ruby_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal foldmethod=indent
-  inoremap <Bar> <Bar><Bar><LEFT>
 endfunction
 
 function! s:eruby_setting()
@@ -826,11 +846,6 @@ function! s:setting()
   endif
 endfunction
 
-function! s:setting4like_c()
-  inoremap {<CR> {<CR>}<C-o><S-o>
-endfunction
-
-au MyAutoCmd FileType c,cpp,java,javascript,php,actionscript call s:setting4like_c()
 au MyAutoCmd FileType * call s:setting()
 
 " Mappings.
