@@ -5,7 +5,7 @@ options head
 	import ${1:module}
 
 snippet from
-alias fr
+alias f
 abbr from ... import ...
 options head
 	from ${1:module} import ${2:target}
@@ -46,19 +46,19 @@ options head
 		${2:pass}
 
 snippet def
-alias	f
+alias	df
 options head
 	def ${1:funcname}(${2}):
 		${0:raise NotImplementedError}
 
 snippet defm
-alias	m
+alias	dm
 options head
-	def ${1:methodname}(self, ${2}):
+	def ${1:methodname}(self${2}):
 		${0:raise NotImplementedError}
 
 snippet deft
-alias tdef
+alias dt
 abbr def test_function(...): ...
 options head
 	def test_${1:funcname}(${2}):

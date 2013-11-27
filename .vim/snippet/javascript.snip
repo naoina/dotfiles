@@ -14,7 +14,7 @@ snippet function
 alias f
 abbr function () {}
 options word
-	function(${1}) {
+	function (${1}) {
 		${0:// TODO: not implemented yet}
 	}
 
@@ -54,11 +54,11 @@ snippet define
 alias def
 options head
 	define([${1}], function(${2}) {
-		function ${3:ModuleName}() {
+		function ${3:moduleName}() {
 			${0}
 		}
 
-		return ${3:ModuleName};
+		return ${3:moduleName};
 	});
 
 snippet require
@@ -112,7 +112,7 @@ options head
 snippet expect
 alias p
 options head
-	expect(${1}).to.be(${2});
+	expect(${1}).to.equal(${2});
 
 snippet eql
 alias eq
@@ -126,6 +126,10 @@ snippet describeComponent
 alias dec
 options head
 	describeComponent('${1:component}', function() {
+		beforeEach(function() {
+			setupComponent();
+		});
+
 		${0}
 	});
 

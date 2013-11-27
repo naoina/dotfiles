@@ -145,17 +145,21 @@ alias pl
 options word
 	{% plural %}
 
-snippet autoescape
-abbr {% autoescape off %}
-alias auto
-options word
-	{% autoescape off %}
-	${0}
-	{% endautoescape %}
-
 snippet spaceless
 abbr {% spaceless %}
 alias space
 	{% spaceless %}
 	${0}
 	{% endspaceless %}
+
+snippet static
+abbr {% static %}
+alias st
+options word
+	{% static '${0}' %}
+
+snippet csrf_token
+abbr {% csrf_token %}
+alias cs
+options head
+	{% csrf_token %}

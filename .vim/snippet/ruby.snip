@@ -74,3 +74,8 @@ options head
 	if ${1:cond}
 		${0}
 	end
+
+snippet expect
+alias	ex
+options word
+	expect(${1}).to ${2}
