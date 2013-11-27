@@ -71,6 +71,11 @@ export HC_OPTS="-W"
 export VIRTUALENV_USE_DISTRIBUTE=1
 export WORKON_HOME="$HOME/work/virtualenv"
 
+if [ -x "`whence go`" ]; then
+    export GOOS=`go env GOOS`
+    export GOARCH=`go env GOARCH`
+fi
+
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 
 #if [ -x "`whence llvm-gcc`" ]; then
@@ -148,6 +153,7 @@ if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
 else
     [[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
 fi
+[[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 alias ll="ls -l"
 alias lz="ll -Z"
