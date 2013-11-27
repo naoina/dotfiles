@@ -2,6 +2,8 @@
 
 @LICENSE@
 
+from __future__ import unicode_literals
+
 __author__ = "@AUTHOR@ <@EMAIL@>"
 
 __all__ = [

@@ -68,24 +68,29 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \ }
 
 NeoBundle 'https://github.com/kana/vim-smartinput.git'
-let s:bundle = neobundle#get('vim-smartinput')
-function! s:bundle.hooks.on_source(bundle)
-    call smartinput#map_to_trigger('i', '#', '#', '#')
-    call smartinput#define_rule({
-            \ 'at': '\%#',
-            \ 'char': '#',
-            \ 'input': '#{}<Left>',
-            \ 'filetype': ['ruby'],
-            \ 'syntax': ['String', 'Delimiter'],
-            \ })
-    call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
-    call smartinput#define_rule({
-            \ 'at': '\({\|\<do\>\)\s*\%#',
-            \ 'char': '<Bar>',
-            \ 'input': '<Bar><Bar><Left>',
-            \ 'filetype': ['ruby'],
-            \ })
-endfunction
+call smartinput#map_to_trigger('i', '#', '#', '#')
+call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
+call smartinput#define_rule({
+        \ 'at': '\({\|\<do\>\)\s*\%#',
+        \ 'char': '<Bar>',
+        \ 'input': '<Bar><Bar><Left>',
+        \ 'filetype': ['ruby'],
+        \ })
+
+NeoBundle 'https://github.com/kana/vim-altr.git'
+" Python
+call altr#define('views.py', 'views/__init__.py', 'tests/test_views.py')
+call altr#define('views/%.py', 'tests/views/test_%.py')
+call altr#define('models.py', 'models/__init__.py', 'tests/test_models.py')
+call altr#define('models/%.py', 'tests/models/test_%.py')
+call altr#define('forms.py', 'forms/__init__.py', 'tests/test_forms.py')
+call altr#define('forms/%.py', 'tests/forms/test_%.py')
+" JavaScript
+call altr#define('static/js/plog/components/%.js', 'tests/js/plog/components/test_%.js')
+" Go
+call altr#define('%.go', '%_test.go')
+command! An call altr#forward()
+command! Ap call altr#back()
 
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
@@ -98,31 +103,27 @@ NeoBundle 'git://github.com/mattn/webapi-vim.git'
 NeoBundle 'git://github.com/rking/ag.vim.git'
 NeoBundle 'git://github.com/tpope/vim-rails.git'  " should not be used the NeoBundleLazy
 NeoBundle 'git://github.com/tpope/vim-markdown.git'
-NeoBundle 'git://github.com/xolox/vim-session.git', {
-        \ 'depends': [
-        \     'git://github.com/xolox/vim-misc.git',
-        \     ],
+NeoBundle 'git://github.com/othree/html5.vim.git'
+
+NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
+        \ 'autoload': {
+        \     'commands': ['CtrlP'],
+        \     },
         \ }
-let g:session_directory = s:cachedir . '/session'
-let g:session_autosave = 'no'
-let g:session_command_aliases = 1
-function! s:open_session()
-  let g:session_current_name = substitute(expand('%:p:h'), '[/]', '$', 'g')
+let s:bundle = neobundle#get('ctrlp.vim')
+function! s:bundle.hooks.on_source(bundle)
+  let g:ctrlp_map = '<nop>'
+  let g:ctrlp_show_hidden = 1
+  let g:ctrlp_prompt_mappings = {
+        \ 'PrtHistory(-1)': [],
+        \ 'PrtHistory(1)': [],
+        \ 'PrtSelectMove("j")': ['<C-n>'],
+        \ 'PrtSelectMove("k")': ['<C-p>'],
+        \ }
 endfunction
-function! s:save_session()
-  if exists('g:session_current_name')
-    exec 'silent SaveSession ' . g:session_current_name
-  endif
+function! s:bundle.hooks.on_post_source(bundle)
+  nnoremap <C-e> :<C-u>CtrlP<CR>
 endfunction
-function! s:remove_session()
-  if exists('g:session_current_name')
-    exec 'silent DeleteSession ' . g:session_current_name
-  endif
-  unlet g:session_current_name
-endfunction
-au VimEnter * nested call s:open_session()
-au BufWritePost * call s:save_session()
-au VimLeavePre * call s:remove_session()
 
 NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', {
         \ 'autoload': {
@@ -140,30 +141,15 @@ NeoBundleLazy 'git://github.com/Shougo/unite-outline.git', {
         \     },
         \ }
 
-NeoBundleLazy 'git://github.com/scrooloose/nerdtree.git', {
-        \ 'autoload': {
-        \     'commands': ['NERDTree', 'NERDTreeToggle'],
+NeoBundle 'git://github.com/thinca/vim-quickrun.git'
+let s:bundle = neobundle#get('vim-quickrun')
+function! s:bundle.hooks.on_source(bundle)
+  let g:quickrun_config = {
+        \ '*': {
+        \     'split': 'vertical 50',
         \     },
         \ }
-let g:NERDTreeShowHidden = 1
-let g:NERDTreeWinPos = 'right'
-let g:NERDTreeIgnore = [
-        \ '\~$', '\.bak$',
-        \ '\.pyc$',
-        \ ]
-nnoremap <C-e> :<C-u>NERDTreeToggle<CR>
-
-NeoBundleLazy 'git://github.com/thinca/vim-quickrun.git', {
-      \ 'autoload': {
-      \     'mappings': '<Plug>(quickrun)',
-      \     'commands': ['QuickRun'],
-      \     },
-      \ }
-let g:quickrun_config = {
-      \ '*': {
-      \     'split': 'vertical 50',
-      \     },
-      \ }
+endfunction
 
 NeoBundleLazy 'git://github.com/nathanaelkane/vim-indent-guides.git', {
         \ 'autoload': {
@@ -188,19 +174,14 @@ NeoBundleLazy 'git://github.com/cespare/mxml.vim.git', {
         \     'filetypes': ['mxml'],
         \     },
         \ }
-NeoBundleLazy 'git://github.com/othree/html5.vim.git', {
-      \ 'autoload': {
-      \     'filetypes': ['html', 'htmldjango', 'mako', 'erb'],
-      \     },
-      \ }
 NeoBundleLazy 'git://github.com/Rykka/colorv.vim.git', {
         \ 'autoload': {
         \     'filetypes': ['html', 'htmldjango', 'mako', 'erb', 'css', 'vim'],
         \     },
         \ }
-NeoBundleLazy 'git://github.com/mattn/zencoding-vim.git', {
+NeoBundleLazy 'git://github.com/mattn/emmet-vim.git', {
         \ 'autoload': {
-        \     'filetypes': ['html', 'xml', 'htmldjango', 'mako', 'erb'],
+        \     'filetypes': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty'],
         \     },
         \ }
 NeoBundle 'git://github.com/vim-scripts/mako.vim.git'  " should not be used the NeoBundleLazy
@@ -214,6 +195,12 @@ NeoBundleLazy 'git://github.com/jiangmiao/simple-javascript-indenter.git', {
         \     'filetypes': ['javascript'],
         \     },
         \ }
+NeoBundleLazy 'https://github.com/teramako/jscomplete-vim.git', {
+        \ 'autoload': {
+        \     'filetypes': ['javascript'],
+        \     },
+        \ }
+
 NeoBundleLazy 'git://github.com/alfredodeza/pytest.vim.git', {
         \ 'autoload': {
         \     'filetypes': ['python'],
@@ -260,6 +247,28 @@ let g:coffee_compile_vert = 1
         " \     },
         " \ }
 
+NeoBundleLazy 'https://github.com/Blackrush/vim-gocode.git', {
+        \ 'autoload': {
+        \     'filetypes': ['go'],
+        \     },
+        \ }
+let s:bundle = neobundle#get('vim-gocode')
+function! s:bundle.hooks.on_source(bundle)
+  let g:gocode_gofmt_tabs = ' -tabs=true'
+endfunction
+function! s:bundle.hooks.on_post_source(bundle)
+  augroup MyGoAutoCmd
+    au!
+    au BufWrite *.go Fmt
+  augroup End
+endfunction
+
+NeoBundleLazy 'https://github.com/dgryski/vim-godef.git', {
+        \ 'autoload': {
+        \     'filetypes': ['go'],
+        \     },
+        \ }
+
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
 NeoBundle 'git://github.com/flazz/vim-colorschemes.git'
@@ -280,6 +289,7 @@ set directory=$VIMLOCAL/swap
 set noswapfile
 
 set backup
+set nowritebackup
 set viminfo='1000,<500,f1
 set backspace=indent,eol,start
 set list
@@ -428,6 +438,7 @@ function! s:template_keywords()
   %s/@EMAIL@/\=g:email/ge
   %s/@YEAR@/\=strftime('%Y')/ge
   %s/@FILE@/\=expand('%:t:r')/ge
+  %s/@DIRNAME@/\=expand('%:p:h:t')/ge
 
   call cursor(1, 0)
   if search('<CURSOR>', 'c')
@@ -466,6 +477,7 @@ let g:neocomplcache_enable_smart_case  = 1
 let g:neocomplcache_temporary_dir = s:cachedir
 let g:neocomplcache_enable_prefetch = 1
 let g:neocomplcache_force_overwrite_completefunc = 1
+let g:neocomplcache_enable_fuzzy_completion = 1
 " let g:neocomplcache_enable_debug = 1
 " if !exists('g:neocomplcache_omni_functions')
     " let g:neocomplcache_force_omni_patterns = {}
@@ -524,13 +536,10 @@ let g:pymode_syntax = 0
 let g:SimpleJsIndenter_BriefMode = 1
 
 function! s:refresh()
-  let save_ar = &autoread
   setlocal autoread
-  redr! | checktime
-  let &autoread = save_ar
-  unlet save_ar
+  redr!
+  set autoread<
 endfunction
-command! Refresh :call s:refresh()
 
 function! s:tohtml_and_browse()
   TOhtml
@@ -657,6 +666,7 @@ function! s:python_setting()
   setlocal expandtab
 
   inoreabbrev slef self
+  inoreabbrev slf self
 
   if executable('py.test') && exists(':Pytest')
       nnoremap <silent><buffer><leader>f :Pytest method<CR>
@@ -694,10 +704,18 @@ endfunction
 
 function! s:javascript_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
-  setlocal foldmethod=indent foldminlines=2
+  setlocal foldmethod=indent foldminlines=1 foldlevel=1
+
+  inoreabbrev tihs this
+  inoreabbrev htis this
+
+  let g:jscomplete_use = ['dom', 'moz']
+  setlocal omnifunc=jscomplete#CompleteJS
 endfunction
 
 function! s:actionscript_setting()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab
+  setlocal foldmethod=indent foldminlines=1 foldlevel=1
   setlocal dictionary=$VIMLOCAL/dict/actionscript3.dict
 endfunction
 
@@ -786,6 +804,19 @@ function! s:coffee_setting()
   nnoremap <silent><buffer><C-c><C-c> :CoffeeCompile<CR>
 endfunction
 
+function! s:go_setting()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  setlocal foldmethod=indent
+  setlocal noexpandtab
+  inoremap {<CR> {<CR>}<C-o>O
+  inoremap (<CR> (<CR>)<C-o>O
+endfunction
+
+function! s:gitconfig_setting()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  setlocal noexpandtab
+endfunction
+
 " For surround of kana's version.
 function! s:c_surround()
   " For C like languages.
@@ -852,6 +883,8 @@ function! s:setting()
 endfunction
 
 au MyAutoCmd FileType * call s:setting()
+au MyAutoCmd InsertEnter * set nohlsearch
+au MyAutoCmd InsertLeave * set hlsearch
 
 " Mappings.
 noremap Q <Nop>
@@ -872,8 +905,7 @@ nnoremap <C-s> <Nop>
 inoremap <C-s> <Nop>
 noremap  <C-j> <C-w>w
 noremap  <C-k> <C-w>W
-nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>Refresh<CR>
-inoremap <silent><C-l> <C-\><C-o>:<C-u>nohls<CR><C-\><C-o>:<C-u>Refresh<CR>
+nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>call <SID>refresh()<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
 nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
