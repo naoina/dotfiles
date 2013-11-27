@@ -29,10 +29,10 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
-if [ -x "`which google-chrome`" ]; then
-    export BROWSER="google-chrome"
-elif [ -x "`which chromium`" ]; then
+if [ -x "`which chromium`" ]; then
     export BROWSER="chromium"
+elif [ -x "`which google-chrome`" ]; then
+    export BROWSER="google-chrome"
 elif [ -x "`which firefox`" ]; then
     export BROWSER="firefox"
 fi
@@ -58,6 +58,8 @@ if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send '%f mounted on %d'"
     devmon --exec-on-drive "$AFTER_CMD" &
 fi
+
+# [ -x "/opt/dropbox/dropbox" ] && /opt/dropbox/dropbox &
 
 
 #$WALLPAPER_PICKER $IMAGE_PATH
