@@ -14,13 +14,13 @@ if has('vim_starting')
   call neobundle#rc($VIMLOCAL . '/bundle')
 endif
 
-" NeoBundle 'git://github.com/Shougo/neocomplcache.git', {
-        " \ 'depends': [
-        " \     'git://github.com/Shougo/neosnippet.git',
-        " \     ],
-        " \ }
+augroup MyAutoCmd
+  au!
+augroup End
 
-NeoBundle 'git://github.com/Shougo/neocomplete.vim.git'
+" NeoBundle 'git://github.com/Shougo/neocomplcache.git'
+
+" NeoBundle 'git://github.com/Shougo/neocomplete.vim.git'
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_auto_select = 1
 let g:neocomplete#min_keyword_length = 4
@@ -37,19 +37,26 @@ if !exists('g:neocomplete#force_omni_input_patterns')
 endif
 let g:neocomplete#force_omni_input_patterns.python = '[^. \t]\.\w*'
 
-" NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
-        " \ 'build': {
-        " \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer',
-        " \     },
-        " \ }
+NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
+        \ 'build': {
+        \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer',
+        \     },
+        \ }
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_key_list_select_completion = ['<Enter>']
 let g:ycm_global_ycm_extra_conf = $VIMLOCAL . '/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
 
-NeoBundle 'git://github.com/Shougo/neosnippet.git'
+NeoBundle 'https://github.com/SirVer/ultisnips.git'
+let g:UltiSnipsSnippetsDir = $VIMLOCAL . '/snippet'
+let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
+
+" NeoBundle 'git://github.com/Shougo/neosnippet.git'
 NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \ 'build': {
@@ -217,15 +224,24 @@ NeoBundleLazy 'git://github.com/klen/python-mode.git', {
       \     'filetypes': ['python'],
       \     },
       \ }
-NeoBundleLazy 'git://github.com/davidhalter/jedi-vim.git', {
-        \ 'build': {
-        \     'unix': 'git submodule update --init',
-        \     },
-        \ 'autoload': {
-        \     'filetypes': ['python'],
-        \     },
-        \ 'depends': 'git://github.com/jmcantrell/vim-virtualenv.git',
-        \ }
+" NeoBundleLazy 'git://github.com/davidhalter/jedi-vim.git', {
+        " \ 'build': {
+        " \     'unix': 'git submodule update --init',
+        " \     },
+        " \ 'autoload': {
+        " \     'filetypes': ['python'],
+        " \     },
+        " \ }
+" let s:bundle = neobundle#get('jedi-vim')
+" function! s:bundle.hooks.on_source(bundle)
+  " let g:jedi#auto_initialization = 1
+  " let g:jedi#get_definition_command = '<C-]>'
+  " let g:jedi#rename_command = '<leader>n'
+  " let g:jedi#use_tabs_not_buffers = 0
+  " let g:jedi#popup_on_dot = 0
+  " let g:jedi#auto_vim_configuration = 0
+" endfunction
+
 NeoBundleLazy 'git://github.com/jmcantrell/vim-virtualenv.git', {
         \ 'autoload': {
         \     'filetypes': ['python'],
@@ -507,13 +523,6 @@ let g:pymode_syntax = 0
 " For simple-javascript-indenter
 let g:SimpleJsIndenter_BriefMode = 1
 
-" For jedi-vim
-let g:jedi#auto_initialization = 1
-let g:jedi#get_definition_command = '<C-]>'
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#popup_on_dot = 0
-let g:jedi#auto_vim_configuration = 0
-
 function! s:refresh()
   let save_ar = &autoread
   setlocal autoread
@@ -598,10 +607,6 @@ function! s:colorv_autopreview()
     ColorVAutoPreview
   endif
 endfunction
-
-augroup MyAutoCmd
-  au!
-augroup End
 
 " au MyAutoCmd FileType ruby call s:flymake_make('ruby\ -c\ %', "%f:%l:%m", 'setlocal shellpipe=1>/dev/null\ 2>')
 " au MyAutoCmd FileType php  call s:flymake_make('php\ -lq\ %', '%s\ error:\ %m\ in\ %f\ on\ line\ %l', 'setlocal shellpipe=1>/dev/null\ 2>')

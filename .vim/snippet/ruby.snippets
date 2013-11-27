@@ -1,0 +1,73 @@
+snippet def "def" b
+def ${1:funcname}
+	${0:# TODO: not implemented yet}
+end
+endsnippet
+
+snippet class "class" b
+class ${1:ClassName}
+	${0:# TODO: not implemented yet}
+end
+endsnippet
+
+snippet module "module" b
+module ${1:ModuleName}
+	${0:# TODO: not implemented yet}
+end
+endsnippet
+
+snippet r "require" b
+require '$0'
+endsnippet
+
+snippet do "do ... end" i
+do
+	$0
+end
+endsnippet
+
+snippet dop "do |n| .. end" i
+do |${1:n}|
+	$0
+end
+endsnippet
+
+snippet de "describe" b
+describe "$1" do
+	$0
+end
+endsnippet
+
+snippet co "context" b
+context "$1" do
+	$0
+end
+endsnippet
+
+snippet it "it" b
+it "should $1" do
+	$0
+end
+endsnippet
+
+snippet be "before(:each)" b
+before(:each) do
+	$0
+end
+endsnippet
+
+snippet af "after(:each)" b
+after(:each) do
+	$0
+end
+endsnippet
+
+snippet if "if" b
+if ${1:cond}
+	$0
+end
+endsnippet
+
+snippet p "expect" b
+expect($1).to ${2:eq($3)}
+endsnippet

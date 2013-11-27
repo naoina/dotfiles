@@ -1,0 +1,67 @@
+extends c_like
+
+snippet class "class" b
+class ${1:`!v expand("%:t:r")`} {
+	public $1() {
+		${0:// TODO: not implemented yet}
+	}
+}  // End of $1 class.
+endsnippet
+
+snippet interface "interface" b
+interface ${1:`!v expand("%:t:r")`} {
+	${0:// TODO: not implemented yet}
+}  // End of $1 interface.
+endsnippet
+
+snippet p "public" b
+public
+endsnippet
+
+snippet pr "private" b
+private
+endsnippet
+
+snippet m "method" b
+${1:public} ${2:void} ${3:methodName}($4) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet v "variable" b
+${1:String} $2;
+endsnippet
+
+snippet = "var init" b
+${1:String} $2 = $3;
+endsnippet
+
+snippet co "const var" b
+public static final ${1:int} $2 = $3
+endsnippet
+
+snippet cos "const String var" b
+public static final String $1 = "$2";
+endsnippet
+
+snippet fore "foreach" b
+for ($1 : $2) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet catch "catch" i
+catch (${1:Exception} e) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet main "main" b
+public static void main(String[] args) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet p "println" i
+System.out.println($1);
+endsnippet

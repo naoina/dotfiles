@@ -1,0 +1,58 @@
+extends javascript
+
+snippet i "import" !b
+import ${1:package};
+endsnippet
+
+snippet m "method" !b
+${1:public} function ${2:methodName}($3):${4:void} {
+	${0:// TODO: not implemented yet}
+}  // End of $2()
+endsnippet
+
+snippet f "function" !wi
+function ($1):${2:void} {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet v "var" !iw
+var ${1:name}:${2:String}${3: = ${4:val}};
+endsnippet
+
+snippet get "getter" !b
+${1:public} function get ${2:getterName}():${3:String} {
+	${0:// TODO: not implemented yet}
+}  // End of getter $2()
+endsnippet
+
+snippet set "setter" !b
+${1:public} function set ${2:setterName}(${3:value}:${4:String}):void {
+	${0:// TODO: not implemented yet}
+}  // End of setter $2()
+endsnippet
+
+snippet getset "getter and setter" !bt
+${1:public} function get ${2:getterAndSetterName}():${3:String} {
+	${4:// TODO: not implemented yet}
+}  // End of getter $2()`!p snip.rv = '\n'`
+${5:public} function set $2(${7:value}:${8:String}):void {
+	${9:// TODO: not implemented yet}
+}  // End of setter $2()
+endsnippet
+
+snippet pr "private" !b
+private 
+endsnippet
+
+snippet ex "ExternalInterface.call" !b
+ExternalInterface.call("console.log", "$0");
+endsnippet
+
+snippet co "const" !b
+public const ${1:CONST_NAME}:${2:int}${3: = ${4:value}};
+endsnippet
+
+snippet cos "const String" !b
+public const ${1:CONST_NAME}:String${2: = "${3:value}"};
+endsnippet

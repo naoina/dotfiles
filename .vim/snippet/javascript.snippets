@@ -1,0 +1,97 @@
+extends c_like
+
+snippet d "document" iw
+document
+endsnippet
+
+snippet w "window" iw
+window
+endsnippet
+
+snippet f "function" iw
+function ($1) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet v "var" iw
+var ${1:varname}${2: = ${3:value}}
+endsnippet
+
+snippet = "assign" i
+${1:varname} = ${2:value};
+endsnippet
+
+snippet , "assign" i
+, ${1:varname} = ${2:value}
+endsnippet
+
+snippet log "console.log" !w
+console.log($0);
+endsnippet
+
+snippet err "console.error" !w
+console.error($0);
+endsnippet
+
+snippet define "define" b
+define([$1], function ($2) {
+	function ${3:moduleName}() {
+		$0
+	}
+
+	return $3;
+});
+endsnippet
+
+snippet require "require" b
+require([$1], function ($2) {
+	$0
+});
+endsnippet
+
+snippet de "describe" b
+describe("${1:describe}", function () {
+	$0
+});
+endsnippet
+
+snippet it "it" b
+it("should $1", function (${2:done}) {
+	${0:done();}
+});
+endsnippet
+
+snippet be "beforeEach" b
+beforeEach(function (${1:done}) {
+	${0:done();}
+});
+endsnippet
+
+snippet before "before" b
+before(function (${1:done}) {
+	${0:done();}
+});
+endsnippet
+
+snippet af "afterEach" b
+afterEach(function (${1:done}) {
+	${0:done();}
+});
+endsnippet
+
+snippet after "after" b
+after(function (${1:done}) {
+	${0:done();}
+});
+endsnippet
+
+snippet p "expect" b
+expect($1).to.${2:equal($3);}
+endsnippet
+
+snippet eq "expect eql" b
+expect($1).to.eql({
+	$0
+});
+endsnippet

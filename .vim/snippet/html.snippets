@@ -1,0 +1,113 @@
+snippet id "id" !iw
+id="${0}"
+endsnippet
+
+snippet c "class" !iw
+class="${0}"
+endsnippet
+
+snippet meta "<meta>" !b
+<meta name="${1}" content="${2}">
+endsnippet
+
+snippet viewport "<meta name=viewport>" !b
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+endsnippet
+
+snippet link "<link>" !b
+<link href="${1}" rel="${2}">
+endsnippet
+
+snippet css "<link rel=stylesheet>" !b
+<link href="${0}" rel="stylesheet">
+endsnippet
+
+snippet rss "<link rel=alternate type=application/rss+xml" !b
+<link href="${0}" rel="alternate" type="application/rss+xml">
+endsnippet
+
+snippet atom "<link rel=alternate type=application/atom+xml" !iw
+<link href="${0}" rel="alternate" type="application/atom+xml">
+endsnippet
+
+snippet js "<script src>" !iw
+<script src="${0}"></script>
+endsnippet
+
+snippet style "<style>" !iw
+<style>
+	${0}
+</style>
+endsnippet
+
+snippet script "<script>" !iw
+<script>
+	${0}
+</script>
+endsnippet
+
+snippet form "<form>" !iw
+<form action="" method="post" enctype="multipart/form-data">
+	<fieldset>
+		${0}
+	</fieldset>
+</form>
+endsnippet
+
+snippet textarea "<textarea>" !iw
+<textarea name="${1}">${2}</textarea>
+endsnippet
+
+snippet inputtext "<input type=text>" !iw
+<input type="text" name="${1}" value="${2}">
+endsnippet
+
+snippet inputpassword "<input type=password>" !iw
+<input type="password" name="${1}" value="${2}">
+endsnippet
+
+snippet inputcheckbox "<input type=checkbox>" !iw
+<input type="checkbox" name="${1}>
+endsnippet
+
+snippet inputradio "<input type=radio>" !iw
+<input type="radio" name="${1}" value="${2}">
+endsnippet
+
+snippet inputsubmit "<input type=submit>" !iw
+<input type="submit" name="submit" value="${2}">
+endsnippet
+
+snippet inputreset "<input type=reset>" !iw
+<input type="reset" name="reset" value="${0}">
+endsnippet
+
+snippet inputhidden "<input type=hidden>" !iw
+<input type="hidden" name="${1}" value="${2}">
+endsnippet
+
+snippet inputrange "<input type=range>" !iw
+<input type="range" name="${1}">
+endsnippet
+
+snippet inputemail "<input type=email>" !iw
+<input type="email" name="${1}">
+endsnippet
+
+snippet inputfile "<input type=file>" !iw
+<input type="file" name="${1}">
+endsnippet
+
+snippet br "<br>" !iw
+<br>
+endsnippet
+
+snippet html "DOCTYPE" !b
+<!DOCTYPE html>
+<html>
+	<head>
+	</head>
+	<body>
+	</body>
+</html>
+endsnippet

@@ -1,0 +1,127 @@
+extends html
+
+snippet % "{% %}" !i
+{% $0 %}
+endsnippet
+
+snippet # "{# #}" !i
+{# $0 #}
+endsnippet
+
+snippet extends "{% extends file %}" b
+{% extends '${0:_base.html}' %}
+endsnippet
+
+snippet block "{% block %}" !wi
+{% block ${1:name} %}$0{% endblock %}
+endsnippet
+
+snippet for "{% for %}" !wi
+{% for ${1:v} in ${2:iter} %}
+	${0:pass}
+{% endfor %}
+endsnippet
+
+snippet if "{% if %}" !wi
+{% if ${1:cond} %}
+	${0:pass}
+{% endif %}
+endsnippet
+
+snippet elif "{% elif %}" !wi
+{% elif ${1:cond} %}
+	${0:pass}
+endsnippet
+
+snippet else "{% else %}" !wi
+{% else %}
+	${0:pass}
+endsnippet
+
+snippet } "{{ val }}" !i
+{{ $0 }}
+endsnippet
+
+snippet load "{% load %}" b
+{% load $1 %}
+endsnippet
+
+snippet comment "{% comment %}" !wi
+{% comment %}
+	$0
+{% endcomment %}
+endsnippet
+
+snippet autoescape "{% autoescape %}" !wi
+{% autoescape ${1:off} %}
+	$0
+{% endautoescape %}
+endsnippet
+
+snippet cycle "{% cycle %}" !wi
+{% cycle ${1:row} %}
+endsnippet
+
+snippet debug "{% debug %}" !wi
+{% debug %}
+endsnippet
+
+snippet filter "{% filter %}" !wi
+{% filter ${1:filter} %}
+	$0
+{% endfilter %}
+endsnippet
+
+snippet firstof "{% firstof %}" !wi
+{% firstof ${0:var} %}
+endsnippet
+
+snippet fore "{% for %}{% empty %}" !wi
+{% for ${1:v} in ${2:iter} %}
+	${3:pass}
+{% empty %}
+	${4:pass}
+{% endfor %}
+endsnippet
+
+snippet ifchanged "{% ifchanged %}" !wi
+{% ifchanged ${1:val} %}
+	$0
+{% endifchanged %}
+endsnippet
+
+snippet include "{% include %}" !wi
+{% include '${1:templatename}' %}
+endsnippet
+
+snippet url "{% url %}" !wi
+{% url '${0:path}' %}
+endsnippet
+
+snippet with "{% with %}" !wi
+{% with ${1:name}=${2:val} %}
+	$0
+{% endwith %}
+endsnippet
+
+snippet t "{% trans %}" !wi
+{% trans "$1" %}
+endsnippet
+
+snippet blocktrans "{% blocktrans %}" !wi
+{% blocktrans $1 %}$0{% endblocktrans %}
+endsnippet
+
+snippet spaceless "{% spaceless %}" !wi
+{% spaceless %}
+	$0
+{% endspaceless %}
+endsnippet
+
+snippet static "{% static %}" !wi
+{% static '$0' %}
+endsnippet
+
+snippet csrf_token "{% csrf_token %}" !wi
+{% csrf_token %}
+endsnippet

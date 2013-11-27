@@ -1,0 +1,177 @@
+snippet i "interface{}" !w
+interface{}
+endsnippet
+
+snippet pa "package" !b
+package ${1:main}
+endsnippet
+
+snippet main "main()" !b
+package main
+
+func main() {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet init "init()" !b
+func init() {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet v "var" !b
+var ${1:name} ${2:string}
+endsnippet
+
+snippet co "const" !b
+const (
+	${1:name}${2: = ${3:value}}
+)
+endsnippet
+
+snippet = ":=" !iw
+${1:name} := ${2:value}
+endsnippet
+
+snippet , "_, err" !iw
+${1:_}, ${2:err}
+endsnippet
+
+snippet for "for" !b
+for ${1:cond} {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet forr "for _, v := range ..." !b
+for ${2:_}, ${3:v} := range ${1:collection} {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet fori "for i := 0; i < n; i++" !b
+for ${2:i} := 0; $2 < ${1:n}; $2++ {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet if "if" !w
+if ${1:cond} {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet ife "if err != nil" !b
+if err != nil {
+	$0
+}
+endsnippet
+
+snippet ifo "if !ok" !b
+if !ok {
+	$0
+}
+endsnippet
+
+snippet ifel "if err != nil" !b
+if ${1:err} := ${2:Some}; err != nil {
+	panic(err)
+}
+endsnippet
+
+snippet f "func" !iw
+func ${1:FuncName}($2) $3{
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet fn "func literal" !wi
+func() {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet m "method" !b
+func (${1:receiver}) ${2:MethodName}($3) $4{
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet type "type" !b
+type ${1:name} ${2:type}
+endsnippet
+
+snippet t "type ... struct" !b
+type ${1:name} struct {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet struct "type ... struct" !b
+type ${1:name} struct {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet ti "type ... interface" !b
+type ${1:name} interface {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet interface "type ... interface" !b
+type ${1:name} interface {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet sw "switch" !b
+switch ${1:expr} {
+case ${2:cond}:
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet case "case" !b
+case ${1:cond}:
+	${0:// TODO: not implemented yet}
+endsnippet
+
+snippet p "fmt.Println" !b
+fmt.Println($0)
+endsnippet
+
+snippet ft "func TestXxx" !b
+func Test${1:Xxx}(t *testing.T) {
+	t.Error("pending")
+}
+endsnippet
+
+snippet fb "func BenchmarkXxx" !b
+func Benchmark${1:Xxx}(b *testing.B) {
+	t.Error("pending")
+}
+endsnippet
+
+snippet rec "if err := recover(); err != nil" !b
+if err := recover(); err != nil {
+	${0:panic(err)}
+}
+endsnippet
+
+snippet def "defer func()" !b
+defer func() {
+	$0
+}()
+endsnippet
+
+snippet ifne "if !reflect.DeepEqual(...)" !b
+if !reflect.DeepEqual(${1:actual}, ${2:expected}) {
+	t.Errorf("Expect %v, but %v", $2, $1)
+}
+endsnippet
+
+snippet pe "panic(err)" !b
+panic(err)
+endsnippet

@@ -1,0 +1,89 @@
+extends html
+
+snippet % "<% %>" !iw
+<% $0 %>
+endsnippet
+
+snippet = "<%= %>" !i
+<%= $0 %>
+endsnippet
+
+snippet end "<% end %>" !iw
+<% end %>
+endsnippet
+
+snippet t "<%= t() %>" !iw
+<%= t("$0") %>
+endsnippet
+
+snippet if "<% if %>" !iw
+<% if ${1:cond} %>
+	$0
+<% end %>
+endsnippet
+
+snippet link_to "<%= link_to %>" !iw
+<%= link_to "$1", $2 %>
+endsnippet
+
+snippet button_tag "<%= button_tag %>" !iw
+<%= button_tag "$1", type: '${2:button}', class: '$3' %>
+endsnippet
+
+snippet form_for "<%= form_for %>" !iw
+<%= form_for ${1:@inst} do |f| %>
+	$0
+<% end %>
+endsnippet
+
+snippet form_tag "<%= form_tag %>" !w
+<%= form_tag ${1::create} do %>
+	$0
+<% end %>
+endsnippet
+
+snippet f.text_field "<%= f.text_field %>" !iw
+<%= f.text_field :${1:id} %>
+endsnippet
+
+snippet f.text_area "<%= f.text_area %>" !iw
+<%= f.text_area :${1:id} %>
+endsnippet
+
+snippet f.label "<%= f.label %>" !iw
+<%= f.label :${1:id}, "${2:label}" %>
+endsnippet
+
+snippet f.select "<%= f.select %>" !iw
+<%= f.select :${1:id} %>
+endsnippet
+
+snippet f.collection_select "<%= f.collection_select %>" !iw
+<%= f.collection_select :${1:name}, ${2:collection}, :${3:id}, :${4:name} %>
+endsnippet
+
+snippet f.fields_for "<%= f.fields_for %>" !iw
+<%= f.fields_for :${1:assoc} do |${1:assoc}_form| %>
+	$0
+<% end %>
+endsnippet
+
+snippet f.file_field "<%= f.file_field %>" !iw
+<%= f.file_field :${1:id} %>
+endsnippet
+
+snippet f.button "<%= f.button %>" !iw
+<%= f.button "${1:label}" %>
+endsnippet
+
+snippet f.hidden_field "<%= f.hidden_field %>" !iw
+<%= f.hidden_field :${1:name} %>
+endsnippet
+
+snippet f.email_field "<%= f.email_field %>" !iw
+<%= f.email_field :${1:id} %>
+endsnippet
+
+snippet f.url_field "<%= f.url_field %>" !iw
+<%= f.url_field :${1:id} %>
+endsnippet
