@@ -1,5 +1,6 @@
 {
   "globals": {
+    "define": true,
     "describe": true,
     "it": true,
     "expect": true,
@@ -24,6 +25,7 @@
   "eqeqeq"      : true, // if === should be required
   "eqnull"      : true, // if == null comparisons should be tolerated
   "es5"         : false, // if ES5 syntax should be allowed
+  "es3"         : true,
   "esnext"      : true, // if es.next specific syntax should be allowed
   "evil"        : true, // if eval should be allowed
   "expr"        : true, // if ExpressionStatement should be allowed as Programs
@@ -72,7 +74,7 @@
   "smarttabs"   : false, // if smarttabs should be tolerated
                         // (http://www.emacswiki.org/emacs/SmartTabs)
   "strict"      : true, // require the "use strict"; pragma
-  "sub"         : true, // if all forms of subscript notation are tolerated
+  "sub"         : false, // if all forms of subscript notation are tolerated
   "supernew"    : true, // if `new function () { ... };` and `new Object;`
                         // should be tolerated
   "trailing"    : true, // if trailing whitespace rules apply
