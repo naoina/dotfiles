@@ -9,13 +9,14 @@ let g:colors_name = 'naoina'
 if &background == "light"
   hi! Normal       guifg=#000000   guibg=#ffffff
   hi! LineNr       guifg=#ff005f
+  hi! CursorLineNr guifg=#ff005f                gui=bold
   hi! String       guifg=#d70000
   hi! Identifier   guifg=#00afaf
   hi! CursorLine                   guibg=#d7ffff gui=none
   hi! Pmenu        guifg=#a8a8a8   guibg=#eeeeee
   hi! PmenuSel     guifg=#8700af   guibg=#eeeeee gui=bold
   hi! Visual                                     gui=reverse
-  hi! SpecialKey   guifg=#0000d7
+  hi! SpecialKey   guifg=#ffd7ff
   hi! NonText      guifg=#87ffff
   hi! Search       guifg=#e4e4e4   guibg=fg      gui=bold
   hi! Todo         guifg=#080808   guibg=#ffff00 gui=bold
@@ -30,9 +31,10 @@ if &background == "light"
   hi! Delimiter    guifg=#8700af
   hi! Define       guifg=#8700af
   hi! Structure    guifg=#00af5f                 gui=none
-  hi! StatusLine   guifg=#949494                 gui=bold
-  hi! StatusLineNC guifg=gray                    gui=reverse,bold
+  hi! StatusLine   guifg=#949494   guibg=87ffff  gui=bold
+  hi! StatusLineNC guifg=#949494                 gui=bold,underline
   hi! SignColumn                   guibg=bg
+  hi! Error        guifg=#ff0000   guibg=#ffff00 gui=bold
 
   hi! link Number      String
   hi! link Boolean     Keyword
@@ -45,6 +47,7 @@ if &background == "light"
 else  " background == 'dark'
   hi! Normal       guifg=gray      guibg=#000000
   hi! LineNr       guifg=#ff005f
+  hi! CursorLineNr guifg=#ff005f                gui=bold
   hi! String       guifg=#af0000
   hi! Identifier   guifg=#00afaf
   hi! CursorLine                   guibg=#1c1c1c gui=none

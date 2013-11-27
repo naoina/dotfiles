@@ -254,8 +254,8 @@ set t_Co=256
 set background=light
 colorscheme naoina
 
-hi FullwidthAndEOLSpace guibg=#262626
-match FullwidthAndEOLSpace "\(　\|\s\)\+$"
+hi FullwidthAndEOLSpace guibg=#ffafd7
+au WinEnter,BufEnter * match FullwidthAndEOLSpace "\(　\|\s\)\+$"
 
 runtime macros/matchit.vim
 
