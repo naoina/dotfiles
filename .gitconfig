@@ -8,15 +8,18 @@
     st = status
     resolve = mergetool
     glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
-	dic = diff --cached
+    dic = diff --cached
     di = diff
+    ignore = update-index --assume-unchanged
+    unignore = update-index --no-assume-unchanged
+    ignored = !git ls-files -v | grep "^[a-z]"
 [color]
 	ui = auto
 [core]
 	editor = /usr/bin/vim
 	quotepath = false
 [merge]
-    tool = git-vimdiff
+    tool = vimdiff2
 [mergetool]
     prompt = false
 [mergetool "git-vimdiff"]
@@ -24,3 +27,10 @@
 	trustExitCode = true
 [push]
 	default = simple
+[diff]
+	algorithm = histogram
+[pager]
+	# They should use less because correct highlight color.
+	log = diff-highlight | less
+	show = diff-highlight | less
+	diff = diff-highlight | less
