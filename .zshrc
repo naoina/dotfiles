@@ -1,5 +1,5 @@
 autoload -U compinit
-autoload history-search-end
+autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
 zle -N history-beginning-search-forward-end history-search-end
 bindkey "^[[A" history-beginning-search-backward-end
@@ -184,8 +184,10 @@ function http_server {
     DIR=${1:="."}
 
     if [ -x "`whence python3`" ]; then
-        (cd $DIR && python3 -m http.server)
+        (cd $DIR && python3 -m http.server 8000)
     elif [ -x "`whence python2`" ]; then
-        (cd $DIR && python2 -m SimpleHTTPServer)
+        (cd $DIR && python2 -m SimpleHTTPServer 8000)
+    elif [ -x "`whence ruby`" ]; then
+        (cd $DIR && ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => ".").start')
     fi
 }
