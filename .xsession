@@ -5,9 +5,10 @@ IMAGE_PATH="$HOME/media/image/wallpaper"
 # WM=wmfs
 # WM=xmonad
 # WM=compiz-fusion
-WM=awesome
-#WM=fluxbox
-# WM=i3
+# WM=awesome
+# WM=fluxbox
+WM=i3
+# WM=wmii
 WALLPAPER_PICKER="$HOME/bin/rotate-wallpaper.py"
 
 export LANG=ja_JP.UTF-8
