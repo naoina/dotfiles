@@ -58,7 +58,7 @@ PROMPT="%F{green}%1v%f[%~]
 #
 #PATH="/sbin:/bin:/usr/sbin:/usr/lib/ccache/bin:/usr/bin"
 PATH="$HOME/.local/bin:$PATH"
-PATH="$HOME/.rbenv/bin:$HOME/.gem/ruby/1.9.1/bin:$PATH"
+PATH="$HOME/.rbenv/bin:$PATH"
 PATH="/usr/lib/colorgcc/bin/:$HOME/bin:/usr/lib/ccache/bin:$PATH"
 export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
 export CCACHE_PATH="/usr/bin"
