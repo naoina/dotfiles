@@ -7,3 +7,6 @@
 [submodule ".zsh/fabric-zsh-autocomplete"]
 	path = .zsh/fabric-zsh-autocomplete
 	url = git://github.com/vhbit/fabric-zsh-autocomplete.git
+[submodule ".zsh/auto-fu.zsh"]
+	path = .zsh/auto-fu.zsh
+	url = https://github.com/hchbaw/auto-fu.zsh.git
