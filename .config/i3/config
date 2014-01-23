@@ -153,7 +153,12 @@ bar {
 }
 
 assign [class="Chromium"] 2
+assign [class="VirtualBox"] 6
+assign [class="zeal"] 10
 for_window [class=".*"] floating enable
 for_window [class="Chromium"] border none
 for_window [class="mlterm"] floating disable
+for_window [class="zeal"] floating disable
 exec compton
+exec_always Esetroot -m $HOME/media/image/white.gif
+exec zeal

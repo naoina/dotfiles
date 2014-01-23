@@ -138,19 +138,21 @@ case ${1:cond}:
 	${0:// TODO: not implemented yet}
 endsnippet
 
-snippet p "fmt.Println" !b
-fmt.Println($0)
+snippet p "fmt.Printf" !b
+fmt.Printf("%q\n", $0)
 endsnippet
 
 snippet ft "func TestXxx" !b
-func Test${1:Xxx}(t *testing.T) {
+func Test_${1:Xxx}(t *testing.T) {
 	t.Error("pending")
 }
 endsnippet
 
 snippet fb "func BenchmarkXxx" !b
-func Benchmark${1:Xxx}(b *testing.B) {
-	t.Error("pending")
+func Benchmark_${1:Xxx}(b *testing.B) {
+	for i := 0; i < b.N; i++ {
+		${0:// TODO: not implemented yet}
+	}
 }
 endsnippet
 
@@ -168,7 +170,7 @@ endsnippet
 
 snippet ifne "if !reflect.DeepEqual(...)" !b
 if !reflect.DeepEqual(${1:actual}, ${2:expected}) {
-	t.Errorf("Expect %v, but %v", $2, $1)
+	t.Errorf("Expect %q, but %q", $2, $1)
 }
 endsnippet
 

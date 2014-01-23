@@ -39,7 +39,7 @@ let g:neocomplete#force_omni_input_patterns.python = '[^. \t]\.\w*'
 
 NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
         \ 'build': {
-        \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer',
+        \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer --system-libclang',
         \     },
         \ }
 let g:ycm_min_num_of_chars_for_completion = 1
@@ -121,9 +121,7 @@ function! s:bundle.hooks.on_source(bundle)
         \ 'PrtSelectMove("k")': ['<C-p>'],
         \ }
 endfunction
-function! s:bundle.hooks.on_post_source(bundle)
-  nnoremap <C-e> :<C-u>CtrlP<CR>
-endfunction
+nnoremap <C-e> :<C-u>CtrlP<CR>
 
 NeoBundleLazy 'git://github.com/Shougo/unite.vim.git', {
         \ 'autoload': {
@@ -247,23 +245,45 @@ let g:coffee_compile_vert = 1
         " \     },
         " \ }
 
-NeoBundleLazy 'https://github.com/Blackrush/vim-gocode.git', {
+NeoBundleLazy 'https://github.com/jnwhiteh/vim-golang.git', {
         \ 'autoload': {
         \     'filetypes': ['go'],
         \     },
         \ }
-let s:bundle = neobundle#get('vim-gocode')
+let s:bundle = neobundle#get('vim-golang')
 function! s:bundle.hooks.on_source(bundle)
-  let g:gocode_gofmt_tabs = ' -tabs=true'
+  if executable('goimports')
+    let g:gofmt_command = 'goimports'
+  endif
 endfunction
 function! s:bundle.hooks.on_post_source(bundle)
+  function! s:gofmt()
+    try
+      undojoin | Fmt
+    catch
+    endtry
+  endfunction
+
   augroup MyGoAutoCmd
     au!
-    au BufWrite *.go Fmt
+    au BufWrite *.go call s:gofmt()
   augroup End
 endfunction
 
+NeoBundleLazy 'https://github.com/nsf/gocode.git', {
+        \ 'build': {
+        \     'unix': 'go get -u github.com/nsf/gocode',
+        \ },
+        \ 'rtp': 'vim',
+        \ 'autoload': {
+        \     'filetypes': ['go'],
+        \     },
+        \ }
+
 NeoBundleLazy 'https://github.com/dgryski/vim-godef.git', {
+        \ 'build': {
+        \     'unix': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
+        \ },
         \ 'autoload': {
         \     'filetypes': ['go'],
         \     },
@@ -404,7 +424,7 @@ let g:csutil_no_mappings = 1
 
 " For syntastic.
 " let g:syntastic_auto_loc_list = 1
-let g:syntastic_quiet_warnings = 0
+let g:syntastic_quiet_messages = {'level': 'warnings'}
 let g:syntastic_mode_map = {
   \ 'mode': 'active',
   \ 'passive_filetypes': ['java', 'html'],

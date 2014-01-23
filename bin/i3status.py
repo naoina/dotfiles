@@ -75,7 +75,6 @@ class Memory(object):
         reg = Memory.regexp
         with open(Memory.meminfo) as f:
             for line in f:
-                # k, v = reg.search(line).groups()
                 m = reg.search(line)
                 if m is None:
                     raise RuntimeError(line)
@@ -87,13 +86,13 @@ class Memory(object):
         memory = '%(inuse)s/%(MemTotal)s MB' % mem
         swap = '%(swap_inuse)s/%(SwapTotal)s MB' % mem
         return [
-            {'name': 'swap', 'full_text': swap},
             {'name': 'memory', 'full_text': memory},
+            {'name': 'swap', 'full_text': swap},
         ]
 
 status_objs = (
-    NetSpeed(),
-    Memory(),
+    (NetSpeed(), 2),
+    (Memory(), 5),
 )
 
 
@@ -105,9 +104,9 @@ def main():
         line = input().lstrip(',')
         status = json.loads(line)
         insert = status.insert
-        for status_obj in status_objs:
-            for st in status_obj.status():
-                insert(3, st)
+        for status_obj, at in status_objs:
+            for i, st in enumerate(status_obj.status()):
+                insert(at + i, st)
         print(',' + json.dumps(status))
 
 if __name__ == '__main__':

@@ -55,9 +55,9 @@ main = do
 
 
 home = "/home/naoina"
-myTerminal = "lilyterm -e $HOME/bin/tmux.sh"
-myTerminalClass = "Lilyterm"
-myTerminalName  = "LilyTerm"
+myTerminal = "mlterm -e $HOME/bin/tmux.sh"
+myTerminalClass = "mlterm"
+myTerminalName  = "mlterm"
 barFgColor = "#999"
 barBgColor = "#000"
 myWorkspaceBar = "dzen2 -expand right -h 23 -y -1 -fg '" ++ barFgColor ++ "' -bg '" ++ barBgColor ++ "'"
@@ -140,7 +140,8 @@ exShift tag w =
 
 keybind conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [ ((controlMask, xK_Return), spawn $ XMonad.terminal conf)
-    , ((modMask, xK_p), shellPrompt promptXPConfig)
+    {- , ((modMask, xK_p), shellPrompt promptXPConfig) -}
+    , ((modMask, xK_p), spawn "dmenu_run")
     , ((modMask, xK_Tab), windowPromptGoto promptXPConfig)
     , ((modMask, xK_j), windows W.focusUp)
     , ((modMask, xK_k), windows W.focusDown)
@@ -148,6 +149,8 @@ keybind conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     {- , ((modMask, xK_t), focusUpSelect) -}
     , ((modMask .|. shiftMask, xK_j), rotSlavesDown)
     , ((modMask .|. shiftMask, xK_k), rotSlavesUp)
+    , ((modMask, xK_h), sendMessage Shrink)
+    , ((modMask, xK_l), sendMessage Expand)
     , ((modMask, xK_Return), promote)
     , ((modMask, xK_space), sinkAll)
     , ((modMask, xK_n), sendMessage NextLayout)
@@ -157,7 +160,6 @@ keybind conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. controlMask .|. shiftMask, xK_r),
         broadcastMessage ReleaseResources >> restart "xmonad" True)
     , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-    , ((controlMask .|. shiftMask, xK_j), spawn "exec kasumi")
     , ((0, xK_Print), spawn "scrot '%Y-%m-%d_$wx$h.png' -e 'mv $f ~/media/image/screenshot/'")
     ]
     ++

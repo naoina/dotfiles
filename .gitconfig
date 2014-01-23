@@ -19,7 +19,7 @@
 	editor = /usr/bin/vim
 	quotepath = false
 [merge]
-    tool = vimdiff2
+    tool = git-vimdiff
 [mergetool]
     prompt = false
 [mergetool "git-vimdiff"]
