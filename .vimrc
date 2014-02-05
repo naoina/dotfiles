@@ -14,6 +14,11 @@ if has('vim_starting')
   call neobundle#rc($VIMLOCAL . '/bundle')
 endif
 
+" To avoid to the process time out in vimproc. See https://github.com/Shougo/neobundle.vim/issues/175
+let g:neobundle#install_process_timeout = 300
+
+NeoBundleFetch 'https://github.com/Shougo/neobundle.vim.git'
+
 augroup MyAutoCmd
   au!
 augroup End
@@ -39,7 +44,7 @@ let g:neocomplete#force_omni_input_patterns.python = '[^. \t]\.\w*'
 
 NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
         \ 'build': {
-        \     'unix': 'git submodule update --init --recursive; ./install.sh --clang-completer --system-libclang',
+        \     'unix': 'sh install.sh --clang-completer --system-libclang',
         \     },
         \ }
 let g:ycm_min_num_of_chars_for_completion = 1
@@ -49,6 +54,9 @@ let g:ycm_confirm_extra_conf = 0
 let g:ycm_complete_in_comments = 1
 let g:ycm_complete_in_strings = 1
 let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 0
+let g:ycm_autoclose_preview_window_after_insertion = 1
 
 NeoBundle 'https://github.com/SirVer/ultisnips.git'
 let g:UltiSnipsSnippetsDir = $VIMLOCAL . '/snippet'
@@ -57,7 +65,6 @@ let g:UltiSnipsJumpForwardTrigger = '<tab>'
 let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
 
 " NeoBundle 'git://github.com/Shougo/neosnippet.git'
-NeoBundle 'git://github.com/Shougo/neobundle.vim.git'
 NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \ 'build': {
         \     'windows': 'make -f make_mingw32.mak',
@@ -104,6 +111,18 @@ NeoBundle 'git://github.com/rking/ag.vim.git'
 NeoBundle 'git://github.com/tpope/vim-rails.git'  " should not be used the NeoBundleLazy
 NeoBundle 'git://github.com/tpope/vim-markdown.git'
 NeoBundle 'git://github.com/othree/html5.vim.git'
+NeoBundle 'https://github.com/AndrewRadev/switch.vim.git'
+nnoremap <silent>- :Switch<CR>
+let s:bundle = neobundle#get('switch.vim')
+function! s:bundle.hooks.on_post_source(bundle)
+  let g:switch_definitions =
+        \ [
+        \   g:switch_builtins.ampersands,
+        \   g:switch_builtins.capital_true_false,
+        \   g:switch_builtins.true_false,
+        \   ['==', '!='],
+        \ ]
+endfunction
 
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
         \ 'autoload': {
@@ -246,6 +265,12 @@ let g:coffee_compile_vert = 1
         " \ }
 
 NeoBundleLazy 'https://github.com/jnwhiteh/vim-golang.git', {
+        \ 'build': {
+        \     'unix': 'go get -u code.google.com/p/go.tools/cmd/goimports',
+        \     'mac': 'go get -u code.google.com/p/go.tools/cmd/goimports',
+        \     'cygwin': 'go get -u code.google.com/p/go.tools/cmd/goimports',
+        \     'windows': 'go get -u code.google.com/p/go.tools/cmd/goimports',
+        \     },
         \ 'autoload': {
         \     'filetypes': ['go'],
         \     },
@@ -273,6 +298,9 @@ endfunction
 NeoBundleLazy 'https://github.com/nsf/gocode.git', {
         \ 'build': {
         \     'unix': 'go get -u github.com/nsf/gocode',
+        \     'mac': 'go get -u github.com/nsf/gocode',
+        \     'cygwin': 'go get -u github.com/nsf/gocode',
+        \     'windows': 'go get -u github.com/nsf/gocode',
         \ },
         \ 'rtp': 'vim',
         \ 'autoload': {
@@ -283,6 +311,9 @@ NeoBundleLazy 'https://github.com/nsf/gocode.git', {
 NeoBundleLazy 'https://github.com/dgryski/vim-godef.git', {
         \ 'build': {
         \     'unix': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
+        \     'mac': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
+        \     'cygwin': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
+        \     'windows': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
         \ },
         \ 'autoload': {
         \     'filetypes': ['go'],
@@ -412,7 +443,6 @@ endfunction
 au BufReadPost * call s:restore_cursor()
 
 au BufEnter * call s:autocd()
-au CursorMovedI * if pumvisible() == 0|pclose|endif
 
 " For gist-vim
 let [g:github_user, g:github_token] = readfile($VIMLOCAL . '/.github.token')
@@ -731,6 +761,10 @@ function! s:javascript_setting()
 
   let g:jscomplete_use = ['dom', 'moz']
   setlocal omnifunc=jscomplete#CompleteJS
+  let b:switch_definitions =
+        \ [
+        \   ['===', '!=='],
+        \ ]
 endfunction
 
 function! s:actionscript_setting()
@@ -830,6 +864,17 @@ function! s:go_setting()
   setlocal noexpandtab
   inoremap {<CR> {<CR>}<C-o>O
   inoremap (<CR> (<CR>)<C-o>O
+  let b:switch_definitions =
+        \ [
+        \   {
+        \     'for\s\+.\{-}\s*,\s*\k\+\s*:=\s*range\s\+\(.\{-}\)\s*{': 'for i = 0; i < len(\1); i++ {',
+        \     'for\s\+\k\+\s*=\s*.\{-};\s*\k\+\s*<\s*len(\(.\{-}\));\s*\k\+++\s*{': 'for _, v := range \1 {',
+        \   },
+        \   {
+        \     'err\s*!=\s*nil': '!ok',
+        \     '!ok': 'err != nil',
+        \   },
+        \ ]
 endfunction
 
 function! s:gitconfig_setting()
@@ -967,8 +1012,8 @@ nmap <C-_> <Plug>NERDCommenterToggle
 vmap <C-_> <Plug>NERDCommenterToggle
 imap <C-_> <C-o><Plug>NERDCommenterToggle
 
-imap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
-smap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
+" imap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
+" smap <expr><Tab> neosnippet#expandable_or_jumpable() ? "\<Plug>(neosnippet_expand_or_jump)" : "\<Tab>"
 
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
