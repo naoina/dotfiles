@@ -55,7 +55,7 @@ xinput set-int-prop "TPPS/2 IBM TrackPoint" "Evdev Wheel Emulation Axes" 8 6 7 4
 fcitx
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
-    AFTER_CMD="notify-send '%f mounted on %d'"
+    AFTER_CMD="notify-send -t 0 \"%f mounted on %d\""
     devmon --exec-on-drive "$AFTER_CMD" &
 fi
 
