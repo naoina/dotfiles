@@ -1,1 +1,9 @@
-*
+home/.vim/swap/
+home/.vim/cache/
+home/.vim/backup/
+home/.vim/bundle/*
+*.pyc
+home/.mlterm/challenge
+home/.config/menus/
+home/.config/chromium/
+home/.config/google-googletalkplugin/
