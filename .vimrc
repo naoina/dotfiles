@@ -44,7 +44,7 @@ let g:neocomplete#force_omni_input_patterns.python = '[^. \t]\.\w*'
 
 NeoBundle 'git://github.com/Valloric/YouCompleteMe.git', {
         \ 'build': {
-        \     'unix': 'sh install.sh --clang-completer --system-libclang',
+        \     'unix': 'git submodule update --init --recursive && ./install.sh --clang-completer --system-libclang',
         \     },
         \ }
 let g:ycm_min_num_of_chars_for_completion = 1
@@ -102,9 +102,26 @@ command! Ap call altr#back()
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
 NeoBundle 'git://github.com/tpope/vim-fugitive.git', {'augroup': 'fugitive'}
+NeoBundle 'https://github.com/gregsexton/gitv.git', {
+      \ 'depends': ['tpope/vim-fugitive.git'],
+      \ }
+let s:bundle = neobundle#get('gitv')
+function! s:bundle.hooks.on_source(bundle)
+  let g:Gitv_DoNotMapCtrlKey = 1
+endfunction
+
 NeoBundle 'git://github.com/phleet/vim-mercenary.git', {'augroup': 'mercenary'}
 NeoBundle 'git://github.com/thinca/vim-template.git'
 NeoBundle 'git://github.com/scrooloose/syntastic.git'
+" let g:syntastic_auto_loc_list = 1
+let g:syntastic_mode_map = {
+    \ 'mode': 'active',
+    \ 'passive_filetypes': ['java', 'html'],
+    \ }
+let g:syntastic_python_checkers = ['flake8']
+let g:syntastic_go_checkers = ['go', 'govet']
+let g:syntastic_coffee_coffeelint_args = '--csv -f ~/.coffeelint.json'
+
 NeoBundle 'https://bitbucket.org/anyakichi/vim-csutil'
 NeoBundle 'git://github.com/mattn/webapi-vim.git'
 NeoBundle 'git://github.com/rking/ag.vim.git'
@@ -123,6 +140,17 @@ function! s:bundle.hooks.on_post_source(bundle)
         \   ['==', '!='],
         \ ]
 endfunction
+
+NeoBundle 'https://github.com/kana/vim-textobj-user.git'
+NeoBundle 'https://github.com/kana/vim-textobj-indent.git', {
+      \ 'depends': [
+      \     'kana/vim-textobj-user.git',
+      \ ]}
+NeoBundle 'https://github.com/cespare/vim-toml'
+NeoBundle 'https://github.com/gf3/peg.vim'
+NeoBundle 'https://github.com/wavded/vim-stylus.git'
+NeoBundle 'https://github.com/digitaltoad/vim-jade.git'
+NeoBundle 'https://github.com/rhysd/committia.vim.git'
 
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
         \ 'autoload': {
@@ -162,11 +190,18 @@ NeoBundle 'git://github.com/thinca/vim-quickrun.git'
 let s:bundle = neobundle#get('vim-quickrun')
 function! s:bundle.hooks.on_source(bundle)
   let g:quickrun_config = {
-        \ '*': {
+        \ '_': {
         \     'split': 'vertical 50',
         \     },
+        \ 'mongo': {
+        \     'command': 'mongo',
+        \     'cmdopt': '--quiet',
+        \     'exec': ['%c %o < %s'],
+        \     }
         \ }
 endfunction
+
+NeoBundle 'https://github.com/cespare/vim-go-templates.git'
 
 NeoBundleLazy 'git://github.com/nathanaelkane/vim-indent-guides.git', {
         \ 'autoload': {
@@ -212,7 +247,11 @@ NeoBundleLazy 'git://github.com/jiangmiao/simple-javascript-indenter.git', {
         \     'filetypes': ['javascript'],
         \     },
         \ }
-NeoBundleLazy 'https://github.com/teramako/jscomplete-vim.git', {
+NeoBundleLazy 'https://github.com/marijnh/tern_for_vim.git', {
+        \ 'build': {
+        \     'unix': 'npm update',
+        \     'mac': 'npm update',
+        \     },
         \ 'autoload': {
         \     'filetypes': ['javascript'],
         \     },
@@ -264,65 +303,40 @@ let g:coffee_compile_vert = 1
         " \     },
         " \ }
 
-NeoBundleLazy 'https://github.com/jnwhiteh/vim-golang.git', {
-        \ 'build': {
-        \     'unix': 'go get -u code.google.com/p/go.tools/cmd/goimports',
-        \     'mac': 'go get -u code.google.com/p/go.tools/cmd/goimports',
-        \     'cygwin': 'go get -u code.google.com/p/go.tools/cmd/goimports',
-        \     'windows': 'go get -u code.google.com/p/go.tools/cmd/goimports',
-        \     },
+NeoBundleLazy 'https://github.com/fatih/vim-go.git', {
         \ 'autoload': {
         \     'filetypes': ['go'],
         \     },
         \ }
-let s:bundle = neobundle#get('vim-golang')
+let s:bundle = neobundle#get('vim-go')
 function! s:bundle.hooks.on_source(bundle)
-  if executable('goimports')
-    let g:gofmt_command = 'goimports'
-  endif
+  let g:go_fmt_fail_silently = 1
+  let g:go_fmt_autosave = 1
+  let g:go_highlight_extra_types = 1
+  let g:go_highlight_functions = 1
+  let g:go_highlight_methods = 1
+  let g:go_highlight_structs = 1
+  let g:go_fmt_command = "goimports"
+  let g:go_snippet_engine = "ultisnipts"
+  let g:go_bin_path = expand('$GOROOT/bin/')
 endfunction
-function! s:bundle.hooks.on_post_source(bundle)
-  function! s:gofmt()
-    try
-      undojoin | Fmt
-    catch
-    endtry
-  endfunction
-
-  augroup MyGoAutoCmd
-    au!
-    au BufWrite *.go call s:gofmt()
-  augroup End
-endfunction
-
-NeoBundleLazy 'https://github.com/nsf/gocode.git', {
-        \ 'build': {
-        \     'unix': 'go get -u github.com/nsf/gocode',
-        \     'mac': 'go get -u github.com/nsf/gocode',
-        \     'cygwin': 'go get -u github.com/nsf/gocode',
-        \     'windows': 'go get -u github.com/nsf/gocode',
-        \ },
-        \ 'rtp': 'vim',
+NeoBundleLazy 'https://github.com/rhysd/vim-go-impl.git', {
         \ 'autoload': {
         \     'filetypes': ['go'],
         \     },
-        \ }
-
-NeoBundleLazy 'https://github.com/dgryski/vim-godef.git', {
         \ 'build': {
-        \     'unix': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
-        \     'mac': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
-        \     'cygwin': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
-        \     'windows': 'go get -u code.google.com/p/rog-go/exp/cmd/godef',
-        \ },
-        \ 'autoload': {
-        \     'filetypes': ['go'],
+        \     'windows': 'go get -u github.com/josharian/impl',
+        \     'cygwin': 'go get -u github.com/josharian/impl',
+        \     'mac': 'go get -u github.com/josharian/impl',
+        \     'unix': 'go get -u github.com/josharian/impl',
         \     },
         \ }
+
 
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
 NeoBundle 'git://github.com/flazz/vim-colorschemes.git'
+        NeoBundle 'https://github.com/mattn/yamada2-vim.git'
 
 filetype plugin indent on
 
@@ -451,16 +465,6 @@ let g:gist_private = 0
 
 " For csutil
 let g:csutil_no_mappings = 1
-
-" For syntastic.
-" let g:syntastic_auto_loc_list = 1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-let g:syntastic_mode_map = {
-  \ 'mode': 'active',
-  \ 'passive_filetypes': ['java', 'html'],
-\}
-let g:syntastic_javascript_checkers = ['jshint']
-let g:syntastic_python_checkers = ['flake8']
 
 " For vim-template.
 let g:template_basedir = $VIMLOCAL . '/templates'
@@ -697,7 +701,6 @@ au BufNewFile,BufRead *.wsgi    setlocal filetype=python
 au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
 au BufNewFile,BufRead *.scala   setlocal filetype=scala
 au BufNewFile,BufRead *.mako    setlocal filetype=mako
-au BufNewFile,BufRead *.coffee  setlocal filetype=coffee
 au BufNewFile,BufRead .bowerrc  setlocal filetype=javascript
 
 function! s:txt_setting()
@@ -735,6 +738,8 @@ endfunction
 function! s:php_setting()
   setlocal include=
   let g:ctags_opts = '--langmap=PHP:.php.inc.php4'
+  iab true TRUE
+  iab false FALSE
 endfunction
 
 function! s:html_setting()
@@ -856,6 +861,11 @@ function! s:coffee_setting()
   setlocal foldmethod=indent
 
   nnoremap <silent><buffer><C-c><C-c> :CoffeeCompile<CR>
+  call s:jump_next_indent_map()
+endfunction
+
+function! s:haml_setting()
+  call s:jump_next_indent_map()
 endfunction
 
 function! s:go_setting()
@@ -877,9 +887,32 @@ function! s:go_setting()
         \ ]
 endfunction
 
+function! s:gotplhtml_setting()
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4
+  setlocal noexpandtab
+  setlocal autoindent
+endfunction
+
 function! s:gitconfig_setting()
   setlocal tabstop=4 softtabstop=4 shiftwidth=4
   setlocal noexpandtab
+endfunction
+
+function! s:toml_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+  setlocal autoindent
+endfunction
+
+function! s:yacc_setting()
+  setlocal noexpandtab autoindent
+endfunction
+
+function! s:jade_setting()
+  call s:html_setting()
+endfunction
+
+function! s:mongo_setting()
+  call s:javascript_setting()
 endfunction
 
 " For surround of kana's version.
@@ -926,6 +959,11 @@ function! s:mako_surround()
   call SurroundRegister('b', 'for', "% for i in L:\n\r\n% endfor")
 endfunction
 
+function! s:jump_next_indent_map()
+  nnoremap <silent><buffer>%n :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%>' . line('.') . 'l\S', 'e')<CR>
+  nnoremap <silent><buffer>%N :call search('^'. matchstr(getline('.'), '\(^\s*\)') .'\%<' . line('.') . 'l\S', 'be')<CR>
+endfunction
+
 function! s:call_if_exists(funcname)
   if exists("*" . a:funcname)
     exec "call " . a:funcname
@@ -953,10 +991,10 @@ au MyAutoCmd InsertLeave * set hlsearch
 
 " Mappings.
 noremap Q <Nop>
-noremap j  gj
-noremap k  gk
-noremap gj j
-noremap gk k
+noremap <silent>j  gj
+noremap <silent>k  gk
+noremap <silent>gj j
+noremap <silent>gk k
 " noremap 0  ^
 " noremap ^  0
 noremap '  `
