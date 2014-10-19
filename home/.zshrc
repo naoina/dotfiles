@@ -184,8 +184,6 @@ zstyle ':auto-fu:var' postdisplay $''
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
 
-source $HOME/.zsh/npm.zsh_completion
-
 function ssh-agent {
     eval `command ssh-agent`
     command ssh-add
