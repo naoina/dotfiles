@@ -4,9 +4,6 @@
 [submodule "home/.zsh/fabric-zsh-autocomplete"]
 	path = home/.zsh/fabric-zsh-autocomplete
 	url = https://github.com/vhbit/fabric-zsh-autocomplete.git
-[submodule "home/.zsh/auto-fu.zsh"]
-	path = home/.zsh/auto-fu.zsh
-	url = https://github.com/hchbaw/auto-fu.zsh.git
 [submodule "home/.ruby-build"]
 	path = home/.ruby-build
 	url = https://github.com/sstephenson/ruby-build.git
@@ -16,3 +13,6 @@
 [submodule "home/.nvm"]
 	path = home/.nvm
 	url = https://github.com/creationix/nvm.git
+[submodule "home/.zsh/auto-fu.zsh"]
+	path = home/.zsh/auto-fu.zsh
+	url = https://github.com/skirino/auto-fu.zsh.git
