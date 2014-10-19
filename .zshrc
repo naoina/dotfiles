@@ -10,6 +10,7 @@ bindkey "^N" history-beginning-search-forward-end
 compinit
 
 zstyle ':completion::complete:*' use-cache 1
+zstyle ':completion:*:default' menu select=2
 
 setopt extended_glob
 setopt auto_pushd
@@ -133,6 +134,11 @@ esac
 # fi
 
 [[ -x "`whence -p rbenv`" ]] && eval "$(rbenv init -)"
+if [ -x "`whence -p hub`" ]; then
+    eval "$(hub alias -s)"
+else
+    source $HOME/.zsh/git-completion.bash
+fi
 
 [[ -x "`whence -p gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
 [[ -x "`whence -p powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
@@ -153,6 +159,11 @@ if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
 else
     [[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
 fi
+if [ -x "`whence -p smlsharp`" ]; then
+    if [ -x "`whence -p rlwrap`" ]; then
+        alias smlsharp="rlwrap smlsharp"
+    fi
+fi
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
 
 alias ll="ls -l"
@@ -165,8 +176,6 @@ alias gprof="gprof -b"
 # ulimit -c unlimited
 umask 022
 
-source $HOME/.zsh/git-completion.bash
-
 source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
 zle-line-init () {auto-fu-init;}; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
@@ -174,6 +183,8 @@ zle -N zle-keymap-select auto-fu-zle-keymap-select
 zstyle ':auto-fu:var' postdisplay $''
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
+
+source $HOME/.zsh/npm.zsh_completion
 
 function ssh-agent {
     eval `command ssh-agent`
@@ -189,5 +200,39 @@ function http_server {
         (cd $DIR && python2 -m SimpleHTTPServer 8000)
     elif [ -x "`whence ruby`" ]; then
         (cd $DIR && ruby -rwebrick -e 'WEBrick::HTTPServer.new(:Port => 8000, :DocumentRoot => ".").start')
+    fi
+}
+
+function flash_cache {
+    for ID in $( pgrep chrom ); do
+        out=`LANG=C sudo ls -l /proc/$ID/fd | grep -E 'Flash|Pepper'`
+        [ -z "$out" ] || (echo $out && echo /proc/$ID/fd/`echo "$out" | cut -d ' ' -f 9`)
+    done
+}
+
+function linkcheck {
+    URL=$1
+    wget --spider --recursive --no-directories --no-verbose $URL
+}
+
+function pubkey-out {
+    id_rsa=$1
+    ssh-keygen -y -f $id_rsa
+}
+
+function codeline-count {
+    cat $1/**/*.go | grep -v '^$' | grep -v '^//' | wc -l
+}
+
+function rtmp-suck {
+    sudo iptables -t nat -A OUTPUT -p tcp --dport 1935 -m owner \! --uid-owner root -j REDIRECT
+    sudo rtmpsuck
+}
+
+function filer {
+    if [ -x "`whence pcmanfm`" ]; then
+        pcmanfm
+    elif [ -x "`whence rox`" ]; then
+        rox
     fi
 }
