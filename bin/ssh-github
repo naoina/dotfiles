@@ -1,5 +1,0 @@
-#!/bin/sh
-
-PUBLIC_KEY="id_rsa.github"
-
-ssh -i ~/.ssh/$PUBLIC_KEY -C "$@"

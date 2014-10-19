@@ -4,6 +4,7 @@
 [alias]
 	ci = commit
     cia = commit --amend -C HEAD
+	ciad = !git commit --amend -C HEAD --date \"$(date -R)\"
     co = checkout
     st = status
     resolve = mergetool
@@ -31,6 +32,10 @@
 	algorithm = histogram
 [pager]
 	# They should use less because correct highlight color.
-	log = diff-highlight | less
-	show = diff-highlight | less
-	diff = diff-highlight | less
+	log = diff-highlight | less -i
+	show = diff-highlight | less -i
+	diff = diff-highlight | less -i
+[web]
+	browser = xdg-open
+[ghq]
+	root = ~/work/src
