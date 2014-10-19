@@ -39,3 +39,5 @@
 	browser = xdg-open
 [ghq]
 	root = ~/work/src
+[github]
+	user = naoina

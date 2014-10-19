@@ -1,0 +1,68 @@
+snippet if "if (...)" !b
+if ($1) {
+	$0
+}
+endsnippet
+
+snippet class "class ..." !b
+class ${1:ClassName} {
+	$0
+}
+endsnippet
+
+snippet pub "public" !b
+public 
+endsnippet
+
+snippet pr "private" !b
+private 
+endsnippet
+
+snippet pro "protected" !b
+protected 
+endsnippet
+
+snippet m "public function" !b
+${1:public} function ${2:name}($3)
+{
+	$0
+}
+endsnippet
+
+snippet r "return" !b
+return 
+endsnippet
+
+snippet co "const" !b
+const $0;
+endsnippet
+
+snippet fori "for ($i = 0; ...; $i++)" !b
+for (${1:$i = 0}; $2; ${3:$i++}) {
+	$0
+}
+endsnippet
+
+snippet v "var_dump()" !b
+var_dump($0);
+endsnippet
+
+snippet sw "switch" !b
+switch ($1) {
+	case $2:
+		break;
+}
+endsnippet
+
+snippet fore "foreach" !b
+foreach ($${1:arr} as $${2:v}) {
+	$0
+}
+endsnippet
+
+snippet f "function" !b
+function ${1:funcname}($2)
+{
+	$0
+}
+endsnippet

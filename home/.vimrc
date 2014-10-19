@@ -9,9 +9,10 @@ let s:cachedir = $VIMLOCAL . '/cache'
 filetype off
 
 if has('vim_starting')
+  set nocompatible
   set runtimepath+=$VIMLOCAL/bundle/neobundle.vim
 
-  call neobundle#rc($VIMLOCAL . '/bundle')
+  call neobundle#begin($VIMLOCAL . '/bundle')
 endif
 
 " To avoid to the process time out in vimproc. See https://github.com/Shougo/neobundle.vim/issues/175
@@ -75,29 +76,35 @@ NeoBundle 'git://github.com/Shougo/vimproc.git', {
         \ }
 
 NeoBundle 'https://github.com/kana/vim-smartinput.git'
-call smartinput#map_to_trigger('i', '#', '#', '#')
-call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
-call smartinput#define_rule({
-        \ 'at': '\({\|\<do\>\)\s*\%#',
-        \ 'char': '<Bar>',
-        \ 'input': '<Bar><Bar><Left>',
-        \ 'filetype': ['ruby'],
-        \ })
+let s:bundle = neobundle#get('vim-smartinput')
+function! s:bundle.hooks.on_post_source(bundle)
+  call smartinput#map_to_trigger('i', '#', '#', '#')
+  call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
+  call smartinput#define_rule({
+          \ 'at': '\({\|\<do\>\)\s*\%#',
+          \ 'char': '<Bar>',
+          \ 'input': '<Bar><Bar><Left>',
+          \ 'filetype': ['ruby'],
+          \ })
+endfunction
 
 NeoBundle 'https://github.com/kana/vim-altr.git'
-" Python
-call altr#define('views.py', 'views/__init__.py', 'tests/test_views.py')
-call altr#define('views/%.py', 'tests/views/test_%.py')
-call altr#define('models.py', 'models/__init__.py', 'tests/test_models.py')
-call altr#define('models/%.py', 'tests/models/test_%.py')
-call altr#define('forms.py', 'forms/__init__.py', 'tests/test_forms.py')
-call altr#define('forms/%.py', 'tests/forms/test_%.py')
-" JavaScript
-call altr#define('static/js/plog/components/%.js', 'tests/js/plog/components/test_%.js')
-" Go
-call altr#define('%.go', '%_test.go')
-command! An call altr#forward()
-command! Ap call altr#back()
+let s:bundle = neobundle#get('vim-altr')
+function! s:bundle.hooks.on_post_source(bundle)
+  " Python
+  call altr#define('views.py', 'views/__init__.py', 'tests/test_views.py')
+  call altr#define('views/%.py', 'tests/views/test_%.py')
+  call altr#define('models.py', 'models/__init__.py', 'tests/test_models.py')
+  call altr#define('models/%.py', 'tests/models/test_%.py')
+  call altr#define('forms.py', 'forms/__init__.py', 'tests/test_forms.py')
+  call altr#define('forms/%.py', 'tests/forms/test_%.py')
+  " JavaScript
+  call altr#define('static/js/plog/components/%.js', 'tests/js/plog/components/test_%.js')
+  " Go
+  call altr#define('%.go', '%_test.go')
+  command! An call altr#forward()
+  command! Ap call altr#back()
+endfunction
 
 NeoBundle 'git://github.com/scrooloose/nerdcommenter.git'
 NeoBundle 'git://github.com/kana/vim-surround.git'
@@ -336,7 +343,9 @@ NeoBundleLazy 'https://github.com/rhysd/vim-go-impl.git', {
 " for colorschemes
 NeoBundle 'git://github.com/godlygeek/csapprox.git'
 NeoBundle 'git://github.com/flazz/vim-colorschemes.git'
-        NeoBundle 'https://github.com/mattn/yamada2-vim.git'
+NeoBundle 'https://github.com/mattn/yamada2-vim.git'
+
+call neobundle#end()
 
 filetype plugin indent on
 
@@ -359,7 +368,6 @@ set viminfo='1000,<500,f1
 set backspace=indent,eol,start
 set list
 set listchars=tab:>-,eol:$
-set nocompatible
 set number
 set hidden
 set hlsearch
@@ -459,7 +467,6 @@ au BufReadPost * call s:restore_cursor()
 au BufEnter * call s:autocd()
 
 " For gist-vim
-let [g:github_user, g:github_token] = readfile($VIMLOCAL . '/.github.token')
 let g:gist_detect_filetype = 1
 let g:gist_private = 0
 
