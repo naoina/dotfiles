@@ -14,6 +14,10 @@ function($1) {
 }
 endsnippet
 
+snippet r "return" !b
+return $0;
+endsnippet
+
 snippet v "var" iw
 var ${1:varname}${2: = ${3:value}}
 endsnippet
@@ -32,6 +36,11 @@ endsnippet
 
 snippet err "console.error" !w
 console.error($0);
+endsnippet
+
+snippet time "console.time" !w
+console.time($1);
+console.timeEnd($1);
 endsnippet
 
 snippet define "define" b

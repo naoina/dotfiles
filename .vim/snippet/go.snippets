@@ -92,6 +92,12 @@ snippet "(\S+\s*)?fn" "func literal" !wr
 }`!p if match.group(1) is None: snip.rv = '()'`
 endsnippet
 
+snippet go "go func()" !b
+go func() {
+	$0
+}()
+endsnippet
+
 snippet m "method" !b
 func (${1:receiver}) ${2:MethodName}($3) $4{
 	${0:// TODO: not implemented yet}
@@ -129,6 +135,13 @@ endsnippet
 snippet sw "switch" !b
 switch ${1:expr} {
 case ${2:cond}:
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet sel "select" !b
+select {
+case <-${1:ch}:
 	${0:// TODO: not implemented yet}
 }
 endsnippet
@@ -175,14 +188,8 @@ defer func() {
 endsnippet
 
 snippet ifne "if !reflect.DeepEqual(...)" !b
-if !reflect.DeepEqual(${1:actual}, ${2:expected}) {
-	t.Errorf("Expect %q, but %q", $2, $1)
-}
-endsnippet
-
-snippet ifnev "if !reflect.DeepEqual(...)" !b
-if !reflect.DeepEqual(${1:actual}, ${2:expected}) {
-	t.Errorf("Expect %v, but %v", $2, $1)
+if !reflect.DeepEqual(actual, expect) {
+	t.Errorf(\`${1:${2:Func}(${3:%#v})} => %#v; want %#v\`, ${4:v}, actual, expect)
 }
 endsnippet
 
@@ -192,4 +199,24 @@ endsnippet
 
 snippet r "return" !b
 return $0
+endsnippet
+
+snippet re "return err" !b
+return err
+endsnippet
+
+snippet rn "return nil" !b
+return nil
+endsnippet
+
+snippet rne "return nil, err" !b
+return nil, err
+endsnippet
+
+snippet e "fmt.Errorf()" !w
+fmt.Errorf("$0")
+endsnippet
+
+snippet tfe "t.Fatal(err)" !b
+t.Fatal(err)
 endsnippet

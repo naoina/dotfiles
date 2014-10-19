@@ -16,8 +16,12 @@ module ${1:ModuleName}
 end
 endsnippet
 
-snippet r "require" b
+snippet req "require" b
 require '$0'
+endsnippet
+
+snippet r "return" !w
+return 
 endsnippet
 
 snippet do "do ... end" i
@@ -33,21 +37,19 @@ end
 endsnippet
 
 snippet de "describe" b
-describe "$1" do
+describe "${1}" do
 	$0
 end
 endsnippet
 
 snippet co "context" b
-context "$1" do
+context "${1}" do
 	$0
 end
 endsnippet
 
 snippet it "it" b
-it "should $1" do
-	$0
-end
+it { ${1:is_expected.to} $0 }
 endsnippet
 
 snippet be "before(:each)" b
@@ -70,4 +72,20 @@ endsnippet
 
 snippet p "expect" b
 expect($1).to ${2:eq($3)}
+endsnippet
+
+snippet ren "render" !w
+render(:${1:show})
+endsnippet
+
+snippet red "redirect_to" !w
+redirect_to($0) and return
+endsnippet
+
+snippet pr "private" !b
+private
+endsnippet
+
+snippet sub "subject" !b
+subject { $0 }
 endsnippet
