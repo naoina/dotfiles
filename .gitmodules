@@ -10,3 +10,6 @@
 [submodule ".zsh/auto-fu.zsh"]
 	path = .zsh/auto-fu.zsh
 	url = https://github.com/hchbaw/auto-fu.zsh.git
+[submodule ".ruby-build"]
+	path = .ruby-build
+	url = https://github.com/sstephenson/ruby-build.git
