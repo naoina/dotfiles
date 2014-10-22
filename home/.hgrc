@@ -24,7 +24,6 @@ purge =
 
 [alias]
 show = diff -c tip
-log = glog
 resolve = resolve --tool /usr/bin/vimdiff
 
 [hgsubversion]
