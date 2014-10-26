@@ -234,3 +234,24 @@ function filer {
         rox
     fi
 }
+
+function encrypt {
+    openssl aes-256-cbc -e -salt -in "$1" -out /dev/stdout
+}
+
+function decrypt {
+    openssl aes-256-cbc -d -in "$1" -out /dev/stdout
+}
+
+function getpubkey {
+    curl https://github.com/naoina.keys
+}
+
+function ssh-keygen {
+    command ssh-keygen "$@"
+    echo -n "Enter file in which to save the key with encryption: "
+    read privatekey
+    mv "$privatekey" "$privatekey.tmp"
+    openssl pkcs8 -topk8 -v2 des3 -in "$privatekey.tmp" -out "$privatekey"
+    rm -f "$privatekey.tmp"
+}
