@@ -744,6 +744,7 @@ endfunction
 
 function! s:php_setting()
   setlocal include=
+  setlocal tabstop=4 softtabstop=4 shiftwidth=4 expandtab
   let g:ctags_opts = '--langmap=PHP:.php.inc.php4'
   iab true TRUE
   iab false FALSE
