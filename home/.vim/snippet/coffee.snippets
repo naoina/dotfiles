@@ -33,3 +33,23 @@ endsnippet
 snippet req "require" !b
 ${1:module} = require '${0:path}'
 endsnippet
+
+snippet de "describe" !b
+describe "$1", ->
+	$0
+endsnippet
+
+snippet it "it" !b
+it "$1", (done) ->
+	do done
+endsnippet
+
+snippet be "beforeEach" !b
+beforeEach (done) ->
+	$0
+endsnippet
+
+snippet af "afterEach" !b
+afterEach (done) ->
+	$0
+endsnippet
