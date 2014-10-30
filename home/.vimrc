@@ -115,6 +115,7 @@ NeoBundle 'https://github.com/gregsexton/gitv.git', {
 let s:bundle = neobundle#get('gitv')
 function! s:bundle.hooks.on_source(bundle)
   let g:Gitv_DoNotMapCtrlKey = 1
+  let g:Gitv_OpenHorizontal = 1
 endfunction
 
 NeoBundle 'git://github.com/phleet/vim-mercenary.git', {'augroup': 'mercenary'}
