@@ -202,6 +202,19 @@ function http_server {
     fi
 }
 
+function r {
+    if [ -z "$1" ]; then
+        ghq list | peco --query "github.com " | if read -r LINE; then
+            cd "$(ghq root)/$LINE"
+        fi
+    else
+        LINE="$(ls $2 | peco --initial-matcher Migemo | xargs -I '{}' -r echo "$2/{}")"
+        if [ -n "$LINE" ]; then
+            $1 "$LINE"
+        fi
+    fi
+}
+
 function flash_cache {
     for ID in $( pgrep chrom ); do
         out=`LANG=C sudo ls -l /proc/$ID/fd | grep -E 'Flash|Pepper'`
