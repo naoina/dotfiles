@@ -1,0 +1,6 @@
+{
+  "Prompt": ">",
+  "CustomMatcher": {
+    "Migemo": ["migemogrep", "$QUERY"]
+  }
+}
