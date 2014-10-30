@@ -154,6 +154,7 @@ fi
 [[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && alias exit="screen -d $STY"
 [[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && alias exit="tmux detach"
 [[ -x "`whence -p dig`" ]] && alias dig="dig +noedns"
+[[ -x "`whence -p ios_webkit_debug_proxy`" ]] && alias ios_webkit_debug_proxy="ios_webkit_debug_proxy -f http://chrome-devtools-frontend.appspot.com/static/18.0.1025.74/devtools.html"
 if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
     . "`whence -p virtualenvwrapper.sh`"
 else
