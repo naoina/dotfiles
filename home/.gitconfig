@@ -3,26 +3,30 @@
 	email = naoina@kuune.org
 [alias]
 	ci = commit
-    cia = commit --amend -C HEAD
+	cia = commit --amend -C HEAD
+	ciac = commit --amend -c HEAD
 	ciad = !git commit --amend -C HEAD --date \"$(date -R)\"
-    co = checkout
-    st = status
-    resolve = mergetool
-    glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
-    dic = diff --cached
-    di = diff
-    ignore = update-index --assume-unchanged
-    unignore = update-index --no-assume-unchanged
-    ignored = !git ls-files -v | grep "^[a-z]"
+	co = checkout
+	st = status
+	resolve = mergetool
+	glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
+	dic = diff --cached
+	di = diff
+	ignore = update-index --assume-unchanged
+	unignore = update-index --no-assume-unchanged
+	ignored = !git ls-files -v | grep "^[a-z]"
+	pr = pull-request
+	cleanup = !git branch --merged | grep -v '*' | xargs -n 1 git branch -d
+	g = grep -P
 [color]
 	ui = auto
 [core]
 	editor = /usr/bin/vim
 	quotepath = false
 [merge]
-    tool = git-vimdiff
+	tool = git-vimdiff
 [mergetool]
-    prompt = false
+	prompt = false
 [mergetool "git-vimdiff"]
 	cmd = git-vimdiff.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
@@ -41,3 +45,5 @@
 	root = ~/work/src
 [github]
 	user = naoina
+[fetch]
+	prune = true
