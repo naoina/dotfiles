@@ -1,3 +1,5 @@
+fpath=($HOME/.zsh $fpath)
+
 autoload -U compinit
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -134,12 +136,6 @@ esac
 # fi
 
 [[ -x "`whence -p rbenv`" ]] && eval "$(rbenv init -)"
-if [ -x "`whence -p hub`" ]; then
-    eval "$(hub alias -s)"
-else
-    source $HOME/.zsh/git-completion.bash
-fi
-
 [[ -x "`whence -p gmcs`" ]] && alias gmcs="gmcs -out:a.out" mcs=gmcs
 [[ -x "`whence -p powerpill`" ]] && alias pacman="`whence powerpill` --nomessages"
 [[ -x "`whence -p rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
@@ -166,6 +162,9 @@ if [ -x "`whence -p smlsharp`" ]; then
     fi
 fi
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
+if [ -x "`whence -p hub`" ]; then
+    eval "$(hub alias -s)"
+fi
 
 alias ll="ls -l"
 alias lz="ll -Z"
