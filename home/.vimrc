@@ -159,6 +159,13 @@ NeoBundle 'https://github.com/gf3/peg.vim'
 NeoBundle 'https://github.com/wavded/vim-stylus.git'
 NeoBundle 'https://github.com/digitaltoad/vim-jade.git'
 NeoBundle 'https://github.com/rhysd/committia.vim.git'
+NeoBundle 'https://github.com/haya14busa/incsearch.vim.git'
+let s:bundle = neobundle#get('incsearch.vim')
+function! s:bundle.hooks.on_source(bundle)
+  map / <Plug>(incsearch-forward)
+  map ? <Plug>(incsearch-backward)
+  let g:incsearch#emacs_like_keymap = 1
+endfunction
 
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
         \ 'autoload': {
