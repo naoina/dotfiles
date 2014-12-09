@@ -168,6 +168,21 @@ function! s:bundle.hooks.on_source(bundle)
   let g:incsearch#vim_cmdline_keymap = 0
 endfunction
 
+NeoBundle 'https://github.com/vim-scripts/diffchar.vim.git'
+let s:bundle = neobundle#get('diffchar.vim')
+function! s:bundle.hooks.on_post_source(bundle)
+  let g:DiffUnit = 'Word3'
+  function! s:enableDiffchar()
+    if &diff
+      %SDChar
+    endif
+  endfunction
+  augroup EnableDiffchar
+    autocmd!
+    autocmd BufEnter * call s:enableDiffchar()
+  augroup END
+endfunction
+
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
         \ 'autoload': {
         \     'commands': ['CtrlP'],
