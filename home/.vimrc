@@ -165,6 +165,7 @@ function! s:bundle.hooks.on_source(bundle)
   map / <Plug>(incsearch-forward)
   map ? <Plug>(incsearch-backward)
   let g:incsearch#emacs_like_keymap = 1
+  let g:incsearch#vim_cmdline_keymap = 0
 endfunction
 
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim.git', {
