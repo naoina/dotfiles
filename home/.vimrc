@@ -228,7 +228,15 @@ function! s:bundle.hooks.on_source(bundle)
         \     'command': 'mongo',
         \     'cmdopt': '--quiet',
         \     'exec': ['%c %o < %s'],
-        \     }
+        \     },
+        \ 'sql': {
+        \     'type': executable('mysql') ? 'sql/mysql' : 'sql/postgres',
+        \     },
+        \ 'sql/mysql': {
+        \     'command': 'mysql',
+        \     'cmdopt': '-u root',
+        \     'exec': ['%c %o < %s'],
+        \     },
         \ }
 endfunction
 
