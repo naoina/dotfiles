@@ -955,6 +955,10 @@ function! s:mongo_setting()
   call s:javascript_setting()
 endfunction
 
+function! s:stylus_setting()
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
+endfunction
+
 " For surround of kana's version.
 function! s:c_surround()
   " For C like languages.
