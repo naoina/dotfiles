@@ -649,15 +649,16 @@ augroup END
 
 
 " Filetypes setting
-au BufNewFile,BufRead *.as      setlocal filetype=actionscript
-au BufNewFile,BufRead *.mxml    setlocal filetype=mxml
-au BufNewFile,BufRead *.inc     setlocal filetype=php
-au BufNewFile,BufRead *.snip    setlocal filetype=snippet
-au BufNewFile,BufRead *.wsgi    setlocal filetype=python
-au BufNewFile,BufRead *.mayaa   setlocal filetype=xml
-au BufNewFile,BufRead *.scala   setlocal filetype=scala
-au BufNewFile,BufRead *.mako    setlocal filetype=mako
-au BufNewFile,BufRead .bowerrc  setlocal filetype=javascript
+au BufNewFile,BufRead *.as       setlocal filetype=actionscript
+au BufNewFile,BufRead *.mxml     setlocal filetype=mxml
+au BufNewFile,BufRead *.inc      setlocal filetype=php
+au BufNewFile,BufRead *.snip     setlocal filetype=snippet
+au BufNewFile,BufRead *.wsgi     setlocal filetype=python
+au BufNewFile,BufRead *.mayaa    setlocal filetype=xml
+au BufNewFile,BufRead *.scala    setlocal filetype=scala
+au BufNewFile,BufRead *.mako     setlocal filetype=mako
+au BufNewFile,BufRead .bowerrc   setlocal filetype=javascript
+au BufNewFile,BufRead *.html.tpl setlocal filetype=gotplhtml
 
 function! s:txt_setting()
   setlocal textwidth=78
@@ -841,8 +842,7 @@ function! s:go_setting()
 endfunction
 
 function! s:gotplhtml_setting()
-  setlocal tabstop=4 softtabstop=4 shiftwidth=4
-  setlocal noexpandtab
+  setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal autoindent
 endfunction
 
