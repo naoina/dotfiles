@@ -319,7 +319,9 @@ function! s:bundle.hooks.on_source(bundle)
         \ }
 endfunction
 
-NeoBundle 'https://github.com/cespare/vim-go-templates'
+NeoBundle 'https://github.com/remyoudompheng/go-misc', {
+      \ 'rtp': 'vim-template-syntax',
+      \ }
 
 NeoBundleLazy 'https://github.com/mattn/gist-vim', {
       \ 'autoload': {
@@ -649,16 +651,17 @@ augroup END
 
 
 " Filetypes setting
-au BufNewFile,BufRead *.as       setlocal filetype=actionscript
-au BufNewFile,BufRead *.mxml     setlocal filetype=mxml
-au BufNewFile,BufRead *.inc      setlocal filetype=php
-au BufNewFile,BufRead *.snip     setlocal filetype=snippet
-au BufNewFile,BufRead *.wsgi     setlocal filetype=python
-au BufNewFile,BufRead *.mayaa    setlocal filetype=xml
-au BufNewFile,BufRead *.scala    setlocal filetype=scala
-au BufNewFile,BufRead *.mako     setlocal filetype=mako
-au BufNewFile,BufRead .bowerrc   setlocal filetype=javascript
-au BufNewFile,BufRead *.html.tpl setlocal filetype=gotplhtml
+au BufNewFile,BufRead *.as        setlocal filetype=actionscript
+au BufNewFile,BufRead *.mxml      setlocal filetype=mxml
+au BufNewFile,BufRead *.inc       setlocal filetype=php
+au BufNewFile,BufRead *.snip      setlocal filetype=snippet
+au BufNewFile,BufRead *.wsgi      setlocal filetype=python
+au BufNewFile,BufRead *.mayaa     setlocal filetype=xml
+au BufNewFile,BufRead *.scala     setlocal filetype=scala
+au BufNewFile,BufRead *.mako      setlocal filetype=mako
+au BufNewFile,BufRead .bowerrc    setlocal filetype=javascript
+au BufNewFile,BufRead *.tmpl      setlocal filetype=gotpl
+au BufNewFile,BufRead *.html.tmpl setlocal filetype=gotplhtml
 
 function! s:txt_setting()
   setlocal textwidth=78
