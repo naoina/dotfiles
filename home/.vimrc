@@ -394,21 +394,13 @@ NeoBundleLazy 'https://github.com/jmcantrell/vim-virtualenv', {
       \     },
       \ }
 
-NeoBundleLazy 'https://github.com/kchmck/vim-coffee-script', {
-      \ 'autoload': {
-      \     'filetypes': ['coffee'],
-      \     },
-      \ }
+NeoBundle 'https://github.com/kchmck/vim-coffee-script'
 let s:bundle = neobundle#get('vim-coffee-script')
 function! s:bundle.hooks.on_source(bundle)
   let g:coffee_compile_vert = 1
 endfunction
 
-NeoBundleLazy 'https://github.com/fatih/vim-go', {
-      \ 'autoload': {
-      \     'filetypes': ['go'],
-      \     },
-      \ }
+NeoBundle 'https://github.com/fatih/vim-go'
 let s:bundle = neobundle#get('vim-go')
 function! s:bundle.hooks.on_source(bundle)
   let g:go_fmt_fail_silently = 1
