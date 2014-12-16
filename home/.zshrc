@@ -176,6 +176,7 @@ alias grep="grep --color=auto -I"
 # ulimit -c unlimited
 umask 022
 
+AUTO_FU_NOCP=1
 source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
 zle-line-init () {auto-fu-init;}; zle -N zle-line-init
 zstyle ':completion:*' completer _oldlist _complete
