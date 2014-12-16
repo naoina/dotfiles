@@ -325,11 +325,21 @@ NeoBundleLazy 'https://github.com/cespare/mxml.vim', {
       \     },
       \ }
 
+let g:colorv_filetypes = [
+      \ 'css', 'scss', 'stylus', 'less', 'sass',
+      \ 'html', 'xhtml', 'xml', 'gotplhtml', 'mako', 'erb', 'htmldjango',
+      \ 'vim',
+      \ ]
 NeoBundleLazy 'https://github.com/Rykka/colorv.vim', {
       \ 'autoload': {
-      \     'filetypes': ['html', 'htmldjango', 'mako', 'erb', 'css', 'vim'],
+      \     'filetypes': g:colorv_filetypes,
       \     },
       \ }
+let s:bundle = neobundle#get('colorv.vim')
+function! s:bundle.hooks.on_source(bundle)
+  let g:colorv_no_global_map = 1
+  let g:colorv_preview_ftype = join(g:colorv_filetypes, ',')
+endfunction
 
 NeoBundleLazy 'https://github.com/mattn/emmet-vim', {
       \ 'autoload': {
@@ -600,12 +610,6 @@ function! s:tohtml_and_browse()
 endfunction
 command! TOhtmAndBrowse :call s:tohtml_and_browse()
 
-function! s:colorv_autopreview()
-  if exists(':ColorVAutoPreview')
-    ColorVAutoPreview
-  endif
-endfunction
-
 augroup MyAutoCmd
   au!
 augroup End
@@ -678,7 +682,6 @@ endfunction
 
 function! s:html_setting()
   call s:xml_setting()
-  call s:colorv_autopreview()
 endfunction
 
 function! s:htmldjango_setting()
@@ -748,7 +751,6 @@ endfunction
 
 function! s:css_setting()
   setlocal foldmethod=indent
-  call s:colorv_autopreview()
 endfunction
 
 function! s:scss_setting()
@@ -772,7 +774,6 @@ endfunction
 
 function! s:vim_setting()
   setlocal shiftwidth=2
-  call s:colorv_autopreview()
 endfunction
 
 function! s:scala_setting()
@@ -851,6 +852,7 @@ endfunction
 
 function! s:stylus_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
+  setl foldmethod=indent
 endfunction
 
 function! s:json_setting()
