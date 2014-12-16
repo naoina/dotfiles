@@ -453,8 +453,8 @@ NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
 let s:bundle = neobundle#get('indentLine')
 function! s:bundle.hooks.on_source(bundle)
   let g:indentLine_enabled = 0
-  nnoremap <C-g> :<C-u>IndentLinesToggle<CR>
-  inoremap <C-g> <C-o>:<C-u>IndentLinesToggle<CR>
+  nnoremap <silent><C-g> :<C-u>IndentLinesToggle<CR>
+  inoremap <silent><C-g> <C-o>:<C-u>IndentLinesToggle<CR>
 endfunction
 
 " for colorschemes
