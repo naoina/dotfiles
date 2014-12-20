@@ -460,6 +460,15 @@ function! s:bundle.hooks.on_source(bundle)
   inoremap <silent><C-g> <C-o>:<C-u>IndentLinesToggle<CR>
 endfunction
 
+NeoBundle 'https://github.com/haya14busa/vim-asterisk'
+let s:bundle = neobundle#get('vim-asterisk')
+function! s:bundle.hooks.on_source(bundle)
+  map * <Plug>(asterisk-z*)
+  map g* <Plug>(asterisk-gz*)
+  map # <Plug>(asterisk-z#)
+  map g# <Plug>(asterisk-gz#)
+endfunction
+
 " for colorschemes
 NeoBundle 'https://github.com/godlygeek/csapprox'
 NeoBundle 'https://github.com/flazz/vim-colorschemes'
