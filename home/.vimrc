@@ -284,22 +284,25 @@ NeoBundle 'https://github.com/thinca/vim-quickrun'
 let s:bundle = neobundle#get('vim-quickrun')
 function! s:bundle.hooks.on_source(bundle)
   let g:quickrun_config = {
-        \ '_': {
-        \     'split': 'vertical 50',
-        \     },
-        \ 'mongo': {
-        \     'command': 'mongo',
-        \     'cmdopt': '--quiet',
-        \     'exec': ['%c %o < %s'],
-        \     },
-        \ 'sql': {
-        \     'type': executable('mysql') ? 'sql/mysql' : 'sql/postgres',
-        \     },
-        \ 'sql/mysql': {
-        \     'command': 'mysql',
-        \     'cmdopt': '-u root',
-        \     'exec': ['%c %o < %s'],
-        \     },
+        \   '_': {
+        \       'split': 'vertical 50',
+        \   },
+        \   'mongo': {
+        \       'command': 'mongo',
+        \       'cmdopt': '--quiet',
+        \       'exec': ['%c %o < %s'],
+        \   },
+        \   'sql': {
+        \       'type': executable('mysql') ? 'sql/mysql' : 'sql/postgres',
+        \   },
+        \   'sql/mysql': {
+        \       'command': 'mysql',
+        \       'cmdopt': '-u root',
+        \       'exec': ['%c %o < %s'],
+        \   },
+        \   'javascript': {
+        \       'type': 'javascript/nodejs',
+        \   },
         \ }
 endfunction
 
