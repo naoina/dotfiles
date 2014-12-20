@@ -9,7 +9,6 @@ let s:cachedir = $VIMLOCAL . '/cache'
 filetype off
 
 if has('vim_starting')
-  set nocompatible
   set runtimepath+=$VIMLOCAL/bundle/neobundle.vim
 
   call neobundle#begin($VIMLOCAL . '/bundle')
