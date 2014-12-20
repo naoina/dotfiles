@@ -132,7 +132,7 @@ function! s:bundle.hooks.on_source(bundle)
       \ 'ruby': 1,
       \ 'sh': 1,
       \ }
-  autocmd User plugin-template-loaded call s:template_keywords()
+  au User plugin-template-loaded call s:template_keywords()
   function! s:template_keywords()
     let firstline = search("@LICENSE@", "cnW")
     if firstline != 0
@@ -470,9 +470,6 @@ set t_Co=256
 set background=light
 colorscheme naoina
 
-hi FullwidthAndEOLSpace guibg=#ffafd7
-au WinEnter,BufEnter * match FullwidthAndEOLSpace "\(　\|\s\)\+$"
-
 runtime macros/matchit.vim
 
 set backupdir=$VIMLOCAL/backup
@@ -507,15 +504,8 @@ set writeany
 set pastetoggle=<F9>
 " set clipboard=unnamed
 set tags=tags;
-
-setlocal cursorline
-au WinEnter,BufEnter * setlocal cursorline
-au WinLeave,BufLeave * setlocal nocursorline
-au QuickFixCmdPost vimgrep cw
-
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
-au FileType * setlocal formatoptions+=cqmM
-
+set formatoptions+=cqmM
 set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 
 set fileencoding=utf-8
@@ -571,17 +561,12 @@ call s:mkdir(&directory, 0700)
 call s:mkdir(&backupdir, 0700)
 call s:mkdir(s:cachedir, 0700)
 
-au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call s:clear_undo() | endif
-
 " Auto restore last cursor position.
 function! s:restore_cursor()
   if line("'\"") > 1 && line("'\"") <= line("$")
     normal! g`"
   endif
 endfunction
-au BufReadPost * call s:restore_cursor()
-
-au BufEnter * call s:autocd()
 
 function! s:unite_setting()
   if exists("b:did_unite_setting") && b:did_unite_setting
@@ -610,10 +595,6 @@ function! s:tohtml_and_browse()
 endfunction
 command! TOhtmAndBrowse :call s:tohtml_and_browse()
 
-augroup MyAutoCmd
-  au!
-augroup End
-
 function! s:to_xxd()
   silent %!xxd -g 1
   setlocal ft=xxd
@@ -629,20 +610,6 @@ augroup BinaryMode
   au BufWrite * if &binary | call s:from_xxd() | endif
   au BufWritePost * if &binary | call s:to_xxd() | setlocal nomodified | endif
 augroup END
-
-
-" Filetypes setting
-au BufNewFile,BufRead *.as        setlocal filetype=actionscript
-au BufNewFile,BufRead *.mxml      setlocal filetype=mxml
-au BufNewFile,BufRead *.inc       setlocal filetype=php
-au BufNewFile,BufRead *.snip      setlocal filetype=snippet
-au BufNewFile,BufRead *.wsgi      setlocal filetype=python
-au BufNewFile,BufRead *.mayaa     setlocal filetype=xml
-au BufNewFile,BufRead *.scala     setlocal filetype=scala
-au BufNewFile,BufRead *.mako      setlocal filetype=mako
-au BufNewFile,BufRead .bowerrc    setlocal filetype=javascript
-au BufNewFile,BufRead *.tmpl      setlocal filetype=gotpl
-au BufNewFile,BufRead *.html.tmpl setlocal filetype=gotplhtml
 
 function! s:txt_setting()
   setlocal textwidth=78
@@ -731,7 +698,7 @@ function! s:java_setting()
       au!
       au BufNewFile,BufRead <buffer> EclimEnable
       " au BufWritePost <buffer> JavaImportOrganize
-    augroup End
+    augroup END
   else
     " javacomplete, script_id=1785
     setlocal omnifunc=javacomplete#Complete
@@ -929,9 +896,35 @@ function! s:setting()
   endif
 endfunction
 
-au MyAutoCmd FileType * call s:setting()
-au MyAutoCmd InsertEnter * set nohlsearch
-au MyAutoCmd InsertLeave * set hlsearch
+hi FullwidthAndEOLSpace guibg=#ffafd7
+augroup vimrc
+  au!
+
+  au BufNewFile,BufRead *.as        setlocal filetype=actionscript
+  au BufNewFile,BufRead *.mxml      setlocal filetype=mxml
+  au BufNewFile,BufRead *.inc       setlocal filetype=php
+  au BufNewFile,BufRead *.snip      setlocal filetype=snippet
+  au BufNewFile,BufRead *.wsgi      setlocal filetype=python
+  au BufNewFile,BufRead *.mayaa     setlocal filetype=xml
+  au BufNewFile,BufRead *.scala     setlocal filetype=scala
+  au BufNewFile,BufRead *.mako      setlocal filetype=mako
+  au BufNewFile,BufRead .bowerrc    setlocal filetype=javascript
+  au BufNewFile,BufRead *.tmpl      setlocal filetype=gotpl
+  au BufNewFile,BufRead *.html.tmpl setlocal filetype=gotplhtml
+
+  au WinEnter,BufEnter * match FullwidthAndEOLSpace "\(　\|\s\)\+$"
+  au WinEnter,BufEnter * setlocal cursorline
+  au WinLeave,BufLeave * setlocal nocursorline
+  au QuickFixCmdPost vimgrep cw
+
+  au FileType * call s:setting()
+  au InsertEnter * set nohlsearch
+  au InsertLeave * set hlsearch
+
+  au BufReadPost * if &fenc=="sjis" || &fenc=="cp932" | silent! %s/¥/\\/g | call s:clear_undo() | endif
+  au BufReadPost * call s:restore_cursor()
+  au BufEnter * call s:autocd()
+augroup END
 
 " Mappings.
 noremap Q <Nop>
