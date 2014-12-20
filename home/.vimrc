@@ -90,6 +90,7 @@ endfunction
 NeoBundleLazy 'https://github.com/scrooloose/nerdcommenter', {
       \ 'autoload': {
       \     'mappings': ['<Plug>NERDCommenter'],
+      \     'functions': ['NERDComment'],
       \     },
       \ }
 let s:bundle = neobundle#get('nerdcommenter')
