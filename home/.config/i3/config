@@ -156,13 +156,13 @@ bar {
 
 assign [class="Chromium"] 2
 assign [class="VirtualBox"] 6
-assign [class="zeal"] 10
+assign [class="[Zz]eal"] 10
 assign [class="weechat"] 10
 assign [class="[Ss]kype"] 10
 for_window [class=".*"] floating enable
 for_window [class="Chromium"] border none, floating disable
 for_window [class="mlterm"] floating disable
-for_window [class="zeal"] floating disable
+for_window [class="[Zz]eal"] floating disable
 for_window [class="weechat"] floating disable
 exec xrandr --output LVDS1 --primary
 exec compton
