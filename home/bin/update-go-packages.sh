@@ -19,6 +19,8 @@ gopkgs=(
     'github.com/peco/migemogrep'
     'github.com/noraesae/orange-cat/cmd/orange'
     'golang.org/x/tools/cmd/stringer'
+    'github.com/cespare/prettybench'
+    'github.com/spf13/hugo'
 )
 
 for pkg in ${gopkgs[@]}; do
