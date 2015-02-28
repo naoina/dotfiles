@@ -85,7 +85,7 @@ function! s:bundle.hooks.on_post_source(bundle)
   " JavaScript
   call altr#define('static/js/plog/components/%.js', 'tests/js/plog/components/test_%.js')
   " Go
-  call altr#define('%.go', '%_test.go')
+  call altr#define('%.go', '%_test.go', '%_bench_test.go')
   command! An call altr#forward()
   command! Ap call altr#back()
 endfunction
