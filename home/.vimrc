@@ -472,6 +472,8 @@ function! s:bundle.hooks.on_source(bundle)
   map g# <Plug>(asterisk-gz#)
 endfunction
 
+NeoBundle 'https://github.com/tpope/vim-unimpaired'
+
 " for colorschemes
 NeoBundle 'https://github.com/godlygeek/csapprox'
 NeoBundle 'https://github.com/flazz/vim-colorschemes'
@@ -522,10 +524,10 @@ set tags=tags;
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 set formatoptions+=cqmM
 set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
+set display=lastline
 
 set fileencoding=utf-8
-set fileencodings=ucs-bom,utf-8,japan,sjis,utf-16,utf-8
-set fileformat=unix
+set fileencodings=ucs-bom,utf-8,japan,cp932,utf-16,utf-8
 set fileformats=unix,dos,mac
 
 " reload with encoding.
@@ -830,6 +832,7 @@ endfunction
 
 function! s:mongo_setting()
   call s:javascript_setting()
+  ru! syntax/javascript.vim
 endfunction
 
 function! s:stylus_setting()
@@ -958,8 +961,8 @@ vnoremap gc :<C-u>normal gc<CR>
 onoremap gc :<C-u>normal gc<CR>
 nnoremap <C-s> <Nop>
 inoremap <C-s> <Nop>
-noremap  <C-j> <C-w>w
-noremap  <C-k> <C-w>W
+noremap  <silent><C-j> <C-w>w
+noremap  <silent><C-k> <C-w>W
 nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>call <SID>refresh()<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
