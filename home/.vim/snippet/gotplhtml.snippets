@@ -1,0 +1,16 @@
+extends html
+
+snippet if "{{ if }}" !b
+{{ if $1 }}
+{{ end }}
+endsnippet
+
+snippet ifelse "{{ if }}{{ else }}" !b
+{{ if $1 }}
+{{ else }}
+{{ end }}
+endsnippet
+
+snippet else "{{ else }}" !b
+{{ else }}
+endsnippet

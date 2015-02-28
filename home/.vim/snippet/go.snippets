@@ -1,4 +1,4 @@
-snippet i "interface{}" !w
+snippet in "interface{}" !w
 interface{}
 endsnippet
 
@@ -219,4 +219,18 @@ endsnippet
 
 snippet tfe "t.Fatal(err)" !b
 t.Fatal(err)
+endsnippet
+
+snippet sorter "sort.Interface" !b
+func (${2:s} ${1:Slice}) Len() int {
+	return len($2)
+}
+
+func ($2 $1) Less(i, j int) bool {
+	return $2[i] < $2[j]
+}
+
+func ($2 $1) Swap(i, j int) {
+	$2[i], $2[j] = $2[j], $2[i]
+}
 endsnippet

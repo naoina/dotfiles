@@ -1,4 +1,14 @@
-extends c_like
+snippet for "for" !b
+for (var ${1:i} = 0; $1 < $2; ++$1) {
+	$0
+}
+endsnippet
+
+snippet if "if" !b
+if ($1) {
+	$0
+}
+endsnippet
 
 snippet d "document" iw
 document
@@ -39,8 +49,8 @@ console.error($0);
 endsnippet
 
 snippet time "console.time" !w
-console.time($1);
-console.timeEnd($1);
+console.time("$1");
+console.timeEnd("$1");
 endsnippet
 
 snippet define "define" b
