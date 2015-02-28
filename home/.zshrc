@@ -233,7 +233,7 @@ function pubkey-out {
 }
 
 function codeline-count {
-    cat $1/**/*.go | grep -v '^$' | grep -v '^//' | wc -l
+    grep -v -e '^$' -e '^//' $1/**/*.go | wc -l
 }
 
 function rtmp-suck {
@@ -267,5 +267,6 @@ function ssh-keygen {
     read privatekey
     mv "$privatekey" "$privatekey.tmp"
     openssl pkcs8 -topk8 -v2 des3 -in "$privatekey.tmp" -out "$privatekey"
+    chmod 600 "$privatekey"
     rm -f "$privatekey.tmp"
 }
