@@ -5,7 +5,7 @@
 	ci = commit
 	cia = commit --amend -C HEAD
 	ciac = commit --amend -c HEAD
-	ciad = !git commit --amend -C HEAD --date \"$(date -R)\"
+	ciad = commit --amend -C HEAD --reset-author
 	co = checkout
 	st = status
 	resolve = mergetool
@@ -31,7 +31,7 @@
 	cmd = git-vimdiff.sh \"$BASE\" \"$LOCAL\" \"$REMOTE\" \"$MERGED\"
 	trustExitCode = true
 [push]
-	default = simple
+	default = current
 [diff]
 	algorithm = histogram
 [pager]
@@ -47,3 +47,5 @@
 	user = naoina
 [fetch]
 	prune = true
+[rerere]
+	enabled = true
