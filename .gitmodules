@@ -1,9 +1,9 @@
 [submodule "home/.rbenv"]
 	path = home/.rbenv
 	url = https://github.com/sstephenson/rbenv.git
-[submodule "home/.vim/bundle/neobundle.vim"]
-	path = home/.vim/bundle/neobundle.vim
-	url = https://github.com/Shougo/neobundle.vim
 [submodule "home/.nvm"]
 	path = home/.nvm
 	url = https://github.com/creationix/nvm.git
+[submodule "home/.vim/bundle/neobundle.vim"]
+	path = home/.vim/bundle/neobundle.vim
+	url = https://github.com/Shougo/neobundle.vim
