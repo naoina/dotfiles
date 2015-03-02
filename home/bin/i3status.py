@@ -6,41 +6,27 @@ import re
 import time
 
 
-def find_file(root, filename):
-    for root, dirs, files in os.walk(root):
-        for f in files:
-            p = os.path.join(root, f)
-            if p.endswith(filename) and os.path.isfile(p):
-                return p
-
-
 class NetSpeed(object):
-    sysdevices = '/sys/devices'
+    sysdevices = '/sys/class'
 
     def __init__(self):
-        self.eth0_rx_bytes = find_file(NetSpeed.sysdevices, 'eth0/statistics/rx_bytes')
-        self.eth0_tx_bytes = find_file(NetSpeed.sysdevices, 'eth0/statistics/tx_bytes')
-        self.wlan0_rx_bytes = find_file(NetSpeed.sysdevices, 'wlan0/statistics/rx_bytes')
-        self.wlan0_tx_bytes = find_file(NetSpeed.sysdevices, 'wlan0/statistics/tx_bytes')
+        self.wlp1s0_rx_bytes = NetSpeed.sysdevices + '/net/wlp1s0/statistics/rx_bytes'
+        self.wlp1s0_tx_bytes = NetSpeed.sysdevices + '/net/wlp1s0/statistics/tx_bytes'
         self.old_time = 0
         self.old_rx = 0
         self.old_tx = 0
 
     def status(self):
         try:
-            with open(self.eth0_rx_bytes) as eth0_rx_f, \
-                    open(self.eth0_tx_bytes) as eth0_tx_f, \
-                    open(self.wlan0_rx_bytes) as wlan0_rx_f, \
-                    open(self.wlan0_tx_bytes) as wlan0_tx_f:
-                eth0_rx = int(eth0_rx_f.readline().strip())
-                eth0_tx = int(eth0_tx_f.readline().strip())
-                wlan0_rx = int(wlan0_rx_f.readline().strip())
-                wlan0_tx = int(wlan0_tx_f.readline().strip())
+            with open(self.wlp1s0_rx_bytes) as wlp1s0_rx_f, \
+                    open(self.wlp1s0_tx_bytes) as wlp1s0_tx_f:
+                wlp1s0_rx = int(wlp1s0_rx_f.readline().strip())
+                wlp1s0_tx = int(wlp1s0_tx_f.readline().strip())
         except FileNotFoundError:
             return ' NOP '
         t = int(time.time())
-        rx = eth0_rx + wlan0_rx
-        tx = eth0_tx + wlan0_tx
+        rx = wlp1s0_rx
+        tx = wlp1s0_tx
         time_diff = t - self.old_time
         if time_diff > 0:
             rx_rate = (rx - self.old_rx) // time_diff
