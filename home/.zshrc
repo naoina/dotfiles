@@ -1,24 +1,5 @@
 fpath=($HOME/.zsh $fpath)
 
-if [[ -f $HOME/.zsh/antigen.zsh ]]; then
-    . $HOME/.zsh/antigen.zsh
-    antigen bundle mollifier/anyframe
-    antigen bundle zsh-users/zsh-completions src
-    antigen bundle skirino/auto-fu.zsh
-    antigen apply
-
-    bindkey "^R" anyframe-widget-put-history
-    bindkey "^T" anyframe-widget-insert-git-branch
-
-    alias r="anyframe-widget-cd-ghq-repository"
-
-    AUTO_FU_NOCP=1
-    zle-line-init () {auto-fu-init;}; zle -N zle-line-init
-    zstyle ':completion:*' completer _oldlist _complete
-    zle -N zle-keymap-select auto-fu-zle-keymap-select
-    zstyle ':auto-fu:var' postdisplay $''
-fi
-
 autoload -U compinit
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -196,6 +177,27 @@ alias grep="grep --color=auto -I"
 umask 022
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
+
+if [[ -f $HOME/.zsh/antigen.zsh ]]; then
+    . $HOME/.zsh/antigen.zsh
+    antigen bundle mollifier/anyframe
+    antigen bundle zsh-users/zsh-completions src
+    antigen apply
+
+    bindkey "^R" anyframe-widget-put-history
+    bindkey "^T" anyframe-widget-insert-git-branch
+
+    alias r="anyframe-widget-cd-ghq-repository"
+fi
+
+if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
+    . $HOME/.zsh/auto-fu.zsh
+    AUTO_FU_NOCP=1
+    zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+    zstyle ':completion:*' completer _oldlist _complete
+    zle -N zle-keymap-select auto-fu-zle-keymap-select
+    zstyle ':auto-fu:var' postdisplay $''
+fi
 
 function ssh-agent {
     eval `command ssh-agent`
