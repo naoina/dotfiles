@@ -2,13 +2,7 @@ snippet in "interface{}" !w
 interface{}
 endsnippet
 
-snippet pa "package" !b
-package ${1:main}
-endsnippet
-
 snippet main "main()" !b
-package main
-
 func main() {
 	${0:// TODO: not implemented yet}
 }
@@ -40,37 +34,37 @@ endsnippet
 
 snippet for "for" !b
 for ${1:cond} {
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet forr "for _, v := range ..." !b
 for ${2:_}, ${3:v} := range ${1:collection} {
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet fori "for i := 0; i < n; i++" !b
 for ${2:i} := 0; $2 < ${1:n}; $2++ {
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet if "if" !w
 if ${1:cond} {
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet ife "if err != nil" !b
 if err != nil {
-	$0
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet ifo "if !ok" !b
 if !ok {
-	$0
+	${0:${VISUAL}}
 }
 endsnippet
 
@@ -82,25 +76,25 @@ endsnippet
 
 snippet f "func" !iw
 func ${1:FuncName}($2) $3{
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
 snippet "(\S+\s*)?fn" "func literal" !wr
 `!p if match.group(1) is not None: snip.rv = match.group(1)`func() {
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }`!p if match.group(1) is None: snip.rv = '()'`
 endsnippet
 
 snippet go "go func()" !b
 go func() {
-	$0
+	${0:${VISUAL}}
 }()
 endsnippet
 
 snippet m "method" !b
 func (${1:receiver}) ${2:MethodName}($3) $4{
-	${0:// TODO: not implemented yet}
+	${0:${VISUAL}}
 }
 endsnippet
 
@@ -152,7 +146,7 @@ case ${1:cond}:
 endsnippet
 
 snippet p "fmt.Printf" !b
-fmt.Printf("%q\n", $0)
+fmt.Printf("%q\n", ${0:${VISUAL}})
 endsnippet
 
 snippet ft "func TestXxx" !b
@@ -183,7 +177,7 @@ endsnippet
 
 snippet def "defer func()" !b
 defer func() {
-	$0
+	${0:${VISUAL}}
 }()
 endsnippet
 
@@ -222,15 +216,15 @@ t.Fatal(err)
 endsnippet
 
 snippet sorter "sort.Interface" !b
-func (${2:s} ${1:Slice}) Len() int {
-	return len($2)
+func (${1:s} ${2:Slice}) Len() int {
+	return len($1)
 }
 
-func ($2 $1) Less(i, j int) bool {
-	return $2[i] < $2[j]
+func ($1 $2) Less(i, j int) bool {
+	return $1[i] < $1[j]
 }
 
-func ($2 $1) Swap(i, j int) {
-	$2[i], $2[j] = $2[j], $2[i]
+func ($1 $2) Swap(i, j int) {
+	$1[i], $1[j] = $1[j], $1[i]
 }
 endsnippet
