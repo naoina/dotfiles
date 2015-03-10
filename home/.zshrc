@@ -1,5 +1,24 @@
 fpath=($HOME/.zsh $fpath)
 
+if [[ -f $HOME/.zsh/antigen.zsh ]]; then
+    . $HOME/.zsh/antigen.zsh
+    antigen bundle mollifier/anyframe
+    antigen bundle zsh-users/zsh-completions src
+    antigen bundle skirino/auto-fu.zsh
+    antigen apply
+
+    bindkey "^R" anyframe-widget-put-history
+    bindkey "^T" anyframe-widget-insert-git-branch
+
+    alias r="anyframe-widget-cd-ghq-repository"
+
+    AUTO_FU_NOCP=1
+    zle-line-init () {auto-fu-init;}; zle -N zle-line-init
+    zstyle ':completion:*' completer _oldlist _complete
+    zle -N zle-keymap-select auto-fu-zle-keymap-select
+    zstyle ':auto-fu:var' postdisplay $''
+fi
+
 autoload -U compinit
 autoload -U history-search-end
 zle -N history-beginning-search-backward-end history-search-end
@@ -175,13 +194,6 @@ alias grep="grep --color=auto -I"
 
 # ulimit -c unlimited
 umask 022
-
-AUTO_FU_NOCP=1
-source $HOME/.zsh/auto-fu.zsh/auto-fu.zsh
-zle-line-init () {auto-fu-init;}; zle -N zle-line-init
-zstyle ':completion:*' completer _oldlist _complete
-zle -N zle-keymap-select auto-fu-zle-keymap-select
-zstyle ':auto-fu:var' postdisplay $''
 source $HOME/.nvm/nvm.sh
 source $HOME/.nvm/bash_completion
 
@@ -202,18 +214,18 @@ function http_server {
     fi
 }
 
-function r {
-    if [ -z "$1" ]; then
-        ghq list | peco --query "github.com " | if read -r LINE; then
-            cd "$(ghq root)/$LINE"
-        fi
-    else
-        LINE="$(ls $2 | peco --initial-matcher Migemo | xargs -I '{}' -r echo "$2/{}")"
-        if [ -n "$LINE" ]; then
-            $1 "$LINE"
-        fi
-    fi
-}
+# function r {
+    # if [ -z "$1" ]; then
+        # ghq list | peco --query "github.com " | if read -r LINE; then
+            # cd "$(ghq root)/$LINE"
+        # fi
+    # else
+        # LINE="$(ls $2 | peco --initial-matcher Migemo | xargs -I '{}' -r echo "$2/{}")"
+        # if [ -n "$LINE" ]; then
+            # $1 "$LINE"
+        # fi
+    # fi
+# }
 
 function flash_cache {
     for ID in $( pgrep chrom ); do
