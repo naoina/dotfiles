@@ -1,6 +1,9 @@
 {
   "Prompt": ">",
-  "CustomMatcher": {
-    "Migemo": ["migemogrep", "$QUERY"]
+  "CustomFilter": {
+    "Migemo": {
+      "Cmd": "migemogrep",
+      "Args": ["$QUERY"]
+    }
   }
 }
