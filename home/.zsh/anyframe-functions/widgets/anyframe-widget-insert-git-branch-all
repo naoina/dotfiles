@@ -1,0 +1,6 @@
+anyframe-source-git-branch -i -a \
+    | anyframe-selector-auto \
+    | awk '{print $1}' \
+    | anyframe-action-insert
+
+# vim: ft=zsh

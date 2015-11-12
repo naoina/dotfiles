@@ -185,7 +185,7 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
     antigen apply
 
     bindkey "^R" anyframe-widget-put-history
-    bindkey "^T" anyframe-widget-insert-git-branch
+    bindkey "^T" anyframe-widget-insert-git-branch-all
 
     alias r="anyframe-widget-cd-ghq-repository"
 fi
