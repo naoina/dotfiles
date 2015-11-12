@@ -94,7 +94,6 @@ bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
 bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace 1
@@ -106,7 +105,6 @@ bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+r reload
@@ -114,7 +112,7 @@ bindsym $mod+Shift+r reload
 bindsym $mod+Shift+Control+r restart
 # exit i3 (logs you out of your X session)
 bindsym Shift+Control+q exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-bindsym Print exec "shutter -s -e"
+bindsym Print exec "shutter -s"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -154,14 +152,14 @@ bar {
         status_command i3status | $HOME/bin/i3status.py
 }
 
-assign [class="Chromium"] 2
+assign [class="[Cc]hrom(?:e|ium)"] 2
 assign [class="VirtualBox"] 6
-assign [class="[Zz]eal"] 10
-assign [class="weechat"] 10
-assign [class="[Ss]kype"] 10
+assign [class="[Zz]eal"] 9
+assign [class="weechat"] 9
+assign [class="[Ss]kype"] 9
 for_window [class=".*"] floating enable
-for_window [class="Chromium"] border none, floating disable
-for_window [class="mlterm"] floating disable
+for_window [class="[Cc]hrom(?:e|ium)"] border none, floating disable
+for_window [class="(?:mlterm|[Ll]ily[Tt]erm|[Tt]ermite)"] floating disable
 for_window [class="[Zz]eal"] floating disable
 for_window [class="weechat"] floating disable
 exec xrandr --output eDP1 --primary
