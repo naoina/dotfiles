@@ -37,7 +37,7 @@ elif [ -x "`which firefox`" ]; then
     export BROWSER="firefox"
 fi
 
-xmodmap $HOME/.Xmodmap
+# xmodmap $HOME/.Xmodmap
 
 # Default settings.
 xgamma -rgamma 1.0 -ggamma 1.0 -bgamma 0.65
@@ -49,7 +49,9 @@ xset -dpms
 # uim-xim &
 # scim -d
 # ibus-daemon --xim -d
-fcitx
+fcitx-autostart
+start-pulseaudio-x11
+touchegg >/dev/null 2>&1 &
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send -t 0 \"%f mounted on %d\""
