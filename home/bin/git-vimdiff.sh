@@ -25,7 +25,8 @@ MERGED="$4"
 
 VIMDIFFCMD="vimdiff -f"
 if [ -f "$BASE" ]; then
-    $VIMDIFFCMD -f "$LOCAL" "$BASE" "$REMOTE"
+    # $VIMDIFFCMD -f "$LOCAL" "$BASE" "$REMOTE"
+    $VIMDIFFCMD -f "$LOCAL" "$REMOTE"
 else
     $VIMDIFFCMD -f "$LOCAL" "$REMOTE"
 fi
