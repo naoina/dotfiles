@@ -459,8 +459,6 @@ NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
 let s:bundle = neobundle#get('indentLine')
 function! s:bundle.hooks.on_source(bundle)
   let g:indentLine_enabled = 0
-  nnoremap <silent><C-g> :<C-u>IndentLinesToggle<CR>
-  inoremap <silent><C-g> <C-o>:<C-u>IndentLinesToggle<CR>
 endfunction
 
 NeoBundle 'https://github.com/haya14busa/vim-asterisk'
@@ -525,6 +523,7 @@ set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 set formatoptions+=cqmM
 set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 set display=lastline
+set mouse=n
 
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,japan,cp932,utf-16,utf-8
@@ -977,6 +976,7 @@ nnoremap <C-]> g<C-]>
 nnoremap <silent>yu :%y +<CR>
 cnoremap <C-p> <UP>
 cnoremap <C-n> <DOWN>
+nnoremap <silent><C-g> :<C-u>setl cursorcolumn!<CR>
 
 " for snippet's select mode
 snoremap j j
@@ -984,12 +984,12 @@ snoremap k k
 
 " diff mode mappings.
 if &diff
-  nmap     <silent><C-l> :diffupdate<CR>
-  nnoremap <silent><C-g> :diffget<CR>
-  nnoremap <silent><C-n> ]czz
-  nnoremap <silent><C-p> [czz
-  nnoremap <silent>ZZ    :xa!<CR>
-  nnoremap <silent>QQ    :cq!<CR>
+  nmap <silent><C-l> :diffupdate<CR>
+  nmap <silent><C-g> :diffget<CR>
+  nmap <silent><C-n> ]czz
+  nmap <silent><C-p> [czz
+  nmap <silent>ZZ    :xa!<CR>
+  nmap <silent>QQ    :cq!<CR>
 endif
 
 " VCS aware(mercurial, git, etc...) version of gf commands
