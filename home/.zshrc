@@ -186,8 +186,9 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
 
     bindkey "^R" anyframe-widget-put-history
     bindkey "^T" anyframe-widget-insert-git-branch-all
+    bindkey "^Xa" anyframe-widget-git-add
 
-    alias r="anyframe-widget-cd-ghq-repository"
+    alias r="anyframe-widget-cd-ghq-repository-relative-path"
 fi
 
 if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
