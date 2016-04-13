@@ -200,6 +200,16 @@ if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
     zstyle ':auto-fu:var' postdisplay $''
 fi
 
+if [[ -x "`whence -p gpg-agent`" ]]; then
+    export GPG_TTY=$(tty)
+
+    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+        export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
+    fi
+
+    pgrep gpg-agent >/dev/null || gpg-agent --daemon
+fi
+
 function ssh-agent {
     eval `command ssh-agent`
     command ssh-add
