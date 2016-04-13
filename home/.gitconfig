@@ -1,6 +1,7 @@
 [user]
 	name = Naoya Inada
 	email = naoina@kuune.org
+	signingkey = 55111EAA
 [alias]
 	ci = commit
 	cia = commit --amend -C HEAD
@@ -49,3 +50,5 @@
 	prune = true
 [rerere]
 	enabled = true
+[commit]
+	gpgsign = true
