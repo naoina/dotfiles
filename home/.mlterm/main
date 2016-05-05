@@ -20,3 +20,5 @@ logsize = 0
 fontsize = 16
 receive_string_via_ucs = true
 not_use_unicode_font = true
+box_drawing_font = decsp
+only_use_unicode_font = false
