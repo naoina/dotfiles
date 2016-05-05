@@ -31,7 +31,7 @@ if &background == "light"
   hi! Delimiter    guifg=#8700af
   hi! Define       guifg=#8700af
   hi! Structure    guifg=#00af5f                 gui=none
-  hi! StatusLine   guifg=#949494   guibg=87ffff  gui=bold
+  hi! StatusLine   guifg=#949494   guibg=#87ffff  gui=bold
   hi! StatusLineNC guifg=#949494                 gui=bold,underline
   hi! SignColumn                   guibg=bg
   hi! Error        guifg=#ff0000   guibg=#ffff00 gui=bold
