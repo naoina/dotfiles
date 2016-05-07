@@ -4,7 +4,7 @@ let g:author = "Naoya Inada"
 let g:email  = "naoina@kuune.org"
 
 let $VIMLOCAL = expand('~/.vim')
-let s:cachedir = $VIMLOCAL . '/cache'
+let s:cachedir = $VIMLOCAL . '/.cache'
 
 filetype off
 
