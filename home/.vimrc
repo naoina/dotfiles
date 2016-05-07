@@ -449,7 +449,6 @@ NeoBundleLazy 'https://github.com/vim-scripts/Align', {
       \ }
 
 NeoBundle 'https://github.com/tpope/vim-repeat'
-NeoBundle 'https://github.com/tpope/vim-speeddating'
 
 NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
       \ 'autoload': {
