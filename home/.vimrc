@@ -250,7 +250,7 @@ NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
       \     'commands': ['Unite'],
       \     },
       \ }
-let s:bundle = neobundle#get('ctrlp.vim')
+let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
   let g:unite_data_directory = s:cachedir
   let g:unite_update_time = 100
