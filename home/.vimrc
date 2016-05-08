@@ -184,7 +184,7 @@ endfunction
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
 NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
-NeoBundle 'https://github.com/tpope/vim-markdown'
+NeoBundle 'https://github.com/plasticboy/vim-markdown'
 NeoBundle 'https://github.com/othree/html5.vim'
 
 NeoBundle 'https://github.com/AndrewRadev/switch.vim'
