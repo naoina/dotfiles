@@ -91,10 +91,8 @@ function! s:bundle.hooks.on_post_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/scrooloose/nerdcommenter', {
-      \ 'autoload': {
-      \     'mappings': ['<Plug>NERDCommenter'],
-      \     'functions': ['NERDComment'],
-      \     },
+      \ 'on_map': ['<Plug>NERDCommenter'],
+      \ 'on_func': ['NERDComment'],
       \ }
 let s:bundle = neobundle#get('nerdcommenter')
 function! s:bundle.hooks.on_source(bundle)
@@ -224,9 +222,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
-      \ 'autoload': {
-      \     'commands': ['CtrlP'],
-      \     },
+      \ 'on_cmd': ['CtrlP'],
       \ }
 let s:bundle = neobundle#get('ctrlp.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -246,9 +242,7 @@ endfunction
 nnoremap <C-e> :<C-u>CtrlPBuffer<CR>
 
 NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
-      \ 'autoload': {
-      \     'commands': ['Unite'],
-      \     },
+      \ 'on_cmd': ['Unite'],
       \ }
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -266,18 +260,12 @@ NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme', {
       \ 'depends': [
       \     'https://github.com/Shougo/unite.vim',
       \ ],
-      \ 'autoload': {
-      \     'unite_sources': ['colorscheme'],
-      \     },
       \ }
 
 NeoBundleLazy 'https://github.com/Shougo/unite-outline', {
       \ 'depends': [
       \     'https://github.com/Shougo/unite.vim',
       \ ],
-      \ 'autoload': {
-      \     'unite_sources': ['outline'],
-      \     },
       \ }
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
@@ -315,9 +303,7 @@ NeoBundle 'https://github.com/remyoudompheng/go-misc', {
       \ }
 
 NeoBundleLazy 'https://github.com/mattn/gist-vim', {
-      \ 'autoload': {
-      \     'commands': 'Gist',
-      \     },
+      \ 'on_cmd': 'Gist',
       \ }
 let s:bundle = neobundle#get('gist-vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -326,9 +312,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/cespare/mxml.vim', {
-      \ 'autoload': {
-      \     'filetypes': ['mxml'],
-      \     },
+      \ 'on_ft': ['mxml'],
       \ }
 
 let g:colorv_filetypes = [
@@ -337,9 +321,7 @@ let g:colorv_filetypes = [
       \ 'vim',
       \ ]
 NeoBundleLazy 'https://github.com/Rykka/colorv.vim', {
-      \ 'autoload': {
-      \     'filetypes': g:colorv_filetypes,
-      \     },
+      \ 'on_ft': g:colorv_filetypes,
       \ }
 let s:bundle = neobundle#get('colorv.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -348,23 +330,17 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/mattn/emmet-vim', {
-      \ 'autoload': {
-      \     'filetypes': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty'],
-      \     },
+      \ 'on_ft': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty'],
       \ }
 
 NeoBundle 'https://github.com/vim-scripts/mako.vim'  " should not use the NeoBundleLazy
 
 NeoBundleLazy 'https://github.com/vim-scripts/mako.vim--Torborg', {
-      \ 'autoload': {
-      \     'filetypes': ['mako'],
-      \     },
+      \ 'on_ft': ['mako'],
       \ }
 
 NeoBundleLazy 'https://github.com/jiangmiao/simple-javascript-indenter', {
-      \ 'autoload': {
-      \     'filetypes': ['javascript'],
-      \     },
+      \ 'on_ft': ['javascript'],
       \ }
 let s:bundle = neobundle#get('simple-javascript-indenter')
 function! s:bundle.hooks.on_source(bundle)
@@ -376,21 +352,15 @@ NeoBundleLazy 'https://github.com/marijnh/tern_for_vim', {
       \     'unix': 'npm update',
       \     'mac': 'npm update',
       \     },
-      \ 'autoload': {
-      \     'filetypes': ['javascript'],
-      \     },
+      \ 'on_ft': ['javascript'],
       \ }
 
 NeoBundleLazy 'https://github.com/alfredodeza/pytest.vim', {
-      \ 'autoload': {
-      \     'filetypes': ['python'],
-      \     },
+      \ 'on_ft': ['python'],
       \ }
 
 NeoBundleLazy 'https://github.com/klen/python-mode', {
-      \ 'autoload': {
-      \     'filetypes': ['python'],
-      \     },
+      \ 'on_ft': ['python'],
       \ }
 let s:bundle = neobundle#get('python-mode')
 function! s:bundle.hooks.on_source(bundle)
@@ -405,9 +375,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/jmcantrell/vim-virtualenv', {
-      \ 'autoload': {
-      \     'filetypes': ['python'],
-      \     },
+      \ 'on_ft': ['python'],
       \ }
 
 NeoBundle 'https://github.com/kchmck/vim-coffee-script'
@@ -431,9 +399,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/rhysd/vim-go-impl', {
-        \ 'autoload': {
-        \     'filetypes': ['go'],
-        \     },
+        \ 'on_ft': ['go'],
         \ 'build': {
         \     'windows': 'go get -u github.com/josharian/impl',
         \     'cygwin': 'go get -u github.com/josharian/impl',
@@ -443,17 +409,13 @@ NeoBundleLazy 'https://github.com/rhysd/vim-go-impl', {
         \ }
 
 NeoBundleLazy 'https://github.com/vim-scripts/Align', {
-      \ 'autoload': {
-      \     'commands': ['Align'],
-      \     },
+      \ 'on_cmd': ['Align'],
       \ }
 
 NeoBundle 'https://github.com/tpope/vim-repeat'
 
 NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
-      \ 'autoload': {
-      \     'filetypes': ['coffee', 'python', 'jade', 'stylus', 'haml'],
-      \     },
+      \ 'on_ft': ['coffee', 'python', 'jade', 'stylus', 'haml'],
       \ }
 let s:bundle = neobundle#get('indentLine')
 function! s:bundle.hooks.on_source(bundle)
