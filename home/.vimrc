@@ -244,6 +244,10 @@ nnoremap <C-e> :<C-u>CtrlPBuffer<CR>
 
 NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
       \ 'on_cmd': ['Unite'],
+      \ 'depends': [
+      \   'https://github.com/ujihisa/unite-colorscheme',
+      \   'https://github.com/Shougo/unite-outline',
+      \ ]
       \ }
 let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
@@ -257,17 +261,8 @@ function! s:bundle.hooks.on_source(bundle)
   " let g:unite_enable_start_insert = 1
 endfunction
 
-NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme', {
-      \ 'depends': [
-      \     'https://github.com/Shougo/unite.vim',
-      \ ],
-      \ }
-
-NeoBundleLazy 'https://github.com/Shougo/unite-outline', {
-      \ 'depends': [
-      \     'https://github.com/Shougo/unite.vim',
-      \ ],
-      \ }
+NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme'
+NeoBundleLazy 'https://github.com/Shougo/unite-outline'
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
