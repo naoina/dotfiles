@@ -254,18 +254,28 @@ let s:bundle = neobundle#get('unite.vim')
 function! s:bundle.hooks.on_source(bundle)
   let g:unite_data_directory = s:cachedir
   let g:unite_update_time = 100
-  let g:unite_enable_split_vertically = 1
+  let g:unite_enable_split_vertically = 0
   let g:unite_winwidth = 60
-  let g:unite_winheight = 8
+  let g:unite_winheight = 10
   let g:unite_split_rule = "botright"
   let g:unite_source_history_yank_enable = 1
-  " let g:unite_enable_start_insert = 1
+  let g:unite_enable_start_insert = 1
+
+  function! s:unite_setting()
+    if exists("b:did_unite_setting") && b:did_unite_setting
+      return
+    endif
+    let b:did_unite_setting = 1
+
+    nmap <buffer><Esc> <Plug>(unite_exit)
+    imap <buffer><Esc> <Plug>(unite_exit)
+  endfunction
 endfunction
 
 NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme'
 NeoBundleLazy 'https://github.com/Shougo/unite-outline'
 NeoBundleLazy 'https://github.com/Shougo/neoyank.vim'
-nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
+nnoremap <C-c>ub :Unite -horizontal buffer file<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nnoremap <C-c>uo :Unite -vertical outline<CR>
@@ -541,16 +551,6 @@ function! s:restore_cursor()
   if line("'\"") > 1 && line("'\"") <= line("$")
     normal! g`"
   endif
-endfunction
-
-function! s:unite_setting()
-  if exists("b:did_unite_setting") && b:did_unite_setting
-    return
-  endif
-  let b:did_unite_setting = 1
-
-  nmap <buffer><Esc> <Plug>(unite_exit)
-  imap <buffer><Esc> <Plug>(unite_exit)
 endfunction
 
 function! s:refresh()
