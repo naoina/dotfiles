@@ -247,6 +247,7 @@ NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
       \ 'depends': [
       \   'https://github.com/ujihisa/unite-colorscheme',
       \   'https://github.com/Shougo/unite-outline',
+      \   'https://github.com/Shougo/neoyank.vim',
       \ ]
       \ }
 let s:bundle = neobundle#get('unite.vim')
@@ -263,6 +264,7 @@ endfunction
 
 NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme'
 NeoBundleLazy 'https://github.com/Shougo/unite-outline'
+NeoBundleLazy 'https://github.com/Shougo/neoyank.vim'
 nnoremap <C-c>ub :Unite -horizontal buffer file file_mru<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
