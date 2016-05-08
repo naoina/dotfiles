@@ -222,25 +222,25 @@ function! s:bundle.hooks.on_source(bundle)
   let g:incsearch#vim_cmdline_keymap = 0
 endfunction
 
-NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
-      \ 'on_cmd': ['CtrlP'],
-      \ }
-let s:bundle = neobundle#get('ctrlp.vim')
-function! s:bundle.hooks.on_source(bundle)
-  let g:ctrlp_map = '<nop>'
-  let g:ctrlp_show_hidden = 1
-  let g:ctrlp_regexp = 1
-  let g:ctrlp_use_migemo = 1
-  let g:ctrlp_prompt_mappings = {
-        \ 'PrtHistory(-1)': [],
-        \ 'PrtHistory(1)': [],
-        \ 'PrtSelectMove("j")': ['<C-n>'],
-        \ 'PrtSelectMove("k")': ['<C-p>'],
-        \ 'ToggleType(1)': ['<C-f>'],
-        \ 'ToggleType(-1)': ['<C-b>'],
-        \ }
-endfunction
-nnoremap <C-e> :<C-u>CtrlPBuffer<CR>
+" NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
+      " \ 'on_cmd': ['CtrlP'],
+      " \ }
+" let s:bundle = neobundle#get('ctrlp.vim')
+" function! s:bundle.hooks.on_source(bundle)
+  " let g:ctrlp_map = '<nop>'
+  " let g:ctrlp_show_hidden = 1
+  " let g:ctrlp_regexp = 1
+  " let g:ctrlp_use_migemo = 1
+  " let g:ctrlp_prompt_mappings = {
+        " \ 'PrtHistory(-1)': [],
+        " \ 'PrtHistory(1)': [],
+        " \ 'PrtSelectMove("j")': ['<C-n>'],
+        " \ 'PrtSelectMove("k")': ['<C-p>'],
+        " \ 'ToggleType(1)': ['<C-f>'],
+        " \ 'ToggleType(-1)': ['<C-b>'],
+        " \ }
+" endfunction
+" nnoremap <C-e> :<C-u>CtrlPBuffer<CR>
 
 NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
       \ 'on_cmd': ['Unite'],
@@ -275,7 +275,7 @@ endfunction
 NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme'
 NeoBundleLazy 'https://github.com/Shougo/unite-outline'
 NeoBundleLazy 'https://github.com/Shougo/neoyank.vim'
-nnoremap <C-c>ub :Unite -horizontal buffer file<CR>
+nnoremap <C-e> :Unite buffer file_rec/async:!<CR>
 nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nnoremap <C-c>uo :Unite -vertical outline<CR>
