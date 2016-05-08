@@ -20,8 +20,9 @@ let g:neobundle#install_process_timeout = 300
 NeoBundleFetch 'https://github.com/Shougo/neobundle.vim'
 
 NeoBundle 'https://github.com/Valloric/YouCompleteMe', {
+      \ 'install_process_timeout': 1800,
       \ 'build': {
-      \     'unix': 'git submodule update --init --recursive && ./install.sh --clang-completer --system-libclang',
+      \     'unix': './install.py --clang-completer',
       \     }
       \ }
 let s:bundle = neobundle#get('YouCompleteMe')
