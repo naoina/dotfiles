@@ -825,7 +825,7 @@ endfunction
 function! s:markdown_setting()
   let b:switch_definitions = [
         \ {
-        \   '\<\w\{-\}\.\(jpe\?g\|png\|gif\|svg\)\>': '\="![".fnamemodify(submatch(0), ":t:r")."](".submatch(0).")"',
+        \   '/\?\<[\w.-_/]\{-\}\.\(jpe\?g\|png\|gif\|svg\)\>': '\="![".fnamemodify(submatch(0), ":t:r")."](".submatch(0).")"',
         \   '!\[.\{-\}\](\(.\{-\}\))': '\1',
         \ }
         \ ]
