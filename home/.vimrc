@@ -193,6 +193,7 @@ function s:bundle.hooks.on_source(bundle)
   let g:vim_markdown_folding_disabled = 1
   let g:vim_markdown_frontmatter = 1
   let g:vim_markdown_toml_frontmatter = 1
+  let g:vim_markdown_new_list_item_indent = 0
 endfunction
 
 NeoBundle 'https://github.com/AndrewRadev/switch.vim'
