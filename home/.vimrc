@@ -270,6 +270,17 @@ function! s:bundle.hooks.on_source(bundle)
   let g:unite_source_history_yank_enable = 1
   let g:unite_enable_start_insert = 1
 
+  let md_img = {
+        \ 'description': "insert as markdown image syntax",
+        \ }
+  function! md_img.func(candidate)
+    let a:candidate.word = '![' . fnamemodify(a:candidate.word, ':t:r') . '](/' . a:candidate.word . ')'
+    call unite#take_action('insert', a:candidate)
+  endfunction
+  call unite#custom#action('file,word', 'markdown_image', md_img)
+  call unite#custom#alias('file,word', 'md_img', 'markdown_image')
+  unlet md_img
+
   function! s:unite_setting()
     if exists("b:did_unite_setting") && b:did_unite_setting
       return
@@ -809,6 +820,15 @@ endfunction
 
 function! s:json_setting()
   call s:javascript_setting()
+endfunction
+
+function! s:markdown_setting()
+  let b:switch_definitions = [
+        \ {
+        \   '\<\w\{-\}\.\(jpe\?g\|png\|gif\|svg\)\>': '\="![".fnamemodify(submatch(0), ":t:r")."](".submatch(0).")"',
+        \   '!\[.\{-\}\](\(.\{-\}\))': '\1',
+        \ }
+        \ ]
 endfunction
 
 " For surround of kana's version.
