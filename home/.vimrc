@@ -183,8 +183,17 @@ endfunction
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
 NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
-NeoBundle 'https://github.com/plasticboy/vim-markdown'
 NeoBundle 'https://github.com/othree/html5.vim'
+
+NeoBundle 'https://github.com/plasticboy/vim-markdown', {
+      \ 'depends': ['https://github.com/cespare/vim-toml'],
+      \ }
+let s:bundle = neobundle#get('vim-markdown')
+function s:bundle.hooks.on_source(bundle)
+  let g:vim_markdown_folding_disabled = 1
+  let g:vim_markdown_frontmatter = 1
+  let g:vim_markdown_toml_frontmatter = 1
+endfunction
 
 NeoBundle 'https://github.com/AndrewRadev/switch.vim'
 let s:bundle = neobundle#get('switch.vim')
