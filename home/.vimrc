@@ -219,7 +219,7 @@ NeoBundle 'https://github.com/kana/vim-textobj-indent', {
 NeoBundle 'https://github.com/cespare/vim-toml'
 NeoBundle 'https://github.com/gf3/peg.vim'
 NeoBundle 'https://github.com/wavded/vim-stylus'
-NeoBundle 'https://github.com/digitaltoad/vim-jade'
+NeoBundle 'https://github.com/digitaltoad/vim-pug'
 NeoBundle 'https://github.com/rhysd/committia.vim'
 
 NeoBundle 'https://github.com/haya14busa/incsearch.vim'
@@ -443,7 +443,7 @@ NeoBundleLazy 'https://github.com/vim-scripts/Align', {
 NeoBundle 'https://github.com/tpope/vim-repeat'
 
 NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
-      \ 'on_ft': ['coffee', 'python', 'jade', 'stylus', 'haml'],
+      \ 'on_ft': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'],
       \ }
 let s:bundle = neobundle#get('indentLine')
 function! s:bundle.hooks.on_source(bundle)
@@ -803,9 +803,14 @@ function! s:yacc_setting()
   setlocal noexpandtab autoindent
 endfunction
 
-function! s:jade_setting()
+function! s:pug_setting()
   call s:html_setting()
   setl foldmethod=indent
+  setl tabstop=2 softtabstop=2 shiftwidth=2 expandtab
+endfunction
+
+function! s:jade_setting()
+  call s:pug_setting()
 endfunction
 
 function! s:mongo_setting()
