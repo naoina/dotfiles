@@ -177,7 +177,6 @@ function! s:bundle.hooks.on_source(bundle)
         \ }
   let g:syntastic_python_checkers = ['flake8']
   let g:syntastic_go_checkers = ['go', 'govet']
-  let g:syntastic_coffee_coffeelint_args = '--csv -f ~/.coffeelint.json'
 endfunction
 
 NeoBundle 'https://github.com/mattn/webapi-vim'
