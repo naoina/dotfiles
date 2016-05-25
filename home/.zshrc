@@ -295,3 +295,6 @@ function ssh-keygen {
     chmod 600 "$privatekey"
     rm -f "$privatekey.tmp"
 }
+
+# added by travis gem
+[ -f /home/naoina/.travis/travis.sh ] && source /home/naoina/.travis/travis.sh
