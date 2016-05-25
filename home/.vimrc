@@ -282,13 +282,10 @@ function! s:bundle.hooks.on_source(bundle)
   unlet md_img
 
   function! s:unite_setting()
-    if exists("b:did_unite_setting") && b:did_unite_setting
-      return
-    endif
-    let b:did_unite_setting = 1
-
     nmap <buffer><Esc> <Plug>(unite_exit)
     imap <buffer><Esc> <Plug>(unite_exit)
+    inoremap <buffer><expr> <C-o> unite#do_action('split')
+    inoremap <buffer><expr> <C-v> unite#do_action('vsplit')
   endfunction
 endfunction
 
