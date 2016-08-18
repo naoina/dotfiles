@@ -1,0 +1,84 @@
+snippet class "class" !b
+class ${1:ClassName}
+	{
+public:
+		$1();
+		~$1();
+private:
+	};
+$1::$1()
+	{
+	}
+$1::~$1()
+	{
+	}
+endsnippet
+
+snippet if "if" !iw
+if(${1:cond})
+	{
+		${0:// TODO: implementation.}
+	}
+endsnippet
+
+snippet else "else" !iw
+else
+	{
+		${0:// TODO: implementation.}
+	}
+endsnippet
+
+snippet fori "for-i" !b
+for(int i = 0; i < ${1:len}; i++)
+	{
+		${0:// TODO: implementation.}
+	}
+endsnippet
+
+snippet sw "switch" !b
+switch(${1:cond})
+	{
+		case ${2:cond}:
+			${0:// TODO: implementation.}
+			break;
+	}
+endsnippet
+
+snippet case "switch-case" !b
+case ${1:cond}:
+	${0:// TODO: implementation.}
+	break;
+endsnippet
+
+snippet p "Print" !iw
+Print("$1");
+endsnippet
+
+snippet m "method" !b
+${1:double} `!v expand('%:t:r')`::${2:MethodName}($3) const
+	{
+		${0:// TODO: implementation.}
+	}
+endsnippet
+
+snippet f "function" !b
+${1:double} ${2:FuncName}($3)
+	{
+		${0:// TODO: implementation.}
+	}
+endsnippet
+
+snippet ft "TestFunc" !b
+void Test${1:FuncName}()
+	{
+		${0: // TODO: implementation.}
+	}
+endsnippet
+
+snippet r "return" !iw
+return $1;
+endsnippet
+
+snippet = "assign" !iw
+$1 = $2;
+endsnippet
