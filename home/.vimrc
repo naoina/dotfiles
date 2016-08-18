@@ -180,6 +180,14 @@ function! s:bundle.hooks.on_source(bundle)
   let g:syntastic_go_checkers = ['go', 'govet']
 endfunction
 
+NeoBundle 'https://github.com/naoina/syntastic-MQL', {
+      \ 'depends': ['https://github.com/scrooloose/syntastic'],
+      \ }
+let s:bundle = neobundle#get('syntastic-MQL')
+function! s:bundle.hooks.on_source(bundle)
+  let g:syntastic_mql5_metaeditor_exe_path = '~/.wine/drive_c/Program Files (x86)/MetaTrader 4/metaeditor.exe'
+endfunction
+
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
 NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
@@ -458,6 +466,14 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundle 'https://github.com/tpope/vim-unimpaired'
+NeoBundle 'https://github.com/rupurt/vim-mql5'
+let s:bundle = neobundle#get('vim-mql5')
+function! s:bundle.hooks.on_source(bundle)
+  augroup mql5
+    au!
+    au BufNewFile,BufReadPost *.mq4 set filetype=mql5
+  augroup END
+endfunction
 
 " for colorschemes
 NeoBundle 'https://github.com/godlygeek/csapprox'
@@ -832,6 +848,14 @@ function! s:markdown_setting()
         \   '!\[.\{-\}\](\(.\{-\}\))': '\1',
         \ }
         \ ]
+endfunction
+
+function! s:mql5_setting()
+  call s:cpp_setting()
+  setlocal tabstop=3 softtabstop=3 shiftwidth=3
+  setlocal cindent
+  setlocal dictionary=$VIMLOCAL/dict/mql5.dict
+  setlocal complete+=k
 endfunction
 
 " For surround of kana's version.
