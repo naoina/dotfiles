@@ -204,7 +204,7 @@ if [[ -x "`whence -p gpg-agent`" ]]; then
     export GPG_TTY=$(tty)
 
     if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-        export SSH_AUTH_SOCK="${HOME}/.gnupg/S.gpg-agent.ssh"
+        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
     fi
 
     pgrep gpg-agent >/dev/null || gpg-agent --daemon
