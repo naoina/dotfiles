@@ -12,6 +12,7 @@ local naughty = require("naughty")
 local menubar = require("menubar")
 
 local vicious = require("vicious")
+local widgets = require("./widgets")
 
 -- Notification
 naughty.config.defaults.timeout       = 0
@@ -22,7 +23,7 @@ naughty.config.defaults.height        = 80
 naughty.config.defaults.width         = 300
 naughty.config.defaults.gap           = 1
 naughty.config.defaults.ontop         = true
-naughty.config.defaults.font          = "Migu 1M 12" or beautiful.font or "Verdana 8"
+naughty.config.defaults.font          = beautiful.font or "Verdana 8"
 naughty.config.defaults.icon          = nil
 naughty.config.defaults.icon_size     = 16
 -- naughty.config.defaults.fg            = beautiful.fg_focus or '#ffffff'
@@ -48,6 +49,9 @@ naughty.config.presets.critical.position    = naughty.config.defaults.position
 naughty.config.presets.critical.font        = naughty.config.defaults.font
 naughty.config.presets.critical.fg          = '#eeeeee'
 naughty.config.presets.critical.bg          = '#ff0000'
+
+local net_dev = "wlp1s0"
+local timezone = ""
 
 --- Spawns cmd if no client can be found matching properties
 -- If such a client can be found, pop to first tag where it is visible, and give it focus
@@ -223,16 +227,54 @@ separatorwidget:set_markup(" <b>|</b> ")
 local spacerwidget = wibox.widget.textbox()
 spacerwidget:set_text(" ")
 
-local timeformat = "%a %b %d %H:%M:%S %Z"
-local utctimewidget = wibox.widget.textbox()
+local timeformat = "%a %b %d %H:%M:%S"
 local localtimewidget = wibox.widget.textbox()
+local anothertimewidget = wibox.widget.textbox()
 
-vicious.register(utctimewidget, vicious.widgets.date, "!" .. timeformat, 1)
-vicious.register(localtimewidget, vicious.widgets.date, timeformat, 1)
+vicious.register(localtimewidget, vicious.widgets.date, timeformat .. " %Z", 1)
+vicious.register(anothertimewidget, widgets.date, timeformat, 1, function () return timezone end)
+timezonetextwidget = wibox.widget.textbox()
+timezonewidget = wibox.widget.background(timezonetextwidget)
+timezone_menu_items = {}
+for i, v in ipairs({
+    "America/Los_Angeles",
+    "UTC",
+    "Asia/Tokyo",
+}) do
+    table.insert(timezone_menu_items, { v,
+        function ()
+            timezone = v
+            timezonetextwidget:set_text(widgets.date(" %Z ", timezone))
+            timezonewidget:set_fg(beautiful.fg_normal)
+            timezonewidget:set_bg(beautiful.bg_systray)
+        end
+    })
+end
+timezone_menu_items[1][2]()
+timezone_menu = awful.menu({
+    items = timezone_menu_items,
+    theme = {
+        width = 200,
+        font = "Monospace 12"
+    }
+})
+timezonewidget:buttons(
+    awful.button({}, 1,
+        function ()
+            local fg = timezonewidget.foreground
+            timezonewidget.foreground = timezonewidget.background
+            timezonewidget:set_bg(fg)
+        end,
+        function ()
+        end)
+)
+timezonewidget:buttons(
+    awful.util.table.join(
+        timezonewidget:buttons(),
+        awful.button({}, 1, nil, function () timezone_menu:toggle() end)))
 
 local meter_border_color = "#777777"
 local meter_background_color = "#000000"
-local meter_warning_color = "#ff0000"
 
 local cpupercentagewidget = wibox.widget.textbox()
 local cpumeterwidget = awful.widget.progressbar({
@@ -245,9 +287,16 @@ cpumeterwidget:set_background_color(meter_background_color)
 vicious.register(cpupercentagewidget, vicious.widgets.cpu,
     function (widget, data)
         local total_percentage = data[1]
-        cpumeterwidget:set_color(total_percentage < 70 and meter_border_color or meter_warning_color)
+        local color
+        if total_percentage < 70 then
+            color = beautiful.fg_normal
+            cpumeterwidget:set_color(meter_border_color)
+        else
+            color = beautiful.danger_color
+            cpumeterwidget:set_color(beautiful.danger_color)
+        end
         cpumeterwidget:set_value(total_percentage)
-        return string.format("CPU %03s%%", total_percentage)
+        return string.format("CPU <span color='%s'>%s%%</span>", color, total_percentage)
     end, 1)
 
 local thermalwidget = wibox.widget.textbox()
@@ -265,10 +314,20 @@ local memorypercentagewidget = wibox.widget.textbox()
 vicious.register(memorypercentagewidget, vicious.widgets.mem,
     function (widget, data)
         used_percentage = data[1]
-        memorymeterwidget:set_color(used_percentage < 70 and meter_border_color or meter_warning_color)
+        local color
+        if used_percentage < 70 then
+            memorymeterwidget:set_color(meter_border_color)
+            color = beautiful.fg_normal
+        elseif used_percentage < 90 then
+            memorymeterwidget:set_color(beautiful.warning_color)
+            color = beautiful.warning_color
+        else
+            memorymeterwidget:set_color(beautiful.danger_color)
+            color = beautiful.danger_color
+        end
         memorymeterwidget:set_value(used_percentage)
         swapwidget:set_text(string.format("Swap %d/%dMB", data[6], data[7]))
-        return string.format("Mem %d/%dMB", data[2], data[3])
+        return string.format("Mem <span color='%s'>%d/%dMB</span>", color, data[2], data[3])
     end, 1)
 
 local batterymeterwidget = awful.widget.progressbar({
@@ -283,6 +342,7 @@ local batterypercentagewidget = wibox.widget.textbox()
 local battery_notified = false
 vicious.register(batterypercentagewidget, vicious.widgets.bat,
     function (widget, data)
+        local state = data[1]
         local battery_percentage = data[2]
         if battery_percentage <= 10 then
             batterymeterwidget:set_color(meter_warning_color)
@@ -305,7 +365,54 @@ vicious.register(batterypercentagewidget, vicious.widgets.bat,
         batterymeterwidget:set_value(battery_percentage)
         batteryremainingwidget:set_text(data[3])
         return string.format("%d%%", battery_percentage)
-    end, 10, "BAT0")
+    end, 10, "BAT1")
+
+local wifiwidget = wibox.widget.textbox()
+vicious.register(wifiwidget, widgets.wifi,
+    function (widget, data)
+        local linp = data["{linp}"]
+        local ssid = data["{ssid}"]
+        local ip = data["{ip}"]
+        if linp == 0 and ssid == "N/A" then
+            return string.format("W: <span color='%s'>down</span>", beautiful.danger_color)
+        end
+        local color = beautiful.danger_color
+        if ip ~= "N/A" then
+            color = beautiful.success_color
+        end
+        return string.format("W: <span color='%s'>(%s%% at %s) %s</span>", color, data["{linp}"], data["{ssid}"], data["{ip}"])
+    end, 1, net_dev)
+
+local netwidget = wibox.widget.textbox()
+vicious.register(netwidget, vicious.widgets.net,
+    function (widget, data)
+        local up = tonumber(data["{"..net_dev.." up_kb}"])
+        local down = tonumber(data["{"..net_dev.." down_kb}"])
+        local up_unit = "K"
+        local down_unit = "K"
+        if up > 1024^2 then
+            up = data["{"..net_dev.." up_mb}"]
+            up_unit = "M"
+        elseif up > 1024^3 then
+            up = data["{"..net_dev.." up_gb}"]
+            up_unit = "G"
+        else
+            up = data["{"..net_dev.." up_kb}"]
+        end
+
+        if down > 1024^2 then
+            down = data["{"..net_dev.." down_mb}"]
+            down_unit = "M"
+        elseif down > 1024^3 then
+            down = data["{"..net_dev.." down_gb}"]
+            down_unit = "G"
+        else
+            down = data["{"..net_dev.." down_kb}"]
+        end
+        local uarr = "&#8593;"
+        local darr = "&#8595;"
+        return string.format("%s%s/s%s %s%s/s%s", up, up_unit, uarr, down, down_unit, darr)
+    end, 1)
 
 for s = 1, screen.count() do
     -- Create a promptbox for each screen
@@ -337,16 +444,15 @@ for s = 1, screen.count() do
     left_layout:add(mytaglist[s])
     left_layout:add(mypromptbox[s])
 
-    -- Widgets that are aligned to the middle
-    local middle_layout = wibox.layout.fixed.horizontal()
-    if s == 1 then middle_layout:add(wibox.widget.systray()) end
-    middle_layout:add(mylayoutbox[s])
-    middle_layout:add(spacerwidget)
-    middle_layout:add(localtimewidget)
-
     -- Widgets that are aligned to the right
     local right_layout = wibox.layout.fixed.horizontal()
     -- right_layout:add(mytasklist[s])
+    right_layout:add(separatorwidget)
+    right_layout:add(localtimewidget)
+    right_layout:add(separatorwidget)
+    right_layout:add(wifiwidget)
+    right_layout:add(separatorwidget)
+    right_layout:add(netwidget)
     right_layout:add(separatorwidget)
     right_layout:add(cpupercentagewidget)
     right_layout:add(spacerwidget)
@@ -366,13 +472,15 @@ for s = 1, screen.count() do
     right_layout:add(spacerwidget)
     right_layout:add(batteryremainingwidget)
     right_layout:add(separatorwidget)
-    right_layout:add(utctimewidget)
-    right_layout:add(spacerwidget)
+    right_layout:add(anothertimewidget)
+    right_layout:add(timezonewidget)
+    if s == 1 then right_layout:add(wibox.widget.systray()) end
+    right_layout:add(mylayoutbox[s])
 
     -- Now bring it all together (with the tasklist in the middle)
     local layout = wibox.layout.align.horizontal()
     layout:set_left(left_layout)
-    layout:set_middle(middle_layout)
+    -- layout:set_middle(middle_layout)
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
@@ -380,7 +488,7 @@ end
 -- }}}
 
 -- Startup applications
-awful.util.spawn("xcompmgr")
+awful.util.spawn("compton")
 
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
@@ -527,7 +635,7 @@ root.keys(globalkeys)
 awful.rules.rules = {
     -- All clients will match this rule.
     { rule = { },
-      properties = { border_width = 2,
+      properties = { border_width = 1,
                      border_color = beautiful.border_normal,
                      focus = true,
                      floating = true,
@@ -546,7 +654,7 @@ awful.rules.rules = {
       properties = { floating = false } },
     { rule = { class = "VirtualBox" },
       properties = { tag = tags[1][6] } },
-    { rule = { class = "Chromium" },
+    { rule = { class = "chromium" },
       properties = { tag = tags[1][2], border_width = 0 } },
     { rule = { class = "Google-chrome" },
       properties = { tag = tags[1][2], border_width = 0 } },
