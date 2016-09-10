@@ -412,6 +412,16 @@ NeoBundleLazy 'https://github.com/jmcantrell/vim-virtualenv', {
       \ 'on_ft': ['python'],
       \ }
 
+NeoBundleLazy 'https://github.com/OmniSharp/omnisharp-vim', {
+      \ 'on_ft': ['cs'],
+      \ 'depends': ['https://github.com/tpope/vim-dispatch'],
+      \ 'build': {
+      \     'windows': 'MSBuild.exe server/OmniSharp.sln /p:Platform="Any CPU"',
+      \     'mac': 'xbuild server/OmniSharp.sln',
+      \     'linux': 'xbuild server/OmniSharp.sln',
+      \     }
+      \ }
+
 NeoBundle 'https://github.com/kchmck/vim-coffee-script'
 let s:bundle = neobundle#get('vim-coffee-script')
 function! s:bundle.hooks.on_source(bundle)
