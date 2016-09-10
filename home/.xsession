@@ -51,7 +51,7 @@ xset -dpms
 # ibus-daemon --xim -d
 fcitx-autostart
 start-pulseaudio-x11
-touchegg >/dev/null 2>&1 &
+# touchegg >/dev/null 2>&1 &
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send -t 0 \"%f mounted on %d\""
