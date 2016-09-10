@@ -94,4 +94,8 @@ theme.awesome_icon = "/usr/share/awesome/icons/awesome16.png"
 
 theme.bg_systray = "#000000"
 
+theme.danger_color = "#ff0000"
+theme.warning_color = "#f5f500"
+theme.success_color = "#3cbc3c"
+
 return theme
