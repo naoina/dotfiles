@@ -1,0 +1,96 @@
+snippet class "class" !b
+${1:public} class ${2:ClassName}
+{
+	public $2()
+	{
+	}
+}
+endsnippet
+
+snippet interface "interface" !b
+public interface ${1:IInterfaceName}
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet if "if" !iw
+if (${1:cond})
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet else "else" !iw
+else
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet fori "for-i" !b
+for (var i = 0; i < ${1:len}; i++)
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet fore "foreach" !b
+foreach (var ${1:v} in ${2:vs})
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet sw "switch" !b
+switch (${1:cond})
+{
+	case ${2:cond}:
+		${0:// TODO: implementation.}
+		break;
+}
+endsnippet
+
+snippet case "case" !b
+case ${1:cond}:
+	${0:// TODO: implementation.}
+	break;
+endsnippet
+
+snippet m "method" !b
+${1:private} ${2:void} ${3:MethodName}($4)
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet = "=" !b
+var ${1:name} = ${2:val};
+endsnippet
+
+snippet get "getter" !b
+${1:public} ${2:int} ${3:Name} { get; }
+endsnippet
+
+snippet getset "getter setter" !b
+${1:public} ${2:int} ${3:Name} { get; set; }
+endsnippet
+
+snippet set "setter" !b
+${1:public} ${2:int} ${3:Name} { set; }
+endsnippet
+
+snippet r "return" !b
+return $0;
+endsnippet
+
+snippet rn "return null" !b
+return null;
+endsnippet
+
+snippet using "using statement" !b
+using (${1:var} ${2:name} = ${3:val})
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
