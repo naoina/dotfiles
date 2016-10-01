@@ -431,10 +431,16 @@ NeoBundleLazy 'https://github.com/OmniSharp/omnisharp-vim', {
       \ }
 let s:bundle = neobundle#get('omnisharp-vim')
 function! s:bundle.hooks.on_source(bundle)
+  let g:OmniSharp_selector_ui = 'unite'
   nnoremap <silent><buffer>gd :OmniSharpGotoDefinition<CR>
+  nnoremap <silent><buffer><leader><space> :OmniSharpGetCodeAction<CR>
+  vnoremap <silent><buffer><leader><space> call OmniSharp#GetCodeAction('visual')<CR>
+  nnoremap <silent><buffer><C-k> :OmniSharpNavigateUp<CR>
+  nnoremap <silent><buffer><C-j> :OmniSharpNavigateDown<CR>
   augroup omnisharp
     au!
     au BufWritePre *.cs OmniSharpCodeFormat
+    au CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
   augroup END
 endfunction
 
