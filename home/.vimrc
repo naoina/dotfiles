@@ -188,6 +188,14 @@ function! s:bundle.hooks.on_source(bundle)
   let g:syntastic_mql5_metaeditor_exe_path = '~/.wine/drive_c/Program Files (x86)/MetaTrader 4/metaeditor.exe'
 endfunction
 
+NeoBundle 'https://github.com/naoina/syntastic-xbuild', {
+      \ 'depends': ['https://github.com/scrooloose/syntastic'],
+      \ }
+let s:bundle = neobundle#get('syntastic-xbuild')
+function! s:bundle.hooks.on_source(bundle)
+  let g:syntastic_cs_checkers = ['xbuild']
+endfunction
+
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
 NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
