@@ -487,9 +487,6 @@ for s = 1, screen.count() do
 end
 -- }}}
 
--- Startup applications
-awful.util.spawn("compton")
-
 -- {{{ Mouse bindings
 root.buttons(awful.util.table.join(
     awful.button({ }, 3, function () mymainmenu:toggle() end),
@@ -558,7 +555,8 @@ globalkeys = awful.util.table.join(
 
     awful.key({}, "Print",
         function ()
-            awful.util.spawn("import -window root " .. os.getenv("HOME") .. "/media/screenshot/" .. os.date("%Y%m%d%H%M%S") .. ".png")
+            awful.util.spawn("shutter -s -e")
+            -- awful.util.spawn("import -window root " .. os.getenv("HOME") .. "/media/screenshot/" .. os.date("%Y%m%d%H%M%S") .. ".png")
         end)
 )
 
@@ -660,6 +658,8 @@ awful.rules.rules = {
       properties = { tag = tags[1][2], border_width = 0 } },
     { rule = { class = "Firefox" },
       properties = { tag = tags[1][2], border_width = 0 } },
+    { rule = { class = "Zeal" },
+      properties = { tag = tags[1][9], border_width = 0 } },
 }
 -- }}}
 
@@ -740,3 +740,7 @@ client.connect_signal("unfocus",
         end
     end)
 -- }}}
+
+-- Startup applications
+awful.util.spawn("compton")
+awful.util.spawn("zeal")
