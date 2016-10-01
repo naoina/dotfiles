@@ -429,6 +429,14 @@ NeoBundleLazy 'https://github.com/OmniSharp/omnisharp-vim', {
       \     'linux': 'xbuild server/OmniSharp.sln',
       \     }
       \ }
+let s:bundle = neobundle#get('omnisharp-vim')
+function! s:bundle.hooks.on_source(bundle)
+  nnoremap <silent><buffer>gd :OmniSharpGotoDefinition<CR>
+  augroup omnisharp
+    au!
+    au BufWritePre *.cs OmniSharpCodeFormat
+  augroup END
+endfunction
 
 NeoBundle 'https://github.com/kchmck/vim-coffee-script'
 let s:bundle = neobundle#get('vim-coffee-script')
