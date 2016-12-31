@@ -61,7 +61,7 @@ NeoBundle 'https://github.com/Shougo/vimproc', {
       \     }
       \ }
 
-NeoBundle 'https://github.com/kana/vim-smartinput'
+NeoBundle 'https://github.com/naoina/vim-smartinput'
 let s:bundle = neobundle#get('vim-smartinput')
 function! s:bundle.hooks.on_post_source(bundle)
   call smartinput#map_to_trigger('i', '#', '#', '#')
