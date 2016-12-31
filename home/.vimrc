@@ -563,6 +563,7 @@ set mouse=n
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,japan,cp932,utf-16,utf-8
 set fileformats=unix,dos,mac
+set nofixendofline
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
