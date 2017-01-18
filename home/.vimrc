@@ -665,7 +665,7 @@ endfunction
 
 function! s:python_setting()
   setlocal tabstop=8 softtabstop=4 shiftwidth=4
-  setlocal textwidth=79
+  setlocal textwidth=100
   setlocal expandtab
 
   inoreabbrev slef self
