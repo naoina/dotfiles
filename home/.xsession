@@ -45,6 +45,8 @@ xset s off
 xset r rate 250 50
 xset b off
 xset -dpms
+xrandr --dpi 96
+xinput -set-prop 'Elan Touchpad' --type=float 'libinput Accel Speed' 1
 
 # uim-xim &
 # scim -d
