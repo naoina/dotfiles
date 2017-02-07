@@ -200,6 +200,13 @@ if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
     zstyle ':auto-fu:var' postdisplay $''
 fi
 
+if [[ -f $HOME/.zsh/load-nvmrc.zsh ]]; then
+    . $HOME/.zsh/load-nvmrc.zsh
+    autoload -U add-zsh-hook
+    add-zsh-hook chpwd load-nvmrc
+    load-nvmrc
+fi
+
 if [[ -x "`whence -p gpg-agent`" ]]; then
     export GPG_TTY=$(tty)
 
