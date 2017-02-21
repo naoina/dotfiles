@@ -178,6 +178,7 @@ function! s:bundle.hooks.on_source(bundle)
         \ }
   let g:syntastic_python_checkers = ['flake8']
   let g:syntastic_go_checkers = ['go', 'govet']
+  let g:syntastic_javascript_checkers = ['eslint', 'jshint']
 endfunction
 
 NeoBundle 'https://github.com/naoina/syntastic-MQL', {
