@@ -1,3 +1,4 @@
 .shutter
 .local/share/applications
 .gnupg
+.ipython/profile_default
