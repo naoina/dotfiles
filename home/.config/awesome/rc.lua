@@ -381,7 +381,11 @@ vicious.register(batterypercentagewidget, vicious.widgets.bat,
         local state = data[1]
         local battery_percentage = data[2]
         local meter_widget = batterymeterwidget:get_widget()
-        if battery_percentage <= 10 then
+        if battery_percentage <= 5 then
+            if state == "−" then -- Discharging
+                awesome.emit_signal("battery::threshold")
+            end
+        elseif battery_percentage <= 10 then
             meter_widget:set_color(meter_warning_color)
             if not battery_notified then
                 naughty.notify({
@@ -785,6 +789,11 @@ client.connect_signal("unfocus",
         end
     end)
 -- }}}
+
+awesome.connect_signal("battery::threshold",
+    function()
+        awful.spawn("systemctl hibernate")
+    end)
 
 -- Startup applications
 if awesome.startup then
