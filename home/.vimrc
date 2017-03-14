@@ -489,6 +489,10 @@ function! s:bundle.hooks.on_source(bundle)
   let g:indentLine_enabled = 0
 endfunction
 
+NeoBundleLazy 'https://github.com/junegunn/vader.vim.git', {
+      \ 'on_ft': ['vader'],
+      \ }
+
 NeoBundle 'https://github.com/haya14busa/vim-asterisk'
 let s:bundle = neobundle#get('vim-asterisk')
 function! s:bundle.hooks.on_source(bundle)
