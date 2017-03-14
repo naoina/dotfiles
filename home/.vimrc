@@ -451,6 +451,8 @@ function! s:bundle.hooks.on_source(bundle)
   let g:coffee_compile_vert = 1
 endfunction
 
+NeoBundle 'https://github.com/mustache/vim-mustache-handlebars'
+
 NeoBundle 'https://github.com/fatih/vim-go'
 let s:bundle = neobundle#get('vim-go')
 function! s:bundle.hooks.on_source(bundle)
