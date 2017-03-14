@@ -169,32 +169,13 @@ function! s:bundle.hooks.on_source(bundle)
   endfunction
 endfunction
 
-NeoBundle 'https://github.com/scrooloose/syntastic'
-let s:bundle = neobundle#get('syntastic')
+NeoBundle 'https://github.com/w0rp/ale.git'
+let s:bundle = neobundle#get('ale')
 function! s:bundle.hooks.on_source(bundle)
-  let g:syntastic_mode_map = {
-        \ 'mode': 'active',
-        \ 'passive_filetypes': ['java', 'html'],
-        \ }
-  let g:syntastic_python_checkers = ['flake8']
-  let g:syntastic_go_checkers = ['go', 'govet']
-  let g:syntastic_javascript_checkers = ['eslint', 'jshint']
-endfunction
-
-NeoBundle 'https://github.com/naoina/syntastic-MQL', {
-      \ 'depends': ['https://github.com/scrooloose/syntastic'],
-      \ }
-let s:bundle = neobundle#get('syntastic-MQL')
-function! s:bundle.hooks.on_source(bundle)
-  let g:syntastic_mql5_metaeditor_exe_path = '~/.wine/drive_c/Program Files (x86)/MetaTrader 4/metaeditor.exe'
-endfunction
-
-NeoBundle 'https://github.com/naoina/syntastic-xbuild', {
-      \ 'depends': ['https://github.com/scrooloose/syntastic'],
-      \ }
-let s:bundle = neobundle#get('syntastic-xbuild')
-function! s:bundle.hooks.on_source(bundle)
-  let g:syntastic_cs_checkers = ['xbuild']
+  let g:ale_lint_on_enter = 1
+  let g:ale_lint_on_save = 1
+  let g:ale_lint_on_text_changed = 0
+  let g:ale_python_mypy_options = '--ignore-missing-imports'
 endfunction
 
 NeoBundle 'https://github.com/mattn/webapi-vim'
