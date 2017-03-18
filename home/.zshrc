@@ -67,7 +67,6 @@ export PATH="$PATH:/usr/local/sbin:/usr/local/bin:/usr/X11R6/bin"
 export CCACHE_PATH="/usr/bin"
 export CCACHE_DIR="/tmp/ccache"
 export CVS_RSH="ssh"
-export JAVA_VERSION="1.6"
 export HC_OPTS="-W"
 # export GIT_SSH="$HOME/bin/ssh-github"
 export VIRTUALENV_USE_DISTRIBUTE=1
