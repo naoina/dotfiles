@@ -396,6 +396,8 @@ function! s:bundle.hooks.on_source(bundle)
   let g:pymode_utils_whitespaces = 0
   let g:pymode_rope = 0
   let g:pymode_syntax = 0
+  let g:pymode_breakpoint = 1
+  let g:pymode_options_max_line_length = 100
 endfunction
 
 NeoBundleLazy 'https://github.com/jmcantrell/vim-virtualenv', {
