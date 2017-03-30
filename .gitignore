@@ -8,5 +8,9 @@ home/.config/menus/
 home/.config/chromium/
 home/.config/google-googletalkplugin/
 home/.config/hub*
+home/.config/nvim/bundle
+home/.config/nvim/.cache
+home/.config/nvim/backup
+home/.config/nvim/.netrwhist
 home/aur/custom/
 home/.tmux/plugins/*

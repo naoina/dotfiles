@@ -22,7 +22,7 @@
 [color]
 	ui = auto
 [core]
-	editor = /usr/bin/vim
+	editor = nvim
 	quotepath = false
 [merge]
 	tool = git-vimdiff

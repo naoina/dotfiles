@@ -7,6 +7,13 @@ ${1:public} class ${2:ClassName}
 }
 endsnippet
 
+snippet struct "struct" !b
+${1:public} struct ${2:StructName}
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
 snippet interface "interface" !b
 public interface ${1:IInterfaceName}
 {
@@ -64,7 +71,7 @@ ${1:private} ${2:void} ${3:MethodName}($4)
 }
 endsnippet
 
-snippet = "=" !b
+snippet v "var" !b
 var ${1:name} = ${2:val};
 endsnippet
 
@@ -92,5 +99,23 @@ snippet using "using statement" !b
 using (${1:var} ${2:name} = ${3:val})
 {
 	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet enum "enum" !b
+enum ${1:EnumName}
+{
+	${0:// TODO: implementation.}
+}
+endsnippet
+
+snippet try "try-catch" !b
+try
+{
+	${2:// TODO: implementation.}
+}
+catch (${1:Exeption} ${2:e})
+{
+	${4:// TODO: implementation.}
 }
 endsnippet

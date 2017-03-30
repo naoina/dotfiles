@@ -1,20 +1,20 @@
-snippet f "->" !w
+snippet f "()->" !w
+(${1})->
+	$0
+endsnippet
+
+snippet F "->" !w
 ->
 	$0
 endsnippet
 
-snippet F "() ->" !w
-(${1}) ->
+snippet ff "()=>" !w
+(${1})=>
 	$0
 endsnippet
 
-snippet ff "=>" !w
+snippet FF "=>" !w
 =>
-	$0
-endsnippet
-
-snippet FF "() =>" !w
-(${1}) =>
 	$0
 endsnippet
 
@@ -36,7 +36,7 @@ return
 endsnippet
 
 snippet req "require" !b
-${1:module} = require '${0:path}'
+${1:module} = require "$1"
 endsnippet
 
 snippet de "describe" !b
@@ -45,16 +45,29 @@ describe "$1", ->
 endsnippet
 
 snippet it "it" !b
-it "$1", (done) ->
-	do done
+it "$1", (done)->
+	done()
 endsnippet
 
 snippet be "beforeEach" !b
-beforeEach (done) ->
+beforeEach (done)->
 	$0
 endsnippet
 
 snippet af "afterEach" !b
-afterEach (done) ->
+afterEach (done)->
+	$0
+endsnippet
+
+snippet rde "return done err if err" !b
+return ${1:done} err if err
+endsnippet
+
+snippet sne "should.not.exists err" !b
+should.not.exists err
+endsnippet
+
+snippet fe "(err)->" !w
+(err${1})->
 	$0
 endsnippet
