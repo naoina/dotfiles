@@ -23,7 +23,7 @@ MERGED="$4"
 # sed -e '/<<<<<<</,/=======/d' -e '/>>>>>>>/d' $MERGED > $LOCAL
 # sed -e '/=======/,/>>>>>>>/d' -e '/<<<<<<</d' $MERGED > $REMOTE
 
-VIMDIFFCMD="vimdiff -f"
+VIMDIFFCMD="nvim -d"
 if [ -f "$BASE" ]; then
     # $VIMDIFFCMD -f "$LOCAL" "$BASE" "$REMOTE"
     $VIMDIFFCMD -f "$LOCAL" "$REMOTE"
