@@ -52,12 +52,18 @@ function! s:bundle.hooks.on_source(bundle)
   let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
 endfunction
 
-NeoBundle 'https://github.com/sbdchd/neoformat.git'
-let s:bundle = neobundle#get('neoformat')
+NeoBundle 'https://github.com/Chiel92/vim-autoformat.git'
+let s:bundle = neobundle#get('vim-autoformat')
 function! s:bundle.hooks.on_source(bundle)
-  augroup neoformat
+  let g:autoformat_autoindent = 0
+  let g:autoformat_retab = 0
+  let g:autoformat_remove_trailing_spaces = 0
+
+  let g:formatters_python = ['autopep8']
+
+  augroup autoformat
     au!
-    au BufWritePre * Neoformat
+    au BufWritePre * Autoformat
   augroup END
 endfunction
 
