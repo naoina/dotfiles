@@ -52,6 +52,15 @@ function! s:bundle.hooks.on_source(bundle)
   let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
 endfunction
 
+NeoBundle 'https://github.com/sbdchd/neoformat.git'
+let s:bundle = neobundle#get('neoformat')
+function! s:bundle.hooks.on_source(bundle)
+  augroup neoformat
+    au!
+    au BufWritePre * Neoformat
+  augroup END
+endfunction
+
 NeoBundle 'https://github.com/Shougo/vimproc', {
       \ 'build': {
       \     'windows': 'make -f make_mingw32.mak',
