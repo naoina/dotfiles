@@ -35,6 +35,7 @@
 	default = current
 [diff]
 	algorithm = histogram
+	compactionHeuristic = true
 [pager]
 	# They should use less because correct highlight color.
 	log = diff-highlight | less -i
