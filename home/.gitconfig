@@ -1,6 +1,6 @@
 [user]
 	name = Naoya Inada
-	email = naoina@kuune.org
+	email = naoina@sarashin.am
 	signingkey = 55111EAA
 [alias]
 	ci = commit
@@ -53,3 +53,5 @@
 	enabled = true
 [commit]
 	gpgsign = true
+[interactive]
+	diffFilter = diff-highlight
