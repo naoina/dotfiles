@@ -1017,7 +1017,8 @@ vnoremap gc :<C-u>normal gc<CR>
 onoremap gc :<C-u>normal gc<CR>
 nnoremap <C-s> <Nop>
 inoremap <C-s> <Nop>
-inoremap <F6> <C-r>=strftime("%Y-%m-%dT%H:%M:%S%z")<CR>
+nnoremap <F6> :<C-u>exec 'normal i' . substitute(system('date ' . shellescape('+%Y-%m-%dT%H:%M:%S%:z')), '[\r\n]\+$', '', '')<CR>
+inoremap <F6> <C-r>=substitute(system('date ' . shellescape('+%Y-%m-%dT%H:%M:%S%:z')), '[\r\n]\+$', '', '')<CR>
 noremap  <silent><C-j> <C-w>w
 noremap  <silent><C-k> <C-w>W
 nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>call <SID>refresh()<CR>
