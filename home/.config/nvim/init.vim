@@ -132,6 +132,9 @@ NeoBundle 'https://github.com/tpope/vim-fugitive', {
 NeoBundle 'https://github.com/gregsexton/gitv', {
       \ 'depends': ['https://github.com/tpope/vim-fugitive'],
       \ }
+NeoBundle 'https://github.com/tpope/vim-rhubarb', {
+      \ 'depends': ['https://github.com/tpope/vim-fugitive'],
+      \ }
 
 let s:bundle = neobundle#get('gitv')
 function! s:bundle.hooks.on_source(bundle)
@@ -242,6 +245,7 @@ NeoBundle 'https://github.com/gf3/peg.vim'
 NeoBundle 'https://github.com/wavded/vim-stylus'
 NeoBundle 'https://github.com/digitaltoad/vim-pug'
 NeoBundle 'https://github.com/rhysd/committia.vim'
+NeoBundle 'https://github.com/othree/yajs.vim.git'
 
 NeoBundle 'https://github.com/haya14busa/incsearch.vim'
 let s:bundle = neobundle#get('incsearch.vim')
@@ -383,18 +387,6 @@ NeoBundle 'https://github.com/vim-scripts/mako.vim'  " should not use the NeoBun
 
 NeoBundleLazy 'https://github.com/vim-scripts/mako.vim--Torborg', {
       \ 'on_ft': ['mako'],
-      \ }
-
-NeoBundleLazy 'https://github.com/jiangmiao/simple-javascript-indenter', {
-      \ 'on_ft': ['javascript'],
-      \ }
-let s:bundle = neobundle#get('simple-javascript-indenter')
-function! s:bundle.hooks.on_source(bundle)
-  let g:SimpleJsIndenter_BriefMode = 1
-endfunction
-
-NeoBundleLazy 'https://github.com/othree/yajs.vim.git', {
-      \ 'on_ft': ['javascript'],
       \ }
 
 NeoBundleLazy 'https://github.com/alfredodeza/pytest.vim', {
