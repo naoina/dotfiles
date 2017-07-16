@@ -24,6 +24,18 @@ function($1) {
 }
 endsnippet
 
+snippet fg "function *" iw
+function *($1) {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
+snippet f> "()=>" i
+($1)=> {
+	${0:// TODO: not implemented yet}
+}
+endsnippet
+
 snippet r "return" !b
 return $0;
 endsnippet
@@ -70,37 +82,55 @@ require([$1], function ($2) {
 endsnippet
 
 snippet de "describe" b
-describe("${1:describe}", function () {
+describe("${1:describe}", ()=> {
 	$0
 });
 endsnippet
 
 snippet it "it" b
-it("should $1", function (${2:done}) {
+it("should $1", ()=> {
 	${0:done();}
+});
+endsnippet
+
+snippet itg "it function *" !b
+it("should $1", function *() {
+	${0:// TODO: not implemented yet}
 });
 endsnippet
 
 snippet be "beforeEach" b
-beforeEach(function (${1:done}) {
+beforeEach(()=> {
 	${0:done();}
 });
 endsnippet
 
+snippet beg "beforeEach function *" !b
+beforeEach(function *() {
+	${0:// TODO: not implemented yet}
+});
+endsnippet
+
 snippet before "before" b
-before(function (${1:done}) {
+before(()=> {
 	${0:done();}
 });
 endsnippet
 
 snippet af "afterEach" b
-afterEach(function (${1:done}) {
+afterEach(()=> {
 	${0:done();}
 });
 endsnippet
 
+snippet afg "afterEach function *" !b
+afterEach(function *() {
+	${0:// TODO: not implemented yet}
+});
+endsnippet
+
 snippet after "after" b
-after(function (${1:done}) {
+after(()=> {
 	${0:done();}
 });
 endsnippet
@@ -113,4 +143,16 @@ snippet eq "expect eql" b
 expect($1).to.eql({
 	$0
 });
+endsnippet
+
+snippet co "const" !b
+const 
+endsnippet
+
+snippet req "require" !b
+const ${1:module} = require('$1');
+endsnippet
+
+snippet as "assert" !b
+assert(${1:actual} === ${2:expect});
 endsnippet
