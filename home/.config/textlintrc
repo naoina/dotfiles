@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "no-nfd": true,
+    "no-surrogate-pair": true,
+    "preset-jtf-style": true,
+    "no-mix-dearu-desumasu": true,
+    "ja-no-mixed-period": {
+      "forceAppendPeriod": true
+    },
+    "period-in-list-item": true,
+    "ja-hiragana-hojodoushi": true,
+    "ja-unnatural-alphabet": true,
+    "ja-no-successive-word": true,
+    "no-mixed-zenkaku-and-hankaku-alphabet": true,
+    "ja-no-redundant-expression": true
+  }
+}

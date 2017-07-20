@@ -201,6 +201,12 @@ function! s:bundle.hooks.on_source(bundle)
         \ 'javascript': ['eslint'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
+  let g:ale_fixers = {
+        \ 'markdown': [
+        \   {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t && cat %t'}}
+        \   ],
+        \ }
+  let g:ale_fix_on_save = 1
 endfunction
 
 NeoBundle 'https://github.com/mattn/webapi-vim'
