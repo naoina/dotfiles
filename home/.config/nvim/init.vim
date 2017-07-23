@@ -190,7 +190,7 @@ function! s:bundle.hooks.on_source(bundle)
         \ 'javascript': ['prettier'],
         \ 'python': ['autopep8', 'isort'],
         \ 'markdown': [
-        \   {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t && cat %t'}}
+        \   {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}}
         \   ],
         \ }
   let g:ale_fix_on_save = 1
