@@ -52,21 +52,6 @@ function! s:bundle.hooks.on_source(bundle)
   let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
 endfunction
 
-NeoBundle 'https://github.com/Chiel92/vim-autoformat.git'
-let s:bundle = neobundle#get('vim-autoformat')
-function! s:bundle.hooks.on_source(bundle)
-  let g:autoformat_autoindent = 0
-  let g:autoformat_retab = 0
-  let g:autoformat_remove_trailing_spaces = 0
-
-  let g:formatters_python = ['autopep8']
-
-  augroup autoformat
-    au!
-    au BufWritePre * Autoformat
-  augroup END
-endfunction
-
 NeoBundle 'https://github.com/Shougo/vimproc', {
       \ 'build': {
       \     'windows': 'make -f make_mingw32.mak',
@@ -203,7 +188,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_python_mypy_options = '--ignore-missing-imports'
   let g:ale_fixers = {
         \ 'javascript': ['prettier'],
-        \ 'python': ['isort'],
+        \ 'python': ['autopep8', 'isort'],
         \ 'markdown': [
         \   {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t && cat %t'}}
         \   ],
