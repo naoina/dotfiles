@@ -184,6 +184,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_lint_on_text_changed = 0
   let g:ale_linters = {
         \ 'javascript': ['eslint'],
+        \ 'go': ['go build'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
   let g:ale_fixers = {
