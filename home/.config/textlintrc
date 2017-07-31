@@ -5,7 +5,7 @@
     "preset-jtf-style": true,
     "no-mix-dearu-desumasu": true,
     "ja-no-mixed-period": {
-      "forceAppendPeriod": true
+      "forceAppendPeriod": false
     },
     "period-in-list-item": true,
     "ja-hiragana-hojodoushi": true,
