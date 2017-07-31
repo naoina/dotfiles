@@ -575,7 +575,7 @@ globalkeys = awful.util.table.join(
         end),
 
     -- Standard program
-    awful.key({ "Control",        }, "Return", function () awful.spawn(terminal) end),
+    awful.key({ modkey,        }, "Return", function () awful.spawn(terminal) end),
     awful.key({ modkey, "Control", "Shift" }, "r", awesome.restart),
     awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
@@ -606,7 +606,6 @@ clientkeys = awful.util.table.join(
     -- awful.key({ modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
     awful.key({ modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey,           }, "space",  function (c) c.floating = not c.floating      end),
-    awful.key({ modkey,           }, "Return", function (c) c:swap(awful.client.getmaster()) end),
     awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end),
     awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
