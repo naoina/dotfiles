@@ -195,7 +195,7 @@ function! s:bundle.hooks.on_source(bundle)
         \   ],
         \ }
   let g:ale_fix_on_save = 1
-  let g:ale_javascript_prettier_options = '--print-width 80'
+  let g:ale_javascript_prettier_options = '--print-width 80 --single-quote'
 endfunction
 
 NeoBundle 'https://github.com/mattn/webapi-vim'
