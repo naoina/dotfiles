@@ -1,6 +1,6 @@
 [user]
 	name = Naoya Inada
-	email = naoina@sarashin.am
+	email = naoina@kuune.org
 	signingkey = 55111EAA
 [alias]
 	ci = commit
