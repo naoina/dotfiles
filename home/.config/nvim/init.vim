@@ -185,6 +185,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_linters = {
         \ 'javascript': ['eslint'],
         \ 'go': ['go build'],
+        \ 'review': ['review-compile'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
   let g:ale_fixers = {
@@ -198,10 +199,15 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_javascript_prettier_options = '--print-width 80 --single-quote'
 endfunction
 
+NeoBundle 'https://github.com/naoina/ale-linter-review', {
+      \ 'depends': 'https://github.com/w0rp/ale.git',
+      \ }
+
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
 NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
 NeoBundle 'https://github.com/othree/html5.vim'
+NeoBundle 'https://github.com/moro/vim-review'
 
 NeoBundle 'https://github.com/plasticboy/vim-markdown', {
       \ 'depends': ['https://github.com/cespare/vim-toml'],

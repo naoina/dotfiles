@@ -1,0 +1,283 @@
+snippet list "//list" "snip.buffer[snip.line] == 'list'" !be
+//list[${1:ident}][${2:caption}][${3:lang}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet list "@<list>{}" !w
+@<list>{${0:ident}}
+endsnippet
+
+snippet listnum "//listnum" !b
+//listnum[${1:ident}][${2:caption}][${3:lang}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet emlist "//emlist" !b
+//emlist[${1:caption}][${2:lang}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet emlistnum "//emlistnum" !b
+//emlistnum[${1:caption}][${2:lang}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet source "//source" !b
+//source[${1:filename}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet cmd "//cmd" !b
+//cmd{
+${0:TODO}
+//}
+endsnippet
+
+snippet image "//image" !b
+//image[${1:ident}][${2:alt}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet img "@<img>{}" !w
+@<img>{${0:ident}}
+endsnippet
+
+snippet icon "@<icon>{}" !w
+@<icon>{${0:ident}}
+endsnippet
+
+snippet indepimage "//indepimage" !b
+//indepimage[${1:filename}][${2:caption}]
+endsnippet
+
+snippet numberlessimage "//numberlessimage" !b
+//numberlessimage[${1:filename}][${2:caption}]
+endsnippet
+
+snippet table "//table" "snip.buffer[snip.line] == 'table'" !be
+//table[${1:ident}][${2:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet table "@<table>{}" !w
+@<table>{${1:ident}}
+endsnippet
+
+snippet --- "------------" !b
+------------
+endsnippet
+
+snippet emtable "//emtable" !b
+//emtable[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet imgtable "//imgtable" !b
+//imgtable[${1:filename}][${2:caption}]{
+//}
+endsnippet
+
+snippet quote "//quote" !b
+//quote{
+${0:TODO}
+//}
+endsnippet
+
+snippet note "//note" !b
+//note[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet memo "//memo" !b
+//memo[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet tip "//tip" !b
+//tip[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet info "//info" !b
+//info[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet warning "//warning" !b
+//warning[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet important "//important" !b
+//important[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet caution "//caution" !b
+//caution[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet notice "//notice" !b
+//notice[${1:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet footnote "//footnote" !b
+//footnote[${1:ident}][${0:description}]
+endsnippet
+
+snippet fn "@<fn>{footnote}" !w
+@<fn>{${0:ident}}
+endsnippet
+
+snippet bibpaper "//bibpaper" !b
+//bibpaper[${1:cite}][${2:caption}]{
+${0:TODO}
+//}
+endsnippet
+
+snippet bib "@<bib>{}" !w
+@<bib>{${0:cite}}
+endsnippet
+
+snippet lead "//lead" !b
+//lead{
+${0:TODO}
+//}
+endsnippet
+
+snippet texequation "//texequation" !b
+//texequation{
+${0:TODO}
+//}
+endsnippet
+
+snippet m "@<m>{tex}" !w
+@<m>{${0:TODO}}
+endsnippet
+
+snippet chap "@<chap>{}" !w
+@<chap>{${0:id}}
+endsnippet
+
+snippet title "@<title>{}" !w
+@<title>{${0:id}}
+endsnippet
+
+snippet chapref "@<chapref>{}" !w
+@<chapref>{${0:id}}
+endsnippet
+
+snippet href "@<href>{}" !w
+@<href>{${0:URL}}
+endsnippet
+
+snippet label "//label" !b
+//label[${0:anchor}]
+endsnippet
+
+snippet # "#@#" !w
+#@# 
+endsnippet
+
+snippet comment "//comment" "snip.buffer[snip.line] == 'comment'" !be
+//comment{
+${0:TODO}
+//}
+endsnippet
+
+snippet comment "@<comment>{}" !w
+@<comment>{${0:comment}}
+endsnippet
+
+snippet kw "@<kw>{keyword}" !w
+@<kw>{${0:keyword}}
+endsnippet
+
+snippet bou "@<bou>{bouten}" !w
+@<bou>{${0:TODO}}
+endsnippet
+
+snippet ami "@<ami>{amikake}" !w
+@<ami>{${0:TODO}}
+endsnippet
+
+snippet u "@<u>{underline}" !w
+@<u>{${0:TODO}}
+endsnippet
+
+snippet b "@<b>{bold}" !w
+@<b>{${0:TODO}}
+endsnippet
+
+snippet i "@<i>{italic}" !w
+@<i>{${0:TODO}}
+endsnippet
+
+snippet strong "@<strong>{}" !w
+@<strong>{${0:TODO}}
+endsnippet
+
+snippet em "@<em>{}" !w
+@<em>{${0:TODO}}
+endsnippet
+
+snippet tt "@<tt>{monospace}" !w
+@<tt>{${0:TODO}}
+endsnippet
+
+snippet tti "@<tti>{monospace+italic}" !w
+@<tti>{${0:TODO}}
+endsnippet
+
+snippet ttb "@<ttb>{monospace+bold}" !w
+@<ttb>{${0:TODO}}
+endsnippet
+
+snippet code "@<code>{}" !w
+@<code>{${0:code}}
+endsnippet
+
+snippet ruby "@<ruby>{}" !w
+@<ruby>{${1:text}, ${2:ruby}}
+endsnippet
+
+snippet br "@<br>{}" !w
+@<br>{}
+endsnippet
+
+snippet uchar "@<uchar>{unicode}" !w
+@<uchar>{${0:unicode}}
+endsnippet
+
+snippet mapfile "#@mapfile" !b
+#@mapfile(${1:filename})
+#@end
+endsnippet
+
+snippet maprange "#@maprange" !b
+#@maprange(${1:filename}, ${2:rangename})
+#@end
+endsnippet
+
+snippet mapoutput "#@mapoutput" !b
+#@mapoutput(${1:command})
+#@end
+endsnippet
