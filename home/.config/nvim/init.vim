@@ -188,12 +188,12 @@ function! s:bundle.hooks.on_source(bundle)
         \ 'review': ['review-compile'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
+  let textlint_linters = [{buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}}]
   let g:ale_fixers = {
         \ 'javascript': ['prettier'],
         \ 'python': ['autopep8', 'isort'],
-        \ 'markdown': [
-        \   {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}}
-        \   ],
+        \ 'markdown': textlint_linters,
+        \ 'review': textlint_linters,
         \ }
   let g:ale_fix_on_save = 1
   let g:ale_javascript_prettier_options = '--print-width 80 --single-quote'
