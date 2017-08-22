@@ -707,7 +707,7 @@ awful.rules.rules = {
     { rule = { class = "Firefox" },
       properties = { screen = 1, tag = "2", border_width = 0 } },
     { rule = { class = "Zeal" },
-      properties = { screen = 1, tag = "9", border_width = 0 } },
+      properties = { screen = 1, tag = "9", border_width = 0, floating = false } },
 }
 -- }}}
 
