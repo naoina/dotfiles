@@ -52,6 +52,7 @@ xinput -set-prop 'Elan Touchpad' --type=float 'libinput Accel Speed' 1
 # ibus-daemon --xim -d
 fcitx-autostart
 start-pulseaudio-x11
+blueman-applet &
 # touchegg >/dev/null 2>&1 &
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
