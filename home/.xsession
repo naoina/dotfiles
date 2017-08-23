@@ -40,7 +40,6 @@ fi
 # xmodmap $HOME/.Xmodmap
 
 # Default settings.
-xgamma -rgamma 1.0 -ggamma 1.0 -bgamma 0.65
 xset s off
 xset r rate 250 50
 xset b off
