@@ -209,6 +209,13 @@ if [[ -f $HOME/.zsh/load-nvmrc.zsh ]]; then
     load-nvmrc
 fi
 
+if [[ -f $HOME/.zsh/activate-venv.zsh ]]; then
+    . $HOME/.zsh/activate-venv.zsh
+    autoload -U add-zsh-hook
+    add-zsh-hook chpwd activate-venv
+    activate-venv
+fi
+
 if [[ -x "`whence -p gpg-agent`" ]]; then
     export GPG_TTY=$(tty)
 
