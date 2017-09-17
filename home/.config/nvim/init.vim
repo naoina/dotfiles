@@ -192,10 +192,40 @@ function! s:bundle.hooks.on_source(bundle)
         \ {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
         \ {buffer, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
         \ ]
+  function! s:protocol_markdown(buffer, lines) abort
+    let l:executable = ale#Escape('protocol')
+    let l:new_lines = []
+    let l:protocol_definition_line = 0
+    let l:in_code_block = 0
+
+    for l:line in a:lines
+      if l:in_code_block && match(l:line, '\v^```$') >= 0
+        let l:in_code_block = 0
+      endif
+      if l:in_code_block && l:protocol_definition_line
+        call add(l:new_lines, l:line)
+        call add(l:new_lines, '')
+        let l:figure = system(l:executable . ' ' . ale#Escape(l:line))
+        call extend(l:new_lines, split(l:figure, '\n'))
+        let l:protocol_definition_line = 0
+        continue
+      endif
+      if l:in_code_block
+        continue
+      endif
+      if match(l:line, '\v^```protocol$') >= 0
+        let l:protocol_definition_line = 1
+        let l:in_code_block = 1
+      endif
+      call add(l:new_lines, l:line)
+    endfor
+
+    return l:new_lines
+  endfunction
   let g:ale_fixers = {
         \ 'javascript': ['prettier'],
         \ 'python': ['autopep8', 'isort'],
-        \ 'markdown': text_linters,
+        \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
         \ 'review': text_linters,
         \ }
   let g:ale_fix_on_save = 1
