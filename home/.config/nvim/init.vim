@@ -279,7 +279,7 @@ NeoBundle 'https://github.com/plasticboy/vim-markdown', {
       \ }
 let s:bundle = neobundle#get('vim-markdown')
 function s:bundle.hooks.on_source(bundle)
-  let g:vim_markdown_folding_disabled = 1
+  let g:vim_markdown_folding_disabled = 0
   let g:vim_markdown_frontmatter = 1
   let g:vim_markdown_toml_frontmatter = 1
   let g:vim_markdown_new_list_item_indent = 0
@@ -524,6 +524,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_fmt_command = "goimports"
   let g:go_snippet_engine = "ultisnipts"
   let g:go_bin_path = expand('$GOROOT/bin/')
+  let g:go_gocode_unimported_packages = 1
 endfunction
 
 NeoBundleLazy 'https://github.com/rhysd/vim-go-impl', {
