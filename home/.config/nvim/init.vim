@@ -261,7 +261,7 @@ function! s:bundle.hooks.on_source(bundle)
         \ 'vue': [funcref('s:prettier_partial')],
         \ }
   let g:ale_fix_on_save = 1
-  let g:ale_javascript_prettier_options = '--print-width 80 --single-quote'
+  let g:ale_javascript_prettier_use_local_config = 1
 endfunction
 
 NeoBundle 'https://github.com/naoina/ale-linter-review', {
