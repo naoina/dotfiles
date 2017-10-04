@@ -249,8 +249,10 @@ function! s:bundle.hooks.on_source(bundle)
     for l:line in a:lines
       if l:in_script_block && match(l:line, '</script>') >= 0
         let l:in_script_block = 0
-        let l:formatted = systemlist(l:cmd, join(l:js_lines, ''))
-        call extend(l:new_lines, l:formatted)
+        if !empty(l:js_lines)
+          let l:formatted = systemlist(l:cmd, join(l:js_lines, "\n"))
+          call extend(l:new_lines, l:formatted)
+        endif
       endif
       if l:in_script_block
         call add(l:js_lines, l:line)
