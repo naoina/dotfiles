@@ -223,8 +223,20 @@ function! s:bundle.hooks.on_source(bundle)
     return l:new_lines
   endfunction
 
-  function! s:prettier_partial(buffer, lines) abort
-    let l:obj = ale#fixers#prettier#Fix(a:buffer)
+  function! s:prettier_eslint(buffer, lines) abort
+    let l:obj = ale#fixers#prettier_eslint#Fix(a:buffer)
+    let l:commands = split(l:obj['command'])
+    let l:cmd = [l:commands[0]]
+    call extend(l:cmd, l:commands[2:-2])
+    call add(l:cmd, '--stdin')
+    let l:cmd = join(l:cmd, ' ')
+    return {
+          \ 'command': l:cmd
+          \ }
+  endfunction
+
+  function! s:prettier_eslint_partial(buffer, lines) abort
+    let l:obj = ale#fixers#prettier_eslint#Fix(a:buffer)
     let l:commands = split(l:obj['command'])
     let l:cmd = [l:commands[0]]
     call extend(l:cmd, l:commands[2:-2])
@@ -254,14 +266,13 @@ function! s:bundle.hooks.on_source(bundle)
   endfunction
 
   let g:ale_fixers = {
-        \ 'javascript': ['prettier'],
+        \ 'javascript': [funcref('s:prettier_eslint')],
         \ 'python': ['autopep8', 'isort'],
         \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
         \ 'review': text_linters,
-        \ 'vue': [funcref('s:prettier_partial')],
+        \ 'vue': [funcref('s:prettier_eslint_partial')],
         \ }
   let g:ale_fix_on_save = 1
-  let g:ale_javascript_prettier_use_local_config = 1
 endfunction
 
 NeoBundle 'https://github.com/naoina/ale-linter-review', {
