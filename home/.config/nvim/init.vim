@@ -251,6 +251,9 @@ function! s:bundle.hooks.on_source(bundle)
         let l:in_script_block = 0
         if !empty(l:js_lines)
           let l:formatted = systemlist(l:cmd, join(l:js_lines, "\n"))
+          if v:shell_error
+            return 0
+          endif
           call extend(l:new_lines, l:formatted)
         endif
       endif
