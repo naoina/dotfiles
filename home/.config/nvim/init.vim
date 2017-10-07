@@ -338,6 +338,18 @@ function! s:bundle.hooks.on_source(bundle)
   let g:incsearch#vim_cmdline_keymap = 0
 endfunction
 
+NeoBundle 'https://github.com/haya14busa/incsearch-migemo.vim', {
+      \ 'depends': [
+      \     'https://github.com/haya14busa/incsearch.vim',
+      \     'https://github.com/Shougo/vimproc',
+      \  ],
+      \ }
+let s:bundle = neobundle#get('incsearch-migemo.vim')
+function! s:bundle.hooks.on_source(bundle)
+  map / <Plug>(incsearch-migemo-/)
+  map ? <Plug>(incsearch-migemo-?)
+endfunction
+
 " NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
       " \ 'on_cmd': ['CtrlP'],
       " \ }
