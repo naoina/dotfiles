@@ -554,7 +554,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_bin_path = expand('$GOROOT/bin/')
   let g:go_gocode_unimported_packages = 1
   let g:go_template_autocreate = 0
-  let g:go_auto_type_info = 1
+  nmap <C-i> <Plug>(go-info)
 endfunction
 
 NeoBundleLazy 'https://github.com/rhysd/vim-go-impl', {
