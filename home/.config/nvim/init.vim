@@ -585,6 +585,14 @@ NeoBundleLazy 'https://github.com/junegunn/vader.vim.git', {
       \ 'on_ft': ['vader'],
       \ }
 
+NeoBundleLazy 'https://github.com/kannokanno/previm', {
+      \ 'on_ft': ['markdown'],
+      \ }
+let s:bundle = neobundle#get('previm')
+function! s:bundle.hooks.on_source(bundle)
+  let g:previm_open_cmd = 'xdg-open'
+endfunction
+
 NeoBundle 'https://github.com/posva/vim-vue'
 
 NeoBundle 'https://github.com/haya14busa/vim-asterisk'
