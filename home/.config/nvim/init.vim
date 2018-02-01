@@ -236,6 +236,13 @@ endfunction
 NeoBundle 'https://github.com/naoina/ale-linter-review', {
       \ 'depends': 'https://github.com/w0rp/ale.git',
       \ }
+NeoBundle 'https://github.com/naoina/ale-solidity', {
+      \ 'depends': 'https://github.com/w0rp/ale.git',
+      \ }
+let s:bundle = neobundle#get('ale-solidity')
+function! s:bundle.hooks.on_source(bundle)
+  let g:ale_fixers['solidity'] = ['solium']
+endfunction
 
 NeoBundle 'https://github.com/mattn/webapi-vim'
 NeoBundle 'https://github.com/rking/ag.vim'
@@ -567,9 +574,7 @@ function! s:bundle.hooks.on_source(bundle)
   augroup END
 endfunction
 
-" for colorschemes
-NeoBundle 'https://github.com/flazz/vim-colorschemes'
-NeoBundle 'https://github.com/mattn/yamada2-vim'
+NeoBundle 'https://github.com/tomlion/vim-solidity'
 
 call neobundle#end()
 
