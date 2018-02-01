@@ -61,18 +61,20 @@ NeoBundle 'https://github.com/Shougo/vimproc', {
       \     }
       \ }
 
-NeoBundle 'https://github.com/naoina/vim-smartinput'
-let s:bundle = neobundle#get('vim-smartinput')
-function! s:bundle.hooks.on_post_source(bundle)
-  call smartinput#map_to_trigger('i', '#', '#', '#')
-  call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
-  call smartinput#define_rule({
-          \ 'at': '\({\|\<do\>\)\s*\%#',
-          \ 'char': '<Bar>',
-          \ 'input': '<Bar><Bar><Left>',
-          \ 'filetype': ['ruby'],
-          \ })
-endfunction
+NeoBundle 'https://github.com/cohama/lexima.vim'
+
+" NeoBundle 'https://github.com/naoina/vim-smartinput'
+" let s:bundle = neobundle#get('vim-smartinput')
+" function! s:bundle.hooks.on_post_source(bundle)
+  " call smartinput#map_to_trigger('i', '#', '#', '#')
+  " call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
+  " call smartinput#define_rule({
+          " \ 'at': '\({\|\<do\>\)\s*\%#',
+          " \ 'char': '<Bar>',
+          " \ 'input': '<Bar><Bar><Left>',
+          " \ 'filetype': ['ruby'],
+          " \ })
+" endfunction
 
 NeoBundle 'https://github.com/kana/vim-altr'
 let s:bundle = neobundle#get('vim-altr')
@@ -184,7 +186,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_lint_on_text_changed = 0
   let g:ale_linters = {
         \ 'javascript': ['eslint'],
-        \ 'go': ['go build', 'govet', 'golint'],
+        \ 'go': ['go build', 'govet'],
         \ 'review': ['review-compile'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
@@ -282,6 +284,11 @@ NeoBundle 'https://github.com/kana/vim-textobj-indent', {
       \     'https://github.com/kana/vim-textobj-user',
       \ ]}
 
+NeoBundle 'https://github.com/daisuzu/rainbowcyclone.vim'
+function! s:bundle.hooks.on_source(bundle)
+  map * <Plug>(rc_highlight_with_cursor_complete)
+endfunction
+
 NeoBundle 'https://github.com/cespare/vim-toml'
 NeoBundle 'https://github.com/gf3/peg.vim'
 NeoBundle 'https://github.com/wavded/vim-stylus'
@@ -306,8 +313,8 @@ NeoBundle 'https://github.com/haya14busa/incsearch-migemo.vim', {
       \ }
 let s:bundle = neobundle#get('incsearch-migemo.vim')
 function! s:bundle.hooks.on_source(bundle)
-  map / <Plug>(incsearch-migemo-/)
-  map ? <Plug>(incsearch-migemo-?)
+  map m/ <Plug>(incsearch-migemo-/)
+  map m? <Plug>(incsearch-migemo-?)
 endfunction
 
 " NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
@@ -434,7 +441,7 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundleLazy 'https://github.com/mattn/emmet-vim', {
-      \ 'on_ft': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty'],
+      \ 'on_ft': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gotplhtml'],
       \ }
 
 NeoBundle 'https://github.com/vim-scripts/mako.vim'  " should not use the NeoBundleLazy
@@ -514,18 +521,8 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_bin_path = expand('$GOROOT/bin/')
   let g:go_gocode_unimported_packages = 1
   let g:go_template_autocreate = 0
-  nmap <C-i> <Plug>(go-info)
+  " nmap <C-i> <Plug>(go-info)
 endfunction
-
-NeoBundleLazy 'https://github.com/rhysd/vim-go-impl', {
-        \ 'on_ft': ['go'],
-        \ 'build': {
-        \     'windows': 'go get -u github.com/josharian/impl',
-        \     'cygwin': 'go get -u github.com/josharian/impl',
-        \     'mac': 'go get -u github.com/josharian/impl',
-        \     'unix': 'go get -u github.com/josharian/impl',
-        \     },
-        \ }
 
 NeoBundleLazy 'https://github.com/vim-scripts/Align', {
       \ 'on_cmd': ['Align'],
@@ -554,15 +551,6 @@ function! s:bundle.hooks.on_source(bundle)
 endfunction
 
 NeoBundle 'https://github.com/posva/vim-vue'
-
-NeoBundle 'https://github.com/haya14busa/vim-asterisk'
-let s:bundle = neobundle#get('vim-asterisk')
-function! s:bundle.hooks.on_source(bundle)
-  map * <Plug>(asterisk-z*)
-  map g* <Plug>(asterisk-gz*)
-  map # <Plug>(asterisk-z#)
-  map g# <Plug>(asterisk-gz#)
-endfunction
 
 NeoBundle 'https://github.com/tpope/vim-unimpaired'
 NeoBundle 'https://github.com/rupurt/vim-mql5'
@@ -689,6 +677,9 @@ function! s:refresh()
   setlocal autoread
   redr!
   set autoread<
+  if exists(':RCReset')
+    RCReset
+  endif
 endfunction
 
 function! s:tohtml_and_browse()
@@ -1093,6 +1084,7 @@ nnoremap <silent>yu :%y +<CR>
 cnoremap <C-p> <UP>
 cnoremap <C-n> <DOWN>
 nnoremap <silent><C-g> :<C-u>setl cursorcolumn!<CR>
+imap <C-h> <BS>
 
 " for snippet's select mode
 snoremap j j
