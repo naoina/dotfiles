@@ -223,59 +223,12 @@ function! s:bundle.hooks.on_source(bundle)
     return l:new_lines
   endfunction
 
-  function! s:prettier_eslint(buffer, lines) abort
-    let l:obj = ale#fixers#prettier_eslint#Fix(a:buffer)
-    let l:commands = split(l:obj['command'])
-    let l:cmd = [l:commands[0]]
-    call extend(l:cmd, l:commands[2:-2])
-    call add(l:cmd, '--stdin')
-    let l:cmd = join(l:cmd, ' ')
-    return {
-          \ 'command': l:cmd
-          \ }
-  endfunction
-
-  function! s:prettier_eslint_partial(buffer, lines) abort
-    let l:obj = ale#fixers#prettier_eslint#Fix(a:buffer)
-    let l:commands = split(l:obj['command'])
-    let l:cmd = [l:commands[0]]
-    call extend(l:cmd, l:commands[2:-2])
-    call add(l:cmd, '--stdin')
-    let l:cmd = join(l:cmd, ' ')
-    let l:new_lines = []
-    let l:js_lines = []
-    let l:in_script_block = 0
-
-    for l:line in a:lines
-      if l:in_script_block && match(l:line, '</script>') >= 0
-        let l:in_script_block = 0
-        if !empty(l:js_lines)
-          let l:formatted = systemlist(l:cmd, join(l:js_lines, "\n"))
-          if v:shell_error
-            return 0
-          endif
-          call extend(l:new_lines, l:formatted)
-        endif
-      endif
-      if l:in_script_block
-        call add(l:js_lines, l:line)
-        continue
-      endif
-      if match(l:line, '<script>') >= 0
-        let l:in_script_block = 1
-      endif
-      call add(l:new_lines, l:line)
-    endfor
-
-    return l:new_lines
-  endfunction
-
   let g:ale_fixers = {
-        \ 'javascript': [funcref('s:prettier_eslint')],
+        \ 'javascript': ['prettier_eslint'],
         \ 'python': ['autopep8', 'isort'],
         \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
         \ 'review': text_linters,
-        \ 'vue': [funcref('s:prettier_eslint_partial')],
+        \ 'vue': ['prettier_eslint'],
         \ }
   let g:ale_fix_on_save = 1
 endfunction
