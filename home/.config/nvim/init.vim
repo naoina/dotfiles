@@ -186,7 +186,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:ale_lint_on_text_changed = 0
   let g:ale_linters = {
         \ 'javascript': ['eslint'],
-        \ 'go': ['go build', 'govet'],
+        \ 'go': ['go build', 'go vet'],
         \ 'review': ['review-compile'],
         \ }
   let g:ale_python_mypy_options = '--ignore-missing-imports'
@@ -514,10 +514,10 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_fmt_autosave = 1
   let g:go_highlight_extra_types = 1
   let g:go_highlight_functions = 1
-  let g:go_highlight_methods = 1
-  let g:go_highlight_structs = 1
-  let g:go_fmt_command = "goimports"
-  let g:go_snippet_engine = "ultisnipts"
+  let g:go_highlight_function_calls = 1
+  let g:go_highlight_format_strings = 1
+  let g:go_fmt_command = 'goimports'
+  let g:go_snippet_engine = 'ultisnipts'
   let g:go_bin_path = expand('$GOROOT/bin/')
   let g:go_gocode_unimported_packages = 1
   let g:go_template_autocreate = 0
