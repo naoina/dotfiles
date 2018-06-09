@@ -56,7 +56,7 @@ snippet log "console.log" !w
 console.log($0);
 endsnippet
 
-snippet err "console.error" !w
+snippet err "console.error" !b
 console.error($0);
 endsnippet
 
@@ -154,5 +154,46 @@ const ${1:module} = require('$1');
 endsnippet
 
 snippet as "assert" !b
-assert(${1:actual} === ${2:expect});
+assert(${1:actual} === ${2:expected});
+endsnippet
+
+snippet try "try-catch" !b
+try {
+	$1
+} catch (err) {
+	$2
+}
+endsnippet
+
+snippet class "class" !b
+class ${1:ClassName} {
+	constructor() {
+	}
+}
+endsnippet
+
+snippet m "method" !b
+${1:methodName}($2) {
+	${0://TODO: not implemented yet}
+}
+endsnippet
+
+snippet ex "export" !b
+export const ${1:exportName} = {
+}
+endsnippet
+
+snippet exd "export default" !b
+export default {
+}
+endsnippet
+
+snippet i "import from" !b
+import $1 from '$2'
+endsnippet
+
+snippet sw "switch" !b
+switch (${1:cond}) {
+	// TODO
+}
 endsnippet
