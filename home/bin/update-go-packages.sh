@@ -8,8 +8,6 @@ EOF
 }
 
 gopkgs=(
-    'golang.org/x/tools/cmd/godoc'
-    'github.com/josharian/impl'
     'github.com/motemen/ghq'
     'github.com/lib/pq'
     'github.com/jackc/pgx'
@@ -17,10 +15,21 @@ gopkgs=(
     'github.com/go-sql-driver/mysql'
     'github.com/peco/peco/cmd/peco'
     'github.com/peco/migemogrep'
+    'github.com/koron/gomigemo/cmd/gmigemo'
     'github.com/noraesae/orange-cat/cmd/orange'
     'golang.org/x/tools/cmd/stringer'
     'github.com/cespare/prettybench'
-    'github.com/spf13/hugo'
+    'github.com/gohugoio/hugo'
+    'golang.org/x/tools/cmd/benchcmp'
+    'github.com/shurcooL/markdownfmt'
+    'github.com/syohex/byzanz-window/cmd/byzanz-window'
+    'github.com/dvyukov/go-fuzz'
+    'github.com/dvyukov/go-fuzz-build'
+    'github.com/github/git-lfs'
+    'github.com/golang/dep/cmd/dep'
+    'github.com/codegangsta/gin'
+    'github.com/derekparker/delve/cmd/dlv'
+    'github.com/tcnksm/gotests'
 )
 
 for pkg in ${gopkgs[@]}; do
