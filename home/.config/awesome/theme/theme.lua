@@ -74,7 +74,7 @@ theme.titlebar_maximized_button_normal_active = themehome .. "/titlebar/maximize
 theme.titlebar_maximized_button_focus_active  = themehome .. "/titlebar/maximized_focus_active.png"
 
 -- You can use your own command to set your wallpaper
-theme.wallpaper_cmd = { "Esetroot -fit " .. os.getenv("HOME") .. "/media/image/Anihonetwallpaper17746.jpg" }
+theme.wallpaper = os.getenv("HOME") .. "/media/image/Anihonetwallpaper17746.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themehome .. "/layouts/fairhw.png"

@@ -455,7 +455,21 @@ vicious.register(netwidget, vicious.widgets.net,
         return string.format("%s%s/s%s %s%s/s%s", up, up_unit, uarr, down, down_unit, darr)
     end, 1)
 
+local function set_wallpaper(s)
+    -- Wallpaper
+    if beautiful.wallpaper then
+        local wallpaper = beautiful.wallpaper
+        -- If wallpaper is a function, call it with the screen
+        if type(wallpaper) == "function" then
+            wallpaper = wallpaper(s)
+        end
+        gears.wallpaper.maximized(wallpaper, s, true)
+    end
+end
+
 awful.screen.connect_for_each_screen(function(s)
+    set_wallpaper(s)
+
     -- Each screen has its own tag table.
     awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
 
