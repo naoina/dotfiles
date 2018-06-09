@@ -524,6 +524,10 @@ function! s:bundle.hooks.on_source(bundle)
   " nmap <C-i> <Plug>(go-info)
 endfunction
 
+NeoBundle 'https://github.com/tcnksm/gotests', {
+      \ 'rtp': 'editor/vim',
+      \ }
+
 NeoBundleLazy 'https://github.com/vim-scripts/Align', {
       \ 'on_cmd': ['Align'],
       \ }
