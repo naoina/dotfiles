@@ -4,7 +4,7 @@ activate-venv() {
 
     while true; do
         if [ -d "${cwd}/${venv_path}" ]; then
-            . "${venv_path}/bin/activate"
+            . "${cwd}/${venv_path}/bin/activate"
             break
         fi
         if [ -z "${cwd}" ]; then
