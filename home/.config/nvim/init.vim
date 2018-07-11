@@ -263,11 +263,9 @@ function s:bundle.hooks.on_source(bundle)
   let g:vim_markdown_new_list_item_indent = 0
 endfunction
 
+let g:switch_mapping = '-'
 NeoBundle 'https://github.com/AndrewRadev/switch.vim'
 let s:bundle = neobundle#get('switch.vim')
-function! s:bundle.hooks.on_source(bundle)
-  nnoremap <silent>- :Switch<CR>
-endfunction
 function! s:bundle.hooks.on_post_source(bundle)
   let g:switch_definitions =
         \ [
