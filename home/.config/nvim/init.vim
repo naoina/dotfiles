@@ -505,7 +505,9 @@ endfunction
 
 NeoBundle 'https://github.com/mustache/vim-mustache-handlebars'
 
-NeoBundle 'https://github.com/fatih/vim-go'
+NeoBundleLazy 'https://github.com/fatih/vim-go', {
+      \ 'on_ft': ['go'],
+      \ }
 let s:bundle = neobundle#get('vim-go')
 function! s:bundle.hooks.on_source(bundle)
   let g:go_fmt_fail_silently = 1
@@ -521,6 +523,9 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_template_autocreate = 0
   " nmap <C-i> <Plug>(go-info)
 endfunction
+NeoBundleLazy 'https://github.com/sebdah/vim-delve', {
+      \ 'on_ft': ['go'],
+      \ }
 
 NeoBundle 'https://github.com/tcnksm/gotests', {
       \ 'rtp': 'editor/vim',
@@ -888,6 +893,9 @@ function! s:go_setting()
         \     '!ok': 'err != nil',
         \   },
         \ ]
+  if exists(':DlvToggleBreakpoint')
+    nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
+  endif
 endfunction
 
 function! s:gotplhtml_setting()
