@@ -22,7 +22,7 @@ NeoBundleFetch 'https://github.com/Shougo/neobundle.vim'
 NeoBundle 'https://github.com/Valloric/YouCompleteMe', {
       \ 'install_process_timeout': 1800,
       \ 'build': {
-      \     'unix': './install.py --clang-completer --gocode-completer --tern-completer',
+      \     'unix': './install.py --clang-completer --go-completer --js-completer',
       \     }
       \ }
 let s:bundle = neobundle#get('YouCompleteMe')
