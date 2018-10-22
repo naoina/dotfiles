@@ -774,8 +774,6 @@ function! s:javascript_setting()
   inoreabbrev tihs this
   inoreabbrev htis this
 
-  let g:jscomplete_use = ['dom', 'moz']
-  setlocal omnifunc=jscomplete#CompleteJS
   let b:switch_definitions =
         \ [
         \   ['===', '!=='],
