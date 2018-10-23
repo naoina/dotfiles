@@ -22,7 +22,7 @@ NeoBundleFetch 'https://github.com/Shougo/neobundle.vim'
 NeoBundle 'https://github.com/Valloric/YouCompleteMe', {
       \ 'install_process_timeout': 1800,
       \ 'build': {
-      \     'unix': './install.py --clang-completer --go-completer --js-completer',
+      \     'unix': './install.py --clang-completer --js-completer',
       \     }
       \ }
 let s:bundle = neobundle#get('YouCompleteMe')
@@ -521,6 +521,7 @@ function! s:bundle.hooks.on_source(bundle)
   let g:go_bin_path = expand('$GOROOT/bin/')
   let g:go_gocode_unimported_packages = 1
   let g:go_template_autocreate = 0
+  let g:go_gocode_propose_source = 0
   " nmap <C-i> <Plug>(go-info)
 endfunction
 NeoBundleLazy 'https://github.com/sebdah/vim-delve', {
