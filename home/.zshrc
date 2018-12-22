@@ -299,11 +299,11 @@ function filer {
 }
 
 function encrypt {
-    openssl aes-256-cbc -e -salt -in "$1" -out /dev/stdout
+    openssl aes-256-cbc -e -pbkdf2 -in "$1" -out /dev/stdout
 }
 
 function decrypt {
-    openssl aes-256-cbc -d -in "$1" -out /dev/stdout
+    openssl aes-256-cbc -d -pbkdf2 -in "$1" -out /dev/stdout
 }
 
 function getpubkey {
