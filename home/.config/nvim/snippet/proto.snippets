@@ -1,0 +1,55 @@
+snippet m "message" !b
+message ${1:MessageName} {
+	// TODO
+}
+endsnippet
+
+snippet s "service" !b
+service ${1:ServiceName} {
+	// TODO
+}
+endsnippet
+
+snippet rpc "rpc" !b
+rpc ${1:RPCName} (${2:RequestType}) returns (${3:ResponseType});
+endsnippet
+
+snippet map "map" !b
+map<${1:key_type}, ${2:value_type}> ${3:map_field} = ${4:1};
+endsnippet
+
+snippet rep "repeated" !b
+repeated 
+endsnippet
+
+snippet res "reserved" !b
+reserved $1;
+endsnippet
+
+snippet enum "enum" !b
+enum ${1:EnumName} {
+	// TODO
+}
+endsnippet
+
+snippet = "field" !b
+${1:TypeName} ${2:field_name} = ${3:1};
+endsnippet
+
+snippet i "import" !b
+import "${1:path/to/file.proto}";
+endsnippet
+
+snippet pa "package" !b
+package ${1:package.namespace};
+endsnippet
+
+snippet opt "option" !b
+option ${1:option_name} = ${2:option_value};
+endsnippet
+
+snippet oneof "oneof" !b
+oneof ${1:field_name} {
+	// TODO
+}
+endsnippet
