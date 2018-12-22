@@ -174,6 +174,9 @@ alias du="du -h"
 alias gprof="gprof -b"
 alias grep="grep --color=auto -I"
 # alias yaourt="yaourt --tmp /home/tmp"
+alias gp="git pull"
+alias sduo="sudo"
+alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xargs pip install -U pip'
 
 # ulimit -c unlimited
 umask 022
