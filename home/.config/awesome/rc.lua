@@ -710,7 +710,7 @@ awful.rules.rules = {
       properties = { screen = 1, tag = "8" } },
     { rule = { class = "Skype" },
       properties = { screen = 1, tag = "9", ontop = true } },
-    { rule = { class = terminal_class },
+    { rule = { name = terminal_class },
       properties = { floating = false } },
     { rule = { class = "VirtualBox" },
       properties = { screen = 1, tag = "6" } },
@@ -790,14 +790,14 @@ end)
 client.connect_signal("focus",
     function(c)
         c.border_color = beautiful.border_focus
-        if c.class == terminal_class then
+        if c.name == terminal_class then
             c.opacity = 0.90
         end
     end)
 client.connect_signal("unfocus",
     function(c)
         c.border_color = beautiful.border_normal
-        if c.class == terminal_class then
+        if c.name == terminal_class then
             c.opacity = 0.85
         end
     end)
