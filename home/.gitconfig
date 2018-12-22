@@ -1,7 +1,7 @@
 [user]
 	name = Naoya Inada
 	email = naoina@kuune.org
-	signingkey = 55111EAA
+	signingkey = 5EA11523
 [alias]
 	ci = commit
 	cia = commit --amend -C HEAD
