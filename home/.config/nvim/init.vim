@@ -9,76 +9,89 @@ let s:cachedir = $VIMLOCAL . '/.cache'
 filetype off
 
 if has('vim_starting')
-  set runtimepath+=$VIMLOCAL/bundle/neobundle.vim
-
-  call neobundle#begin($VIMLOCAL . '/bundle')
+  set runtimepath+=$VIMLOCAL/plugged/vim-plug
+  if !isdirectory(expand($VIMLOCAL . '/plugged/vim-plug'))
+    call system('mkdir -p ' . $VIMLOCAL . '/plugged/vim-plug')
+    call system('git clone https://github.com/junegunn/vim-plug ' . $VIMLOCAL . '/plugged/vim-plug/autoload')
+  end
 endif
 
-" To avoid to the process time out in vimproc. See https://github.com/Shougo/neobundle.vim/issues/175
-let g:neobundle#install_process_timeout = 300
 
-NeoBundleFetch 'https://github.com/Shougo/neobundle.vim'
+call plug#begin($VIMLOCAL . '/plugged')
+let g:plug_url_format = 'https://git::@github.com/%s'
 
-NeoBundle 'https://github.com/Valloric/YouCompleteMe', {
-      \ 'install_process_timeout': 1800,
-      \ 'build': {
-      \     'unix': './install.py --clang-completer --js-completer',
-      \     }
+Plug 'junegunn/vim-plug', { 'dir': $VIMLOCAL . '/plugged/vim-plug/autoload' }
+
+let g:plug_timeout = 1800
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --js-completer' }
+unlet g:plug_timeout
+let g:ycm_min_num_of_chars_for_completion = 1
+let g:ycm_key_list_select_completion = ['<Enter>']
+let g:ycm_global_ycm_extra_conf = $VIMLOCAL . '/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_complete_in_comments = 1
+let g:ycm_complete_in_strings = 1
+let g:ycm_collect_identifiers_from_comments_and_strings = 1
+let g:ycm_add_preview_to_completeopt = 1
+let g:ycm_autoclose_preview_window_after_completion = 0
+let g:ycm_autoclose_preview_window_after_insertion = 0
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_filetype_blacklist = {
+      \   'php': 1,
       \ }
-let s:bundle = neobundle#get('YouCompleteMe')
-function! s:bundle.hooks.on_source(bundle)
-  let g:ycm_min_num_of_chars_for_completion = 1
-  let g:ycm_key_list_select_completion = ['<Enter>']
-  let g:ycm_global_ycm_extra_conf = $VIMLOCAL . '/.ycm_extra_conf.py'
-  let g:ycm_confirm_extra_conf = 0
-  let g:ycm_complete_in_comments = 1
-  let g:ycm_complete_in_strings = 1
-  let g:ycm_collect_identifiers_from_comments_and_strings = 1
-  let g:ycm_add_preview_to_completeopt = 1
-  let g:ycm_autoclose_preview_window_after_completion = 0
-  let g:ycm_autoclose_preview_window_after_insertion = 0
-  let g:ycm_seed_identifiers_with_syntax = 1
-  let g:ycm_filetype_blacklist = {
-        \   'php': 1,
+
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsSnippetsDir = $VIMLOCAL . '/snippet'
+let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
+let g:UltiSnipsJumpForwardTrigger = '<tab>'
+let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
+
+Plug 'Shougo/vimproc.vim', { 'do': 'make' }
+Plug 'cohama/lexima.vim'
+
+Plug 'Shougo/unite.vim', { 'on': 'Unite' }
+let g:unite_data_directory = s:cachedir
+let g:unite_update_time = 100
+let g:unite_enable_split_vertically = 0
+let g:unite_winwidth = 60
+let g:unite_winheight = 10
+let g:unite_split_rule = "botright"
+let g:unite_source_history_yank_enable = 1
+let g:unite_enable_start_insert = 1
+function! OnloadUnite() abort
+  let md_img = {
+        \ 'description': "insert as markdown image syntax",
         \ }
+  function! md_img.func(candidate) abort
+    let a:candidate.word = '![' . fnamemodify(a:candidate.word, ':t:r') . '](/' . a:candidate.word . ')'
+    call unite#take_action('insert', a:candidate)
+  endfunction
+  call unite#custom#action('file,word', 'markdown_image', md_img)
+  call unite#custom#alias('file,word', 'md_img', 'markdown_image')
+  unlet md_img
+endfunction
+augroup Unite
+  au!
+  au User unite.vim call OnloadUnite()
+augroup END
+
+function! s:unite_setting() abort
+  nmap <buffer><Esc> <Plug>(unite_exit)
+  imap <buffer><Esc> <Plug>(unite_exit)
+  inoremap <buffer><expr> <C-o> unite#do_action('split')
+  inoremap <buffer><expr> <C-v> unite#do_action('vsplit')
 endfunction
 
-NeoBundle 'https://github.com/SirVer/ultisnips'
-let s:bundle = neobundle#get('ultisnips')
-function! s:bundle.hooks.on_source(bundle)
-  let g:UltiSnipsSnippetsDir = $VIMLOCAL . '/snippet'
-  let g:UltiSnipsSnippetDirectories = [g:UltiSnipsSnippetsDir]
-  let g:UltiSnipsJumpForwardTrigger = '<tab>'
-  let g:UltiSnipsJumpBackwardTrigger = '<S-tab>'
-endfunction
+Plug 'ujihisa/unite-colorscheme', { 'on': 'Unite' }
+Plug 'Shougo/unite-outline', { 'on': 'Unite' }
+Plug 'Shougo/neoyank.vim', { 'on': 'Unite' }
+nnoremap <C-e> :Unite buffer file_rec/async:!<CR>
+nnoremap <C-c>uh :Unite history/yank<CR>
+nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
+nnoremap <C-c>uo :Unite -vertical outline<CR>
 
-NeoBundle 'https://github.com/Shougo/vimproc', {
-      \ 'build': {
-      \     'windows': 'make -f make_mingw32.mak',
-      \     'cygwin': 'make -f make_cygwin.mak',
-      \     'mac': 'make -f make_mac.mak',
-      \     'unix': 'make -f make_unix.mak',
-      \     }
-      \ }
-
-NeoBundle 'https://github.com/cohama/lexima.vim'
-
-" NeoBundle 'https://github.com/naoina/vim-smartinput'
-" let s:bundle = neobundle#get('vim-smartinput')
-" function! s:bundle.hooks.on_post_source(bundle)
-  " call smartinput#map_to_trigger('i', '#', '#', '#')
-  " call smartinput#map_to_trigger('i', '<Bar>', '<Bar>', '<Bar>')
-  " call smartinput#define_rule({
-          " \ 'at': '\({\|\<do\>\)\s*\%#',
-          " \ 'char': '<Bar>',
-          " \ 'input': '<Bar><Bar><Left>',
-          " \ 'filetype': ['ruby'],
-          " \ })
-" endfunction
-
-NeoBundle 'https://github.com/kana/vim-altr'
-let s:bundle = neobundle#get('vim-altr')
-function! s:bundle.hooks.on_post_source(bundle)
+Plug 'kana/vim-altr', { 'on': ['An', 'Ap'] }
+function! OnloadVimAltr() abort
   " Python
   call altr#define('views.py', 'views/__init__.py', 'tests/test_views.py')
   call altr#define('views/%.py', 'tests/views/test_%.py')
@@ -88,185 +101,136 @@ function! s:bundle.hooks.on_post_source(bundle)
   call altr#define('forms/%.py', 'tests/forms/test_%.py')
   " JavaScript
   call altr#define('static/js/plog/components/%.js', 'tests/js/plog/components/test_%.js')
-  " Go
   call altr#define('%.go', '%_test.go', '%_bench_test.go')
-
-  call altr#define('lib/%/%.coffee', 'lib/%/%.js', 'test/%/%.coffee', 'test/%/%.js')
-  call altr#define('routes/%.coffee', 'test/routes/%.coffee', 'test/routes/%.js')
-
+  call altr#define('lib/%/%.js', 'test/%/%.js')
+  call altr#define('routes/%.js', 'test/routes/%.js')
   command! An call altr#forward()
   command! Ap call altr#back()
 endfunction
+augroup VimAltr
+  au! User vim-altr call OnloadVimAltr()
+augroup END
 
-NeoBundleLazy 'https://github.com/scrooloose/nerdcommenter', {
-      \ 'on_map': ['<Plug>NERDCommenter'],
-      \ 'on_func': ['NERDComment'],
-      \ }
-let s:bundle = neobundle#get('nerdcommenter')
-function! s:bundle.hooks.on_source(bundle)
-  let g:NERDCreateDefaultMappings = 0
-  let g:NERDSpaceDelims = 1
-  let g:NERDDefaultNesting = 0
-endfunction
-nmap <C-_> <Plug>NERDCommenterToggle
-vmap <C-_> <Plug>NERDCommenterToggle
-imap <C-_> <C-o><Plug>NERDCommenterToggle
+Plug 'tyru/caw.vim'
+nmap <C-_> <Plug>(caw:hatpos:toggle)
+vmap <C-_> <Plug>(caw:hatpos:toggle)
 
-NeoBundle 'https://github.com/kana/vim-surround'
-NeoBundle 'https://github.com/tpope/vim-fugitive', {
-      \ 'augroup': 'fugitive',
-      \ }
-NeoBundle 'https://github.com/gregsexton/gitv', {
-      \ 'depends': ['https://github.com/tpope/vim-fugitive'],
-      \ }
-NeoBundle 'https://github.com/tpope/vim-rhubarb', {
-      \ 'depends': ['https://github.com/tpope/vim-fugitive'],
-      \ }
+Plug 'kana/vim-surround'
 
-let s:bundle = neobundle#get('gitv')
-function! s:bundle.hooks.on_source(bundle)
-  let g:Gitv_DoNotMapCtrlKey = 1
-  let g:Gitv_OpenHorizontal = 1
-endfunction
+Plug 'tpope/vim-fugitive'
+set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 
-NeoBundle 'https://github.com/phleet/vim-mercenary', {
-      \ 'augroup': 'mercenary',
-      \ }
+Plug 'tpope/vim-rhubarb'
 
-NeoBundle 'https://github.com/thinca/vim-template'
-let s:bundle = neobundle#get('vim-template')
-function! s:bundle.hooks.on_source(bundle)
-  let g:template_basedir = $VIMLOCAL . '/templates'
-  let g:template_files = '**'
-  let g:template_free_pattern = 'skel-\?'
-  let g:comment_oneline_only_ft = {
-      \ 'python': 1,
-      \ 'ruby': 1,
-      \ 'sh': 1,
-      \ }
+Plug 'thinca/vim-template'
+let g:template_basedir = $VIMLOCAL . '/templates'
+let g:template_files = '**'
+let g:template_free_pattern = 'skel-\?'
+let g:comment_oneline_only_ft = {
+    \ 'python': 1,
+    \ 'ruby': 1,
+    \ 'sh': 1,
+    \ }
+augroup vimtemplate
+  au!
   au User plugin-template-loaded call s:template_keywords()
-  function! s:template_keywords()
-    let firstline = search("@LICENSE@", "cnW")
-    if firstline != 0
-      let license = readfile(g:template_basedir . '/LICENSE')
-      let lastline = firstline + len(license)
-      let type = has_key(g:comment_oneline_only_ft, &ft) ? 'AlignLeft' : 'Sexy'
+augroup END
+function! s:template_keywords() abort
+  %s/@AUTHOR@/\=g:author/ge
+  %s/@EMAIL@/\=g:email/ge
+  %s/@YEAR@/\=strftime('%Y')/ge
+  %s/@FILE@/\=expand('%:t:r')/ge
+  %s/@DIRNAME@/\=expand('%:p:h:t')/ge
 
-      %s/@LICENSE@/\=license/ge
-      execute firstline . "," . lastline . 'call NERDComment("n", "' . type . '")'
-      unlet license
-    endif
+  call cursor(1, 0)
+  if search('<CURSOR>', 'c')
+    normal! "_da<zz
+  endif
 
-    %s/@AUTHOR@/\=g:author/ge
-    %s/@EMAIL@/\=g:email/ge
-    %s/@YEAR@/\=strftime('%Y')/ge
-    %s/@FILE@/\=expand('%:t:r')/ge
-    %s/@DIRNAME@/\=expand('%:p:h:t')/ge
-
-    call cursor(1, 0)
-    if search('<CURSOR>', 'c')
-      normal! "_da<zz
-    endif
-
-    " clear undo
-    let old_undolevels = &undolevels
-    setlocal undolevels=-1
-    exec "normal a \<BS>\<Esc>"
-    let &undolevels = old_undolevels
-    unlet old_undolevels
-    setlocal nomodified
-  endfunction
+  " clear undo
+  let old_undolevels = &undolevels
+  setlocal undolevels=-1
+  exec "normal a \<BS>\<Esc>"
+  let &undolevels = old_undolevels
+  unlet old_undolevels
+  setlocal nomodified
 endfunction
 
-NeoBundle 'https://github.com/w0rp/ale.git'
-let s:bundle = neobundle#get('ale')
-function! s:bundle.hooks.on_source(bundle)
-  let g:ale_lint_on_enter = 1
-  let g:ale_lint_on_save = 1
-  let g:ale_lint_on_text_changed = 0
-  let g:ale_linters = {
-        \ 'javascript': ['eslint'],
-        \ 'go': ['go build', 'go vet'],
-        \ 'review': ['review-compile'],
-        \ }
-  let g:ale_python_mypy_options = '--ignore-missing-imports'
-  let text_linters = [
-        \ {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
-        \ {buffer, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
-        \ ]
-  function! s:protocol_markdown(buffer, lines) abort
-    let l:executable = ale#Escape('protocol')
-    let l:new_lines = []
-    let l:protocol_definition_line = 0
-    let l:in_code_block = 0
+Plug 'w0rp/ale'
+let g:ale_lint_on_enter = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
+let g:ale_linters = {
+      \ 'javascript': ['eslint'],
+      \ 'go': ['go build', 'go vet'],
+      \ 'review': ['review-compile'],
+      \ }
+let g:ale_python_mypy_options = '--ignore-missing-imports'
+let text_linters = [
+      \ {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
+      \ {buffer, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
+      \ ]
+function! s:protocol_markdown(buffer, lines) abort
+  let l:executable = ale#Escape('protocol')
+  let l:new_lines = []
+  let l:protocol_definition_line = 0
+  let l:in_code_block = 0
 
-    for l:line in a:lines
-      if l:in_code_block && match(l:line, '\v^```$') >= 0
-        let l:in_code_block = 0
-      endif
-      if l:in_code_block && l:protocol_definition_line
-        call add(l:new_lines, l:line)
-        call add(l:new_lines, '')
-        let l:figure = system(l:executable . ' ' . ale#Escape(l:line))
-        call extend(l:new_lines, split(l:figure, '\n'))
-        let l:protocol_definition_line = 0
-        continue
-      endif
-      if l:in_code_block
-        continue
-      endif
-      if match(l:line, '\v^```protocol$') >= 0
-        let l:protocol_definition_line = 1
-        let l:in_code_block = 1
-      endif
+  for l:line in a:lines
+    if l:in_code_block && match(l:line, '\v^```$') >= 0
+      let l:in_code_block = 0
+    endif
+    if l:in_code_block && l:protocol_definition_line
       call add(l:new_lines, l:line)
-    endfor
+      call add(l:new_lines, '')
+      let l:figure = system(l:executable . ' ' . ale#Escape(l:line))
+      call extend(l:new_lines, split(l:figure, '\n'))
+      let l:protocol_definition_line = 0
+      continue
+    endif
+    if l:in_code_block
+      continue
+    endif
+    if match(l:line, '\v^```protocol$') >= 0
+      let l:protocol_definition_line = 1
+      let l:in_code_block = 1
+    endif
+    call add(l:new_lines, l:line)
+  endfor
 
-    return l:new_lines
-  endfunction
-
-  let g:ale_fixers = {
-        \ 'javascript': ['prettier_eslint'],
-        \ 'python': ['autopep8', 'isort'],
-        \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
-        \ 'review': text_linters,
-        \ 'vue': ['prettier_eslint'],
-        \ }
-  let g:ale_fix_on_save = 1
+  return l:new_lines
 endfunction
-
-NeoBundle 'https://github.com/naoina/ale-linter-review', {
-      \ 'depends': 'https://github.com/w0rp/ale.git',
+let g:ale_fixers = {
+      \ 'javascript': ['prettier_eslint'],
+      \ 'python': ['autopep8', 'isort'],
+      \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
+      \ 'review': text_linters,
+      \ 'vue': ['prettier_eslint'],
       \ }
-NeoBundle 'https://github.com/naoina/ale-solidity', {
-      \ 'depends': 'https://github.com/w0rp/ale.git',
-      \ }
-let s:bundle = neobundle#get('ale-solidity')
-function! s:bundle.hooks.on_source(bundle)
-  let g:ale_fixers['solidity'] = ['solium']
-endfunction
+let g:ale_fix_on_save = 1
 
-NeoBundle 'https://github.com/mattn/webapi-vim'
-NeoBundle 'https://github.com/rking/ag.vim'
-NeoBundle 'https://github.com/tpope/vim-rails' " should not use NeoBundleLazy
-NeoBundle 'https://github.com/othree/html5.vim'
-NeoBundle 'https://github.com/moro/vim-review'
+Plug 'naoina/ale-linter-review'
+Plug 'naoina/ale-solidity'
+let g:ale_fixers['solidity'] = ['solium']
+let g:ale_linters['solidity'] = ['truffle', 'solhint', 'solium']
 
-NeoBundle 'https://github.com/plasticboy/vim-markdown', {
-      \ 'depends': ['https://github.com/cespare/vim-toml'],
-      \ }
-let s:bundle = neobundle#get('vim-markdown')
-function s:bundle.hooks.on_source(bundle)
-  let g:vim_markdown_folding_disabled = 0
-  let g:vim_markdown_frontmatter = 1
-  let g:vim_markdown_toml_frontmatter = 1
-  let g:vim_markdown_new_list_item_indent = 0
-endfunction
+Plug 'mattn/webapi-vim'
+Plug 'rking/ag.vim'
+Plug 'tpope/vim-rails'
+Plug 'othree/html5.vim'
+Plug 'moro/vim-review'
+Plug 'cespare/vim-toml'
 
-let g:switch_mapping = '-'
-NeoBundle 'https://github.com/AndrewRadev/switch.vim'
-let s:bundle = neobundle#get('switch.vim')
-function! s:bundle.hooks.on_post_source(bundle)
+Plug 'plasticboy/vim-markdown'
+let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_toml_frontmatter = 1
+let g:vim_markdown_new_list_item_indent = 0
+
+Plug 'AndrewRadev/switch.vim', { 'on': 'Switch' }
+let g:switch_mapping = ''
+nnoremap - :Switch<CR>
+function! OnloadSwitch() abort
   let g:switch_definitions =
         \ [
         \   g:switch_builtins.ampersands,
@@ -275,305 +239,149 @@ function! s:bundle.hooks.on_post_source(bundle)
         \   ['==', '!='],
         \ ]
 endfunction
+augroup SwitchVim
+  au!
+  au User switch.vim call OnloadSwitch()
+augroup END
 
-NeoBundle 'https://github.com/kana/vim-textobj-user'
-NeoBundle 'https://github.com/kana/vim-textobj-indent', {
-      \ 'depends': [
-      \     'https://github.com/kana/vim-textobj-user',
-      \ ]}
+Plug 'kana/vim-textobj-user'
+Plug 'kana/vim-textobj-indent'
 
-NeoBundle 'https://github.com/daisuzu/rainbowcyclone.vim'
-function! s:bundle.hooks.on_source(bundle)
-  map * <Plug>(rc_highlight_with_cursor_complete)
-endfunction
+Plug 'daisuzu/rainbowcyclone.vim'
+map * <Plug>(rc_highlight_with_cursor_complete)
 
-NeoBundle 'https://github.com/cespare/vim-toml'
-NeoBundle 'https://github.com/gf3/peg.vim'
-NeoBundle 'https://github.com/wavded/vim-stylus'
-NeoBundle 'https://github.com/digitaltoad/vim-pug'
-NeoBundle 'https://github.com/rhysd/committia.vim'
-NeoBundle 'https://github.com/othree/yajs.vim.git'
+Plug 'gf3/peg.vim'
+Plug 'wavded/vim-stylus'
+Plug 'digitaltoad/vim-pug'
+Plug 'rhysd/committia.vim'
+Plug 'othree/yajs.vim'
 
-NeoBundle 'https://github.com/haya14busa/incsearch.vim'
-let s:bundle = neobundle#get('incsearch.vim')
-function! s:bundle.hooks.on_source(bundle)
-  map / <Plug>(incsearch-forward)
-  map ? <Plug>(incsearch-backward)
-  let g:incsearch#emacs_like_keymap = 1
-  let g:incsearch#vim_cmdline_keymap = 0
-endfunction
+Plug 'haya14busa/incsearch.vim'
+map / <Plug>(incsearch-forward)
+map ? <Plug>(incsearch-backward)
+let g:incsearch#emacs_like_keymap = 1
+let g:incsearch#vim_cmdline_keymap = 0
 
-NeoBundle 'https://github.com/haya14busa/incsearch-migemo.vim', {
-      \ 'depends': [
-      \     'https://github.com/haya14busa/incsearch.vim',
-      \     'https://github.com/Shougo/vimproc',
-      \  ],
-      \ }
-let s:bundle = neobundle#get('incsearch-migemo.vim')
-function! s:bundle.hooks.on_source(bundle)
-  map m/ <Plug>(incsearch-migemo-/)
-  map m? <Plug>(incsearch-migemo-?)
-endfunction
+Plug 'haya14busa/incsearch-migemo.vim'
+map m/ <Plug>(incsearch-migemo-/)
+map m? <Plug>(incsearch-migemo-?)
 
-" NeoBundleLazy 'https://github.com/kien/ctrlp.vim', {
-      " \ 'on_cmd': ['CtrlP'],
-      " \ }
-" let s:bundle = neobundle#get('ctrlp.vim')
-" function! s:bundle.hooks.on_source(bundle)
-  " let g:ctrlp_map = '<nop>'
-  " let g:ctrlp_show_hidden = 1
-  " let g:ctrlp_regexp = 1
-  " let g:ctrlp_use_migemo = 1
-  " let g:ctrlp_prompt_mappings = {
-        " \ 'PrtHistory(-1)': [],
-        " \ 'PrtHistory(1)': [],
-        " \ 'PrtSelectMove("j")': ['<C-n>'],
-        " \ 'PrtSelectMove("k")': ['<C-p>'],
-        " \ 'ToggleType(1)': ['<C-f>'],
-        " \ 'ToggleType(-1)': ['<C-b>'],
-        " \ }
-" endfunction
-" nnoremap <C-e> :<C-u>CtrlPBuffer<CR>
-
-NeoBundleLazy 'https://github.com/Shougo/unite.vim', {
-      \ 'on_cmd': ['Unite'],
-      \ 'depends': [
-      \   'https://github.com/ujihisa/unite-colorscheme',
-      \   'https://github.com/Shougo/unite-outline',
-      \   'https://github.com/Shougo/neoyank.vim',
-      \ ]
-      \ }
-let s:bundle = neobundle#get('unite.vim')
-function! s:bundle.hooks.on_source(bundle)
-  let g:unite_data_directory = s:cachedir
-  let g:unite_update_time = 100
-  let g:unite_enable_split_vertically = 0
-  let g:unite_winwidth = 60
-  let g:unite_winheight = 10
-  let g:unite_split_rule = "botright"
-  let g:unite_source_history_yank_enable = 1
-  let g:unite_enable_start_insert = 1
-
-  let md_img = {
-        \ 'description': "insert as markdown image syntax",
-        \ }
-  function! md_img.func(candidate)
-    let a:candidate.word = '![' . fnamemodify(a:candidate.word, ':t:r') . '](/' . a:candidate.word . ')'
-    call unite#take_action('insert', a:candidate)
-  endfunction
-  call unite#custom#action('file,word', 'markdown_image', md_img)
-  call unite#custom#alias('file,word', 'md_img', 'markdown_image')
-  unlet md_img
-
-  function! s:unite_setting()
-    nmap <buffer><Esc> <Plug>(unite_exit)
-    imap <buffer><Esc> <Plug>(unite_exit)
-    inoremap <buffer><expr> <C-o> unite#do_action('split')
-    inoremap <buffer><expr> <C-v> unite#do_action('vsplit')
-  endfunction
-endfunction
-
-NeoBundleLazy 'https://github.com/ujihisa/unite-colorscheme'
-NeoBundleLazy 'https://github.com/Shougo/unite-outline'
-NeoBundleLazy 'https://github.com/Shougo/neoyank.vim'
-nnoremap <C-e> :Unite buffer file_rec/async:!<CR>
-nnoremap <C-c>uh :Unite history/yank<CR>
-nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
-nnoremap <C-c>uo :Unite -vertical outline<CR>
-
-NeoBundle 'https://github.com/thinca/vim-quickrun'
-let s:bundle = neobundle#get('vim-quickrun')
-function! s:bundle.hooks.on_source(bundle)
-  let g:quickrun_config = {
-        \   '_': {
-        \       'split': 'vertical 50',
-        \   },
-        \   'mongo': {
-        \       'command': 'mongo',
-        \       'cmdopt': '--quiet',
-        \       'exec': ['%c %o < %s'],
-        \   },
-        \   'sql': {
-        \       'type': executable('mysql') ? 'sql/mysql' : 'sql/postgres',
-        \   },
-        \   'sql/mysql': {
-        \       'command': 'mysql',
-        \       'cmdopt': '-u root',
-        \       'exec': ['%c %o < %s'],
-        \   },
-        \   'javascript': {
-        \       'type': 'javascript/nodejs',
-        \   },
-        \ }
-endfunction
-
-NeoBundle 'https://github.com/remyoudompheng/go-misc', {
-      \ 'rtp': 'vim-template-syntax',
+Plug 'thinca/vim-quickrun'
+let g:quickrun_config = {
+      \   '_': {
+      \       'split': 'vertical 50',
+      \   },
+      \   'mongo': {
+      \       'command': 'mongo',
+      \       'cmdopt': '--quiet',
+      \       'exec': ['%c %o < %s'],
+      \   },
+      \   'sql': {
+      \       'type': executable('mysql') ? 'sql/mysql' : 'sql/postgres',
+      \   },
+      \   'sql/mysql': {
+      \       'command': 'mysql',
+      \       'cmdopt': '-u root',
+      \       'exec': ['%c %o < %s'],
+      \   },
+      \   'javascript': {
+      \       'type': 'javascript/nodejs',
+      \   },
       \ }
 
-NeoBundleLazy 'https://github.com/mattn/gist-vim', {
-      \ 'on_cmd': 'Gist',
-      \ }
-let s:bundle = neobundle#get('gist-vim')
-function! s:bundle.hooks.on_source(bundle)
-  let g:gist_detect_filetype = 1
-  let g:gist_private = 0
-endfunction
-
-NeoBundleLazy 'https://github.com/cespare/mxml.vim', {
-      \ 'on_ft': ['mxml'],
-      \ }
+Plug 'mattn/gist-vim', { 'on': 'Gist' }
+let g:gist_detect_filetype = 1
+let g:gist_private = 0
 
 let g:colorv_filetypes = [
       \ 'css', 'scss', 'stylus', 'less', 'sass',
       \ 'html', 'xhtml', 'xml', 'gotplhtml', 'mako', 'erb', 'htmldjango',
       \ 'vim',
       \ ]
-NeoBundleLazy 'https://github.com/Rykka/colorv.vim', {
-      \ 'on_ft': g:colorv_filetypes,
-      \ }
-let s:bundle = neobundle#get('colorv.vim')
-function! s:bundle.hooks.on_source(bundle)
-  let g:colorv_no_global_map = 1
-  let g:colorv_preview_ftype = join(g:colorv_filetypes, ',')
-endfunction
+Plug 'Rykka/colorv.vim', { 'for': g:colorv_filetypes }
+let g:colorv_no_global_map = 1
+let g:colorv_preview_ftype = join(g:colorv_filetypes, ',')
 
-NeoBundleLazy 'https://github.com/mattn/emmet-vim', {
-      \ 'on_ft': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gotplhtml'],
+Plug 'mattn/emmet-vim', {
+      \ 'for': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gotplhtml'],
       \ }
 
-NeoBundle 'https://github.com/vim-scripts/mako.vim'  " should not use the NeoBundleLazy
+Plug 'klen/python-mode', { 'for': ['python'] }
+let g:pymode_run = 0
+let g:pymode_doc = 0
+let g:pymode_lint = 0
+let g:pymode_folding = 0
+let g:pymode_indent = 0
+let g:pymode_utils_whitespaces = 0
+let g:pymode_rope = 0
+let g:pymode_syntax = 0
+let g:pymode_breakpoint = 1
+let g:pymode_options_max_line_length = 100
 
-NeoBundleLazy 'https://github.com/vim-scripts/mako.vim--Torborg', {
-      \ 'on_ft': ['mako'],
-      \ }
+Plug 'jmcantrell/vim-virtualenv', { 'for': ['python'] }
 
-NeoBundleLazy 'https://github.com/alfredodeza/pytest.vim', {
-      \ 'on_ft': ['python'],
-      \ }
+Plug 'kchmck/vim-coffee-script'
+let g:coffee_compile_vert = 1
 
-NeoBundleLazy 'https://github.com/klen/python-mode', {
-      \ 'on_ft': ['python'],
-      \ }
-let s:bundle = neobundle#get('python-mode')
-function! s:bundle.hooks.on_source(bundle)
-  let g:pymode_run = 0
-  let g:pymode_doc = 0
-  let g:pymode_lint = 0
-  let g:pymode_folding = 0
-  let g:pymode_indent = 0
-  let g:pymode_utils_whitespaces = 0
-  let g:pymode_rope = 0
-  let g:pymode_syntax = 0
-  let g:pymode_breakpoint = 1
-  let g:pymode_options_max_line_length = 100
-endfunction
+Plug 'mustache/vim-mustache-handlebars'
 
-NeoBundleLazy 'https://github.com/jmcantrell/vim-virtualenv', {
-      \ 'on_ft': ['python'],
-      \ }
+" Plug 'prabirshrestha/async.vim'
+" Plug 'prabirshrestha/vim-lsp'
+" Plug 'prabirshrestha/asyncomplete.vim'
+" Plug 'prabirshrestha/asyncomplete-lsp.vim'
+" if executable('golsp')
+  " augroup GoLSP
+    " au!
+    " au User lsp_setup call lsp#register_server({
+          " \ 'name': 'golsp',
+          " \ 'cmd': {server_info->['golsp', '-mode', 'stdio']},
+          " \ 'whitelist': ['go'],
+          " \ })
+    " au FileType go setlocal omnifunc=lsp#complete
+  " augroup END
+" endif
 
-NeoBundleLazy 'https://github.com/OmniSharp/omnisharp-vim', {
-      \ 'on_ft': ['cs'],
-      \ 'depends': ['https://github.com/tpope/vim-dispatch'],
-      \ 'build': {
-      \     'windows': 'MSBuild.exe server/OmniSharp.sln /p:Platform="Any CPU"',
-      \     'mac': 'xbuild server/OmniSharp.sln',
-      \     'linux': 'xbuild server/OmniSharp.sln',
-      \     }
-      \ }
-let s:bundle = neobundle#get('omnisharp-vim')
-function! s:bundle.hooks.on_source(bundle)
-  let g:OmniSharp_selector_ui = 'unite'
-  nnoremap <silent><buffer>gd :OmniSharpGotoDefinition<CR>
-  nnoremap <silent><buffer><leader><space> :OmniSharpGetCodeAction<CR>
-  vnoremap <silent><buffer><leader><space> call OmniSharp#GetCodeAction('visual')<CR>
-  nnoremap <silent><buffer><leader>p :OmniSharpNavigateUp<CR>
-  nnoremap <silent><buffer><leader>n :OmniSharpNavigateDown<CR>
-  augroup omnisharp
-    au!
-    au BufWritePre *.cs OmniSharpCodeFormat
-    au CursorHold *.cs call OmniSharp#TypeLookupWithoutDocumentation()
-  augroup END
-endfunction
+Plug 'fatih/vim-go', { 'for': ['go'] }
+let g:go_fmt_fail_silently = 1
+let g:go_fmt_autosave = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_format_strings = 1
+let g:go_fmt_command = 'goimports'
+let g:go_snippet_engine = 'ultisnipts'
+let g:go_bin_path = expand('$GOROOT/bin/')
+let g:go_gocode_unimported_packages = 1
+let g:go_template_autocreate = 0
+let g:go_gocode_propose_source = 0
+augroup VimGo
+  au!
+  au User vim-go nmap <C-i> <Plug>(go-info)
+augroup END
 
-NeoBundle 'https://github.com/kchmck/vim-coffee-script'
-let s:bundle = neobundle#get('vim-coffee-script')
-function! s:bundle.hooks.on_source(bundle)
-  let g:coffee_compile_vert = 1
-endfunction
+Plug 'sebdah/vim-delve', { 'for': ['go'] }
+Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
+Plug 'vim-scripts/Align', { 'on': ['Align'] }
+Plug 'tpope/vim-repeat'
 
-NeoBundle 'https://github.com/mustache/vim-mustache-handlebars'
+Plug 'Yggdroot/indentLine', { 'fro': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'] }
+let g:indentLine_enabled = 0
 
-NeoBundleLazy 'https://github.com/fatih/vim-go', {
-      \ 'on_ft': ['go'],
-      \ }
-let s:bundle = neobundle#get('vim-go')
-function! s:bundle.hooks.on_source(bundle)
-  let g:go_fmt_fail_silently = 1
-  let g:go_fmt_autosave = 1
-  let g:go_highlight_extra_types = 1
-  let g:go_highlight_functions = 1
-  let g:go_highlight_function_calls = 1
-  let g:go_highlight_format_strings = 1
-  let g:go_fmt_command = 'goimports'
-  let g:go_snippet_engine = 'ultisnipts'
-  let g:go_bin_path = expand('$GOROOT/bin/')
-  let g:go_gocode_unimported_packages = 1
-  let g:go_template_autocreate = 0
-  let g:go_gocode_propose_source = 0
-  " nmap <C-i> <Plug>(go-info)
-endfunction
-NeoBundleLazy 'https://github.com/sebdah/vim-delve', {
-      \ 'on_ft': ['go'],
-      \ }
+Plug 'junegunn/vader.vim.git', { 'on': ['Vader'], 'for': ['vader'] }
 
-NeoBundle 'https://github.com/tcnksm/gotests', {
-      \ 'rtp': 'editor/vim',
-      \ }
+Plug 'naoina/previm', { 'for': ['markdown'] }
+let g:previm_open_cmd = 'xdg-open'
+let g:previm_show_header = 0
 
-NeoBundleLazy 'https://github.com/vim-scripts/Align', {
-      \ 'on_cmd': ['Align'],
-      \ }
+Plug 'posva/vim-vue'
+Plug 'tpope/vim-unimpaired'
 
-NeoBundle 'https://github.com/tpope/vim-repeat'
+Plug 'rupurt/vim-mql5'
+au BufNewFile,BufReadPost *.mq4 set filetype=mql5
 
-NeoBundleLazy 'https://github.com/Yggdroot/indentLine', {
-      \ 'on_ft': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'],
-      \ }
-let s:bundle = neobundle#get('indentLine')
-function! s:bundle.hooks.on_source(bundle)
-  let g:indentLine_enabled = 0
-endfunction
+Plug 'tomlion/vim-solidity'
 
-NeoBundleLazy 'https://github.com/junegunn/vader.vim.git', {
-      \ 'on_ft': ['vader'],
-      \ }
-
-NeoBundleLazy 'https://github.com/naoina/previm', {
-      \ 'on_ft': ['markdown'],
-      \ }
-let s:bundle = neobundle#get('previm')
-function! s:bundle.hooks.on_source(bundle)
-  let g:previm_open_cmd = 'xdg-open'
-  let g:previm_show_header = 0
-endfunction
-
-NeoBundle 'https://github.com/posva/vim-vue'
-
-NeoBundle 'https://github.com/tpope/vim-unimpaired'
-NeoBundle 'https://github.com/rupurt/vim-mql5'
-let s:bundle = neobundle#get('vim-mql5')
-function! s:bundle.hooks.on_source(bundle)
-  augroup mql5
-    au!
-    au BufNewFile,BufReadPost *.mq4 set filetype=mql5
-  augroup END
-endfunction
-
-NeoBundle 'https://github.com/tomlion/vim-solidity'
-
-call neobundle#end()
+call plug#end()
 
 filetype plugin indent on
 
@@ -618,7 +426,6 @@ set pastetoggle=<F9>
 set tags=tags;
 set tabstop=4 softtabstop=4 shiftwidth=4 expandtab
 set formatoptions+=cqmM
-set statusline=%<[%n]%{fugitive#statusline()}\ %F\ %h%r%m[%{&fenc}][%{&ff=='unix'?'LF':&ff=='dos'?'CRLF':'CR'}]\ %=[0x%B]\ %c,%l/%L\ %y
 set display=lastline
 set mouse=n
 
