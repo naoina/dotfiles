@@ -202,6 +202,7 @@ function! s:protocol_markdown(buffer, lines) abort
   return l:new_lines
 endfunction
 let g:ale_fixers = {
+      \ 'go': ['goimports'],
       \ 'javascript': ['prettier_eslint'],
       \ 'python': ['autopep8', 'isort'],
       \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
@@ -326,25 +327,9 @@ let g:coffee_compile_vert = 1
 
 Plug 'mustache/vim-mustache-handlebars'
 
-" Plug 'prabirshrestha/async.vim'
-" Plug 'prabirshrestha/vim-lsp'
-" Plug 'prabirshrestha/asyncomplete.vim'
-" Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" if executable('golsp')
-  " augroup GoLSP
-    " au!
-    " au User lsp_setup call lsp#register_server({
-          " \ 'name': 'golsp',
-          " \ 'cmd': {server_info->['golsp', '-mode', 'stdio']},
-          " \ 'whitelist': ['go'],
-          " \ })
-    " au FileType go setlocal omnifunc=lsp#complete
-  " augroup END
-" endif
-
-Plug 'fatih/vim-go', { 'for': ['go'] }
+Plug 'fatih/vim-go'
 let g:go_fmt_fail_silently = 1
-let g:go_fmt_autosave = 1
+let g:go_fmt_autosave = 0
 let g:go_highlight_extra_types = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_function_calls = 1
@@ -352,13 +337,39 @@ let g:go_highlight_format_strings = 1
 let g:go_fmt_command = 'goimports'
 let g:go_snippet_engine = 'ultisnipts'
 let g:go_bin_path = expand('$GOROOT/bin/')
+let g:go_def_mapping_enabled = 0
+let g:go_info_mode = 'guru'
 let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
-augroup VimGo
-  au!
-  au User vim-go nmap <C-i> <Plug>(go-info)
-augroup END
+
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+nnoremap gd :LspDefinition<CR>
+nnoremap <C-]> :LspDefinition<CR>
+nnoremap <C-i> :LspHover<CR>
+if executable('golsp')
+  augroup GoLSP
+    au!
+    au User lsp_setup call lsp#register_server({
+         \ 'name': 'golsp',
+         \ 'cmd': {server_info->['golsp', '-mode', 'stdio']},
+         \ 'whitelist': ['go'],
+         \ })
+  augroup END
+endif
+if executable('javascript-typescript-stdio')
+  augroup JavaScriptLSP
+    au!
+    au User lsp_setup call lsp#register_server({
+          \ 'name': 'javascript-typescript-langserver',
+          \ 'cmd': {server_info->['javascript-typescript-stdio']},
+          \ 'whitelist': ['javascript', 'typescript'],
+          \ })
+  augroup END
+endif
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
@@ -378,10 +389,13 @@ Plug 'posva/vim-vue'
 Plug 'tpope/vim-unimpaired'
 
 Plug 'rupurt/vim-mql5'
-au BufNewFile,BufReadPost *.mq4 set filetype=mql5
+augroup VimMQL5
+  au! BufNewFile,BufReadPost *.mq4 set filetype=mql5
+augroup END
 
 Plug 'tomlion/vim-solidity'
 
+call plug#helptags()
 call plug#end()
 
 filetype plugin indent on
@@ -703,6 +717,11 @@ function! s:go_setting()
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
   endif
+  if exists('#GoLSP')
+    augroup GoLSP
+      au FileType go setlocal omnifunc=lsp#complete
+    augroup END
+  endif
 endfunction
 
 function! s:gotplhtml_setting()
@@ -794,6 +813,11 @@ endfunction
 
 function! s:javascript_surround()
   call s:c_surround()
+  if exists('#JavaScriptLSP')
+    augroup JavaScriptLSP
+      au FileType javascript setlocal omnifunc=lsp#complete
+    augroup END
+  endif
 endfunction
 
 function! s:python_surround()
