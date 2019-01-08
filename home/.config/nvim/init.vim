@@ -1,7 +1,8 @@
+scriptencoding utf-8
 syntax on
 
-let g:author = "Naoya Inada"
-let g:email  = "naoina@kuune.org"
+let g:author = 'Naoya Inada'
+let g:email  = 'naoina@kuune.org'
 
 let $VIMLOCAL = expand('~/.config/nvim')
 let s:cachedir = $VIMLOCAL . '/.cache'
@@ -37,8 +38,8 @@ let g:ycm_autoclose_preview_window_after_completion = 0
 let g:ycm_autoclose_preview_window_after_insertion = 0
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_filetype_blacklist = {
-      \   'php': 1,
-      \ }
+     \   'php': 1,
+     \ }
 
 Plug 'SirVer/ultisnips'
 let g:UltiSnipsSnippetsDir = $VIMLOCAL . '/snippet'
@@ -55,12 +56,12 @@ let g:unite_update_time = 100
 let g:unite_enable_split_vertically = 0
 let g:unite_winwidth = 60
 let g:unite_winheight = 10
-let g:unite_split_rule = "botright"
+let g:unite_split_rule = 'botright'
 let g:unite_source_history_yank_enable = 1
 let g:unite_enable_start_insert = 1
 function! OnloadUnite() abort
   let md_img = {
-        \ 'description': "insert as markdown image syntax",
+        \ 'description': 'insert as markdown image syntax',
         \ }
   function! md_img.func(candidate) abort
     let a:candidate.word = '![' . fnamemodify(a:candidate.word, ':t:r') . '](/' . a:candidate.word . ')'
@@ -457,7 +458,7 @@ endfunction
 
 function! s:mkdir(dir, perm)
   if !isdirectory(a:dir)
-    call mkdir(a:dir, "p", a:perm)
+    call mkdir(a:dir, 'p', a:perm)
   endif
 endfunction
 
@@ -484,7 +485,7 @@ call s:mkdir(s:cachedir, 0700)
 
 " Auto restore last cursor position.
 function! s:restore_cursor()
-  if line("'\"") > 1 && line("'\"") <= line("$")
+  if line("'\"") > 1 && line("'\"") <= line('$')
     normal! g`"
   endif
 endfunction
@@ -503,7 +504,7 @@ function! s:tohtml_and_browse()
   let webbrowser = 'chromium'
   let tempfile = tempname()
   write `=tempfile`
-  exec "!" . webbrowser . " " . tempfile
+  exec '!' . webbrowser . ' ' . tempfile
   bdelete!
   call delete(tempfile)
 endfunction
@@ -511,7 +512,7 @@ command! TOhtmAndBrowse :call s:tohtml_and_browse()
 
 function! s:to_xxd()
   silent %!xxd -g 1
-  setlocal ft=xxd
+  setlocal filetype=xxd
 endfunction
 
 function! s:from_xxd()
@@ -815,22 +816,22 @@ function! s:jump_next_indent_map()
 endfunction
 
 function! s:call_if_exists(funcname)
-  if exists("*" . a:funcname)
-    exec "call " . a:funcname
+  if exists('*' . a:funcname)
+    exec 'call ' . a:funcname
   endif
 endfunction
 
 function! s:setting()
-  let prefix = "s:" . &ft
+  let prefix = 's:' . &filetype
 
-  let f = prefix . "_setting()"
+  let f = prefix . '_setting()'
   call s:call_if_exists(f)
 
   " For surround of kana's version.
-  if exists("*SurroundRegister")
+  if exists('*SurroundRegister')
     let g:surround_indent = 1
 
-    let f = prefix . "_surround()"
+    let f = prefix . '_surround()'
     call s:call_if_exists(f)
   endif
 endfunction
