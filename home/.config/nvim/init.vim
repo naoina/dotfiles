@@ -564,11 +564,6 @@ function! s:python_setting()
       nnoremap <silent><buffer><leader>f :Pytest method<CR>
       nnoremap <silent><buffer><leader>c :Pytest class<CR>
   endif
-  if exists('#PythonLSP')
-    augroup PythonLSP
-      au FileType python setlocal omnifunc=lsp#complete
-    augroup END
-  endif
 endfunction
 
 function! s:mako_setting()
@@ -608,11 +603,6 @@ function! s:javascript_setting()
         \ [
         \   ['===', '!=='],
         \ ]
-  if exists('#JavascriptLSP')
-    augroup JavascriptLSP
-      au FileType javascript setlocal omnifunc=lsp#complete
-    augroup END
-  endif
 endfunction
 
 function! s:actionscript_setting()
@@ -728,11 +718,6 @@ function! s:go_setting()
         \ ]
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
-  endif
-  if exists('#GoLSP')
-    augroup GoLSP
-      au FileType go setlocal omnifunc=lsp#complete
-    augroup END
   endif
 endfunction
 
@@ -864,6 +849,10 @@ function! s:setting()
 
     let f = prefix . '_surround()'
     call s:call_if_exists(f)
+  endif
+
+  if exists(substitute(&filetype, '\(\w\+\)', '#\u\1LSP', ''))
+    setlocal omnifunc=lsp#complete
   endif
 endfunction
 
