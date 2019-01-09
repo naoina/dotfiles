@@ -382,7 +382,7 @@ Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
 Plug 'vim-scripts/Align', { 'on': ['Align'] }
 Plug 'tpope/vim-repeat'
 
-Plug 'Yggdroot/indentLine', { 'fro': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'] }
+Plug 'Yggdroot/indentLine', { 'for': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'] }
 let g:indentLine_enabled = 0
 
 Plug 'junegunn/vader.vim.git', { 'on': ['Vader'], 'for': ['vader'] }
@@ -607,8 +607,8 @@ function! s:javascript_setting()
         \ [
         \   ['===', '!=='],
         \ ]
-  if exists('#JavaScriptLSP')
-    augroup JavaScriptLSP
+  if exists('#JavascriptLSP')
+    augroup JavascriptLSP
       au FileType javascript setlocal omnifunc=lsp#complete
     augroup END
   endif
