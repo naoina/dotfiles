@@ -168,10 +168,10 @@ let g:ale_linters = {
       \ }
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let text_linters = [
-      \ {buffer, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
-      \ {buffer, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
+      \ {buffer, done, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
+      \ {buffer, done, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
       \ ]
-function! s:protocol_markdown(buffer, lines) abort
+function! s:protocol_markdown(buffer, done, lines) abort
   let l:executable = ale#Escape('protocol')
   let l:new_lines = []
   let l:protocol_definition_line = 0
