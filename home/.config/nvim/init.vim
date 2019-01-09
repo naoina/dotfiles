@@ -601,6 +601,11 @@ function! s:javascript_setting()
         \ [
         \   ['===', '!=='],
         \ ]
+  if exists('#JavaScriptLSP')
+    augroup JavaScriptLSP
+      au FileType javascript setlocal omnifunc=lsp#complete
+    augroup END
+  endif
 endfunction
 
 function! s:actionscript_setting()
@@ -813,11 +818,6 @@ endfunction
 
 function! s:javascript_surround()
   call s:c_surround()
-  if exists('#JavaScriptLSP')
-    augroup JavaScriptLSP
-      au FileType javascript setlocal omnifunc=lsp#complete
-    augroup END
-  endif
 endfunction
 
 function! s:python_surround()
