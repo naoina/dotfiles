@@ -350,26 +350,27 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 nnoremap gd :LspDefinition<CR>
 nnoremap <C-]> :LspDefinition<CR>
 nnoremap <C-i> :LspHover<CR>
-if executable('golsp')
-  augroup GoLSP
+function! s:register_lsp_server(args) abort
+  let l:cmd = a:args.cmd
+  let l:bin_name = l:cmd[0]
+  if !executable(l:bin_name)
+    return
+  endif
+  function! s:cmd(server_info) closure
+    return l:cmd
+  endfunction
+  let l:whitelist = a:args.whitelist
+  exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
     au!
-    au User lsp_setup call lsp#register_server({
-         \ 'name': 'golsp',
-         \ 'cmd': {server_info->['golsp', '-mode', 'stdio']},
-         \ 'whitelist': ['go'],
-         \ })
+    exec 'au User lsp_setup call lsp#register_server(' . string({
+          \ 'name': l:bin_name,
+          \ 'cmd': function('s:cmd'),
+          \ 'whitelist': l:whitelist,
+          \ }) . ')'
   augroup END
-endif
-if executable('javascript-typescript-stdio')
-  augroup JavaScriptLSP
-    au!
-    au User lsp_setup call lsp#register_server({
-          \ 'name': 'javascript-typescript-langserver',
-          \ 'cmd': {server_info->['javascript-typescript-stdio']},
-          \ 'whitelist': ['javascript', 'typescript'],
-          \ })
-  augroup END
-endif
+endfunction
+call s:register_lsp_server({'cmd': ['golsp', '-mode', 'stdio'], 'whitelist': ['go']})
+call s:register_lsp_server({'cmd': ['javascript-typescript-stdio'], 'whitelist': ['javascript', 'typescript']})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
