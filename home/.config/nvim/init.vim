@@ -564,6 +564,11 @@ function! s:python_setting()
       nnoremap <silent><buffer><leader>f :Pytest method<CR>
       nnoremap <silent><buffer><leader>c :Pytest class<CR>
   endif
+  if exists('#PythonLSP')
+    augroup PythonLSP
+      au FileType python setlocal omnifunc=lsp#complete
+    augroup END
+  endif
 endfunction
 
 function! s:mako_setting()
