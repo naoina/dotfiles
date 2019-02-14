@@ -180,8 +180,9 @@ alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xa
 
 # ulimit -c unlimited
 umask 022
-source $HOME/.nvm/nvm.sh
-source $HOME/.nvm/bash_completion
+export NVM_DIR="$(readlink -f $HOME/.nvm)"
+source $NVM_DIR/nvm.sh
+source $NVM_DIR/bash_completion
 
 if [[ -f $HOME/.zsh/antigen.zsh ]]; then
     . $HOME/.zsh/antigen.zsh
