@@ -369,7 +369,7 @@ function! s:register_lsp_server(args) abort
           \ }) . ')'
   augroup END
 endfunction
-call s:register_lsp_server({'cmd': ['golsp', '-mode', 'stdio'], 'whitelist': ['go']})
+call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
 call s:register_lsp_server({'cmd': ['javascript-typescript-stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
