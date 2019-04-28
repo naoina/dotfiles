@@ -297,7 +297,7 @@ let g:gist_private = 0
 
 let g:colorv_filetypes = [
       \ 'css', 'scss', 'stylus', 'less', 'sass',
-      \ 'html', 'xhtml', 'xml', 'gotplhtml', 'mako', 'erb', 'htmldjango',
+      \ 'html', 'xhtml', 'xml', 'gohtmltmpl', 'mako', 'erb', 'htmldjango',
       \ 'vim',
       \ ]
 Plug 'Rykka/colorv.vim', { 'for': g:colorv_filetypes }
@@ -305,7 +305,7 @@ let g:colorv_no_global_map = 1
 let g:colorv_preview_ftype = join(g:colorv_filetypes, ',')
 
 Plug 'mattn/emmet-vim', {
-      \ 'for': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gotplhtml'],
+      \ 'for': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gohtmltmpl'],
       \ }
 
 Plug 'klen/python-mode', { 'for': ['python'] }
@@ -721,7 +721,7 @@ function! s:go_setting()
   endif
 endfunction
 
-function! s:gotplhtml_setting()
+function! s:gohtmltmpl_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal autoindent
 endfunction
@@ -869,8 +869,8 @@ augroup vimrc
   au BufNewFile,BufRead *.scala     setlocal filetype=scala
   au BufNewFile,BufRead *.mako      setlocal filetype=mako
   au BufNewFile,BufRead .bowerrc    setlocal filetype=javascript
-  au BufNewFile,BufRead *.tmpl      setlocal filetype=gotpl
-  au BufNewFile,BufRead *.html.tmpl setlocal filetype=gotplhtml
+  au BufNewFile,BufRead *.tmpl      setlocal filetype=gotexttmpl
+  au BufNewFile,BufRead *.html.tmpl setlocal filetype=gohtmltmpl
 
   au WinEnter,BufEnter * match FullwidthAndEOLSpace "\(　\|\s\)\+$"
   au WinEnter,BufEnter * setlocal cursorline
