@@ -168,16 +168,16 @@ let g:ale_linters = {
       \ }
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let text_linters = [
-      \ {buffer, done, lines -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
-      \ {buffer, done, lines -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
+      \ {buffer -> {'command': 'textlint -c ~/.config/textlintrc -o /dev/null --fix --no-color --quiet %t', 'read_temporary_file': 1}},
+      \ {buffer -> {'command': 'prh --rules ~/.config/prh.default.yml --stdout %t'}},
       \ ]
-function! s:protocol_markdown(buffer, done, lines) abort
+function! s:protocol_markdown(buffer) abort
   let l:executable = ale#Escape('protocol')
   let l:new_lines = []
   let l:protocol_definition_line = 0
   let l:in_code_block = 0
 
-  for l:line in a:lines
+  for l:line in getbufline(a:buffer, 1, '$')
     if l:in_code_block && match(l:line, '\v^```$') >= 0
       let l:in_code_block = 0
     endif
