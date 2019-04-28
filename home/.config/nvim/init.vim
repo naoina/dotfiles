@@ -338,18 +338,21 @@ let g:go_fmt_command = 'goimports'
 let g:go_snippet_engine = 'ultisnipts'
 let g:go_bin_path = expand('$GOROOT/bin/')
 let g:go_def_mapping_enabled = 0
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
 let g:go_info_mode = 'guru'
 let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
+nnoremap gd :GoDef<CR>
 
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-nnoremap gd :LspDefinition<CR>
-nnoremap <C-]> :LspDefinition<CR>
-nnoremap <C-i> :LspHover<CR>
+" nnoremap gd :LspDefinition<CR>
+" nnoremap <C-]> :LspDefinition<CR>
+" nnoremap <C-i> :LspHover<CR>
 function! s:register_lsp_server(args) abort
   let l:cmd = a:args.cmd
   let l:bin_name = l:cmd[0]
@@ -369,7 +372,7 @@ function! s:register_lsp_server(args) abort
           \ }) . ')'
   augroup END
 endfunction
-call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
+" call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
 call s:register_lsp_server({'cmd': ['javascript-typescript-stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
