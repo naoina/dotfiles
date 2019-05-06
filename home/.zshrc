@@ -167,6 +167,10 @@ if [ -x "`whence -p hub`" ]; then
     eval "$(hub alias -s)"
 fi
 
+if [[ -x "$(whence -p direnv)" ]]; then
+    eval "$(direnv hook zsh)"
+fi
+
 alias ll="ls -l"
 alias lz="ll -Z"
 alias df="df -h"
