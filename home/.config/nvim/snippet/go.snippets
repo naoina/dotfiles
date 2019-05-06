@@ -2,13 +2,13 @@ snippet in "interface{}" !w
 interface{}
 endsnippet
 
-snippet main "main()" !b
+snippet "^main" "main()" !rbA
 func main() {
 	${0:// TODO: not implemented yet}
 }
 endsnippet
 
-snippet init "init()" !b
+snippet "^init" "init()" !rbA
 func init() {
 	${0:// TODO: not implemented yet}
 }
@@ -74,7 +74,7 @@ if ${1:err} := ${2:Some}; err != ${3:nil} {
 }
 endsnippet
 
-snippet f "func" !iw
+snippet f "func" "re.match('f(?!.*:=)', snip.buffer[snip.line])" !iwe
 func ${1:FuncName}($2) $3{
 	${0:${VISUAL}}
 }
@@ -211,7 +211,7 @@ snippet pe "panic(err)" !b
 panic(err)
 endsnippet
 
-snippet r "return" !b
+snippet r "return" "re.match('\s*r(?!.*:=)', snip.buffer[snip.line])" !be
 return $0
 endsnippet
 
