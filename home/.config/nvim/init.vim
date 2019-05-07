@@ -91,6 +91,16 @@ nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nnoremap <C-c>uo :Unite -vertical outline<CR>
 
+Plug 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20,results:0'
+let g:ctrlp_custom_ignore = {
+      \ 'dir': '\v[\/](,|vendor|node_modules)$',
+      \ 'file': '\v\.(' . join([
+      \     'exe', 'so', 'dll', 'jpe?g', 'png', 'gif', 'ico', 'pdf', 'mp4',
+      \     'ttf', 'svg', 'otf', 'eot', 'woff2?', 'log', 'env(rc)?', 'map',
+      \     ], '|') . ')$'
+      \ }
+
 Plug 'kana/vim-altr', { 'on': ['An', 'Ap'] }
 function! OnloadVimAltr() abort
   " Python
@@ -912,7 +922,7 @@ noremap  <silent><C-k> <C-w>W
 nnoremap <silent><C-l> :<C-u>nohls<CR>:<C-u>call <SID>refresh()<CR>
 nnoremap <SPACE> za
 nnoremap <silent><expr><C-n> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cn\<CR>" : ":\<C-u>bn\<CR>"
-nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
+" nnoremap <silent><expr><C-p> len(filter(range(1, winnr('$')), 'getbufvar(winbufnr(v:val), "&buftype") == "quickfix"')) ? ":\<C-u>cN\<CR>" : ":\<C-u>bN\<CR>"
 nnoremap <silent><expr><C-d> ":e #\<CR>:bw! #\<CR>"
 nnoremap QQ :q!<CR>
 noremap! <C-a> <HOME>
