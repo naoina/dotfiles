@@ -340,7 +340,6 @@ let g:go_bin_path = expand('$GOROOT/bin/')
 let g:go_def_mapping_enabled = 0
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
-let g:go_info_mode = 'guru'
 let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
