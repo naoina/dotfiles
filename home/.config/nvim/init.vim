@@ -353,7 +353,6 @@ let g:go_info_mode = 'gopls'
 let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
-nnoremap gd :GoDef<CR>
 
 Plug 'prabirshrestha/asyncomplete.vim'
 Plug 'prabirshrestha/async.vim'
@@ -730,6 +729,9 @@ function! s:go_setting()
         \ ]
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
+  endif
+  if exists(':GoDef')
+    nnoremap <silent><buffer>gd :GoDef<CR>
   endif
 endfunction
 
