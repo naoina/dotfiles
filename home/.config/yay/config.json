@@ -1,0 +1,5 @@
+{
+  "builddir": "$HOME/aur/custom/build",
+  "removemake": "yes",
+  "cleanAfter": false
+}

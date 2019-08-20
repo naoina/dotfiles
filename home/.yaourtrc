@@ -1,3 +1,0 @@
-EXPORT=1
-EXPORTSRC=0
-EXPORTDIR="$HOME/aur/custom/os/`uname -m`"
