@@ -24,7 +24,7 @@ let g:plug_url_format = 'https://git::@github.com/%s'
 Plug 'junegunn/vim-plug', { 'dir': $VIMLOCAL . '/plugged/vim-plug/autoload' }
 
 let g:plug_timeout = 1800
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --js-completer' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.py --clang-completer --js-completer' }
 unlet g:plug_timeout
 let g:ycm_min_num_of_chars_for_completion = 1
 let g:ycm_key_list_select_completion = ['<Enter>']
@@ -355,12 +355,41 @@ let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
 
 Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+augroup AsyncompleteBuffer
+  au!
+  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
+      \ 'name': 'buffer',
+      \ 'whitelist': ['*'],
+      \ 'completor': function('asyncomplete#sources#buffer#completor'),
+      \ 'config': {
+      \    'max_buffer_size': -1,
+      \  },
+      \ }))
+augroup END
+Plug 'prabirshrestha/asyncomplete-file.vim'
+augroup AsyncompleteFile
+  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
+      \ 'name': 'file',
+      \ 'whitelist': ['*'],
+      \ 'priority': 10,
+      \ 'completor': function('asyncomplete#sources#file#completor')
+      \ }))
+augroup END
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+augroup AsyncompleteUltiSnips
+  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+      \ 'name': 'ultisnips',
+      \ 'whitelist': ['*'],
+      \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+      \ }))
+augroup END
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" nnoremap gd :LspDefinition<CR>
-" nnoremap <C-]> :LspDefinition<CR>
-" nnoremap <C-i> :LspHover<CR>
+nnoremap gd :LspDefinition<CR>
+nnoremap <C-]> :LspDefinition<CR>
+nnoremap <C-i> :LspHover<CR>
 function! s:register_lsp_server(args) abort
   let l:cmd = a:args.cmd
   let l:bin_name = l:cmd[0]
@@ -380,8 +409,8 @@ function! s:register_lsp_server(args) abort
           \ }) . ')'
   augroup END
 endfunction
-" call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
-call s:register_lsp_server({'cmd': ['javascript-typescript-stdio'], 'whitelist': ['javascript', 'typescript']})
+call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
+call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
@@ -729,9 +758,6 @@ function! s:go_setting()
         \ ]
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
-  endif
-  if exists(':GoDef')
-    nnoremap <silent><buffer>gd :GoDef<CR>
   endif
 endfunction
 
