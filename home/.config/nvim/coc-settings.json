@@ -10,6 +10,7 @@
     },
     "javascript": {
       "command": "typescript-language-server",
+      "args": ["--stdio"],
       "filetypes": ["javascript", "typescript"]
     },
     "python": {
