@@ -1,0 +1,20 @@
+{
+  "suggest.minTriggerInputLength": 1,
+  "diagnostic.enable": true,
+  "diagnostic.displayByAle": true,
+  "coc.preferences.previewAutoClose": false,
+  "languageserver": {
+    "golang": {
+      "command": "gopls",
+      "filetypes": ["go"]
+    },
+    "javascript": {
+      "command": "typescript-language-server",
+      "filetypes": ["javascript", "typescript"]
+    },
+    "python": {
+      "command": "pyls",
+      "filetypes": ["python"]
+    }
+  }
+}

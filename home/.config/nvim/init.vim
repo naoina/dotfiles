@@ -354,64 +354,15 @@ let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
 
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-buffer.vim'
-augroup AsyncompleteBuffer
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> <C-]> <Plug>(coc-definition)
+nnoremap <C-i> :call CocActionAsync('doHover')<CR>
+augroup COC
   au!
-  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#buffer#get_source_options({
-      \ 'name': 'buffer',
-      \ 'whitelist': ['*'],
-      \ 'completor': function('asyncomplete#sources#buffer#completor'),
-      \ 'config': {
-      \    'max_buffer_size': -1,
-      \  },
-      \ }))
+  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+  au CursorHold * silent call CocActionAsync('highlight')
 augroup END
-Plug 'prabirshrestha/asyncomplete-file.vim'
-augroup AsyncompleteFile
-  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#file#get_source_options({
-      \ 'name': 'file',
-      \ 'whitelist': ['*'],
-      \ 'priority': 10,
-      \ 'completor': function('asyncomplete#sources#file#completor')
-      \ }))
-augroup END
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-augroup AsyncompleteUltiSnips
-  au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-      \ 'name': 'ultisnips',
-      \ 'whitelist': ['*'],
-      \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-      \ }))
-augroup END
-Plug 'prabirshrestha/async.vim'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
-nnoremap gd :LspDefinition<CR>
-nnoremap <C-]> :LspDefinition<CR>
-nnoremap <C-i> :LspHover<CR>
-function! s:register_lsp_server(args) abort
-  let l:cmd = a:args.cmd
-  let l:bin_name = l:cmd[0]
-  if !executable(l:bin_name)
-    return
-  endif
-  function! s:cmd(server_info) closure
-    return l:cmd
-  endfunction
-  let l:whitelist = a:args.whitelist
-  exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
-    au!
-    exec 'au User lsp_setup call lsp#register_server(' . string({
-          \ 'name': l:bin_name,
-          \ 'cmd': function('s:cmd'),
-          \ 'whitelist': l:whitelist,
-          \ }) . ')'
-  augroup END
-endfunction
-call s:register_lsp_server({'cmd': ['gopls', '-mode', 'stdio'], 'whitelist': ['go']})
-call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
-call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
@@ -490,6 +441,7 @@ set fileencoding=utf-8
 set fileencodings=ucs-bom,utf-8,japan,cp932,utf-16,utf-8
 set fileformats=unix,dos,mac
 set nofixendofline
+set updatetime=500
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
