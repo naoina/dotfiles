@@ -355,7 +355,7 @@ let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> <C-]> <Plug>(coc-definition)
 nnoremap <C-i> :call CocActionAsync('doHover')<CR>
 augroup COC
@@ -710,6 +710,9 @@ function! s:go_setting()
         \ ]
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
+  endif
+  if exists(':GoDef')
+    nnoremap <silent><buffer>gd :GoDef<CR>
   endif
 endfunction
 
