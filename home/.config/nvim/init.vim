@@ -354,15 +354,50 @@ let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> <C-]> <Plug>(coc-definition)
-nnoremap <C-i> :call CocActionAsync('doHover')<CR>
-augroup COC
-  au!
-  au User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-  au CursorHold * silent call CocActionAsync('highlight')
-augroup END
+function! s:asyncomplete_register_source(name, options) abort
+  exec 'augroup' 'Asyncomplete_' . a:name
+    exec 'au! User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#' . a:name . '#get_source_options(' . string(extend({
+          \ 'name': a:name,
+          \ 'whitelist': ['*'],
+          \ 'completor': function('asyncomplete#sources#' . a:name . '#completor'),
+          \}, a:options)) . '))'
+  augroup END
+endfunction
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-buffer.vim'
+call s:asyncomplete_register_source('buffer', {
+      \ 'config': {
+      \     'max_buffer_size': -1,
+      \ }})
+Plug 'prabirshrestha/asyncomplete-file.vim'
+call s:asyncomplete_register_source('file', {
+      \ 'priority': 10,
+      \ })
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
+call s:asyncomplete_register_source('ultisnips', {})
+Plug 'prabirshrestha/async.vim'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+nnoremap <C-i> :LspHover<CR>
+function! s:register_lsp_server(args) abort
+  let l:cmd = a:args.cmd
+  let l:bin_name = l:cmd[0]
+  if !executable(l:bin_name)
+    return
+  endif
+  let l:whitelist = a:args.whitelist
+  exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
+    au!
+    exec 'au User lsp_setup call lsp#register_server(' . string({
+          \ 'name': l:bin_name,
+          \ 'cmd': l:cmd,
+          \ 'whitelist': l:whitelist,
+          \ }) . ')'
+  augroup END
+endfunction
+call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go']})
+call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
+call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
