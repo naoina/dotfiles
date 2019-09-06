@@ -377,8 +377,9 @@ Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 call s:asyncomplete_register_source('ultisnips', {})
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
+let g:lsp_text_edit_enabled = 0
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-nnoremap <C-i> :LspHover<CR>
+" nnoremap <C-i> :LspHover<CR>
 function! s:register_lsp_server(args) abort
   let l:cmd = a:args.cmd
   let l:bin_name = l:cmd[0]
