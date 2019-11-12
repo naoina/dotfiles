@@ -388,16 +388,20 @@ function! s:register_lsp_server(args) abort
     return
   endif
   let l:whitelist = a:args.whitelist
+  let l:workspace_config = get(a:args, 'workspace_config', {})
   exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
     au!
     exec 'au User lsp_setup call lsp#register_server(' . string({
           \ 'name': l:bin_name,
           \ 'cmd': l:cmd,
           \ 'whitelist': l:whitelist,
+          \ 'workspace_config': l:workspace_config,
           \ }) . ')'
   augroup END
 endfunction
-call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go']})
+call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go'], 'workspace_config': {'gopls': {
+      \ 'completeUnimported': v:true,
+      \ }}})
 call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
 
