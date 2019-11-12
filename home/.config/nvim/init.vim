@@ -379,6 +379,10 @@ Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
 let g:lsp_text_edit_enabled = 0
 let g:lsp_signature_help_enabled = 0
+highlight link LspErrorText Error
+highlight link LspWarningText Error
+highlight link LspInformationText Error
+highlight link LspHintText Error
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 " nnoremap <C-i> :LspHover<CR>
 function! s:register_lsp_server(args) abort
