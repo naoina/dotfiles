@@ -92,6 +92,7 @@ nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nnoremap <C-c>uo :Unite -vertical outline<CR>
 
 Plug 'ctrlpvim/ctrlp.vim'
+let g:ctrlp_types = ['buf', 'mru', 'fil']
 let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20,results:0'
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/](,|vendor|node_modules)$',
