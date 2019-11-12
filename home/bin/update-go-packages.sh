@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 usage() {
     cat << EOF
 Usage: `basename $0`
@@ -8,7 +10,7 @@ EOF
 }
 
 gopkgs=(
-    'github.com/motemen/ghq'
+    # 'github.com/motemen/ghq'
     'github.com/lib/pq'
     'github.com/jackc/pgx'
     'github.com/mattn/go-sqlite3'
@@ -16,7 +18,6 @@ gopkgs=(
     'github.com/peco/peco/cmd/peco'
     'github.com/peco/migemogrep'
     'github.com/koron/gomigemo/cmd/gmigemo'
-    'github.com/noraesae/orange-cat/cmd/orange'
     'golang.org/x/tools/cmd/stringer'
     'github.com/cespare/prettybench'
     'github.com/gohugoio/hugo'
