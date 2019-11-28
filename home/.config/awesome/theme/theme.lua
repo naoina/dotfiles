@@ -4,7 +4,7 @@ themehome = awful.util.getdir("config") .. "/theme"
 
 theme = {}
 
-theme.font          = "Monospace Bold 16"
+theme.font          = "Monospace Bold 7"
 
 theme.bg_normal     = "#222222"
 theme.bg_focus      = "#535d6c"
