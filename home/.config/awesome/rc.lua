@@ -14,6 +14,9 @@ local menubar = require("menubar")
 local vicious = require("vicious")
 local widgets = require("./widgets")
 
+-- Themes define colours, icons, and wallpapers
+beautiful.init(awful.util.getdir("config") .. "/theme/theme.lua")
+
 -- Notification
 naughty.config.defaults.timeout       = 0
 naughty.config.defaults.screen        = 1
@@ -23,7 +26,7 @@ naughty.config.defaults.height        = 80
 naughty.config.defaults.width         = 300
 naughty.config.defaults.gap           = 1
 naughty.config.defaults.ontop         = true
-naughty.config.defaults.font          = beautiful.font or "Verdana 8"
+naughty.config.defaults.font          = beautiful.font or "Verdana 7"
 naughty.config.defaults.icon          = nil
 naughty.config.defaults.icon_size     = 16
 -- naughty.config.defaults.fg            = beautiful.fg_focus or '#ffffff'
@@ -131,8 +134,6 @@ end
 -- }}}
 
 -- {{{ Variable definitions
--- Themes define colours, icons, and wallpapers
-beautiful.init(awful.util.getdir("config") .. "/theme/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "mlterm -e " .. os.getenv("HOME") .. "/bin/tmux.sh"
@@ -276,7 +277,7 @@ timezone_menu = awful.menu({
     items = timezone_menu_items,
     theme = {
         width = 200,
-        font = "Monospace 12"
+        font = "Monospace 7"
     }
 })
 timezonewidget:buttons(
