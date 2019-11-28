@@ -50,7 +50,6 @@ naughty.config.presets.critical.font        = naughty.config.defaults.font
 naughty.config.presets.critical.fg          = '#eeeeee'
 naughty.config.presets.critical.bg          = '#ff0000'
 
-local net_dev = "wlp1s0"
 local timezone = ""
 
 --- Spawns cmd if no client can be found matching properties
@@ -422,6 +421,17 @@ vicious.register(batterypercentagewidget, vicious.widgets.bat,
         return string.format("%d%%", battery_percentage)
     end, 10, bat)
 
+local net_dir = "/sys/class/net"
+local dir = io.popen("ls " .. net_dir)
+local net_dev = "wlan0"
+for d in dir:lines() do
+    local f = io.open(net_dir .. "/" .. d .. "/wireless")
+    if f then
+        f:close()
+        net_dev = d
+    end
+end
+dir:close()
 local wifiwidget = wibox.widget.textbox()
 vicious.register(wifiwidget, widgets.wifi,
     function (widget, data)
