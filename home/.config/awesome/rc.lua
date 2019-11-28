@@ -373,6 +373,20 @@ local batterymeterwidget = wibox.widget {
     direction = "east",
     layout = wibox.container.rotate,
 }
+
+local battery_dir = "/sys/class/power_supply"
+local dir = io.popen("ls " .. battery_dir)
+local bat = "BAT1"
+for d in dir:lines() do
+    local f = io.open(battery_dir .. "/" .. d .. "/type")
+    local candidate = f:read("*line")
+    f:close()
+    if candidate == "Battery" then
+        bat = d
+        break
+    end
+end
+dir:close()
 local batteryremainingwidget = wibox.widget.textbox()
 local batterypercentagewidget = wibox.widget.textbox()
 local battery_notified = false
@@ -406,7 +420,7 @@ vicious.register(batterypercentagewidget, vicious.widgets.bat,
         meter_widget:set_value(battery_percentage)
         batteryremainingwidget.text = data[3]
         return string.format("%d%%", battery_percentage)
-    end, 10, "BAT1")
+    end, 10, bat)
 
 local wifiwidget = wibox.widget.textbox()
 vicious.register(wifiwidget, widgets.wifi,
