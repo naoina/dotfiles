@@ -28,6 +28,7 @@ export LC_TIME=C
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+export QT_QPA_PLATFORMTHEME="qt5ct"
 
 if [ -x "`which chromium`" ]; then
     export BROWSER="chromium"
@@ -44,8 +45,9 @@ xset s off
 xset r rate 250 50
 xset b off
 xset -dpms
-xrandr --dpi 96
-xinput -set-prop 'Elan Touchpad' --type=float 'libinput Accel Speed' 1
+#xrandr --dpi 96
+#xinput -set-prop "$(xinput list | perl -ne 'print $1 if /Touchpad\s+id=(\d+)/')" --type=float 'libinput Accel Speed' 1
+syndaemon -i 0.5 -t -k &
 
 # uim-xim &
 # scim -d
@@ -59,6 +61,8 @@ if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
     AFTER_CMD="notify-send -t 0 \"%f mounted on %d\""
     devmon --exec-on-drive "$AFTER_CMD" &
 fi
+
+libinput-gestures-setup start
 
 # [ -x "/opt/dropbox/dropbox" ] && /opt/dropbox/dropbox &
 
