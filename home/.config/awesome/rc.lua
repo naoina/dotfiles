@@ -389,38 +389,64 @@ end
 dir:close()
 local batteryremainingwidget = wibox.widget.textbox()
 local batterypercentagewidget = wibox.widget.textbox()
-local battery_notified = false
-vicious.register(batterypercentagewidget, vicious.widgets.bat,
-    function (widget, data)
-        local state = data[1]
-        local battery_percentage = data[2]
-        local meter_widget = batterymeterwidget:get_widget()
-        if battery_percentage <= 5 then
-            if state == "−" then -- Discharging
-                awesome.emit_signal("battery::threshold")
-            end
-        elseif battery_percentage <= 10 then
-            meter_widget:set_color(meter_warning_color)
-            if not battery_notified then
-                naughty.notify({
-                    title = "Low battery notification",
-                    text = string.format("A current battery remaining is %d%%.\nIncidentally, lower than 5%% will immediatelly go to hibernate mode.", battery_percentage),
-                    preset = naughty.config.presets.critical,
-                })
-                battery_notified = true
-            end
-        else
-            battery_notified = false
-            if battery_percentage <= 30 then
-                meter_widget:set_color("#5fd700")
-            else
-                meter_widget:set_color("#009700")
-            end
+function timer_start_new(timeout, callback)
+    local t = gears.timer.new({ timeout = timeout })
+    t:connect_signal("timeout", function()
+        local cont = gears.protected_call(callback)
+        if not cont then
+            t:stop()
         end
-        meter_widget:set_value(battery_percentage)
-        batteryremainingwidget.text = data[3]
-        return string.format("%d%%", battery_percentage)
-    end, 10, bat)
+    end)
+    t:start()
+    t:emit_signal("timeout")
+    return t
+end
+timer_start_new(
+    5, -- sec
+    function()
+        local readable, _ = pcall(
+            function()
+            end)
+        local f = io.open(battery_dir .. "/" .. bat .. "/power_now")
+        local _, err, _ = f:read("*all")
+        f:close()
+        if err then
+            return true
+        end
+        local battery_notified = false
+        vicious.register(batterypercentagewidget, vicious.widgets.bat,
+            function (widget, data)
+                local state = data[1]
+                local battery_percentage = data[2]
+                local meter_widget = batterymeterwidget:get_widget()
+                if battery_percentage <= 5 then
+                    if state == "-" then -- Discharging
+                        awesome.emit_signal("battery::threshold")
+                    end
+                elseif battery_percentage <= 10 then
+                    meter_widget:set_color(meter_warning_color)
+                    if not battery_notified then
+                        naughty.notify({
+                            title = "Low battery notification",
+                            text = string.format("A current battery remaining is %d%%.\nIncidentally, lower than 5%% will immediatelly go to hibernate mode.", battery_percentage),
+                            preset = naughty.config.presets.critical,
+                        })
+                        battery_notified = true
+                    end
+                else
+                    battery_notified = false
+                    if battery_percentage <= 30 then
+                        meter_widget:set_color("#5fd700")
+                    else
+                        meter_widget:set_color("#009700")
+                    end
+                end
+                meter_widget:set_value(battery_percentage)
+                batteryremainingwidget.text = data[3]
+                return string.format("%d%%", battery_percentage)
+            end, 10, bat)
+        return false
+    end)
 
 local net_dir = "/sys/class/net"
 local dir = io.popen("ls " .. net_dir)
