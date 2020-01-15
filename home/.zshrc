@@ -29,8 +29,13 @@ WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
 NULL="/dev/null"
 
 bindkey -e
-bindkey "^P" history-search-backward
-bindkey "^N" history-search-forward
+autoload -U history-search-end
+zle -N history-beginning-search-backward-end history-search-end
+zle -N history-beginning-search-forward-end history-search-end
+bindkey "^[[A" history-beginning-search-backward-end
+bindkey "^[[B" history-beginning-search-forward-end
+bindkey "^P" history-beginning-search-backward-end
+bindkey "^N" history-beginning-search-forward-end
 
 # For VCS (git, hg, etc...)
 autoload -Uz vcs_info
