@@ -219,6 +219,7 @@ let g:ale_fixers = {
       \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
       \ 'review': text_linters,
       \ 'vue': ['prettier_eslint'],
+      \ 'proto': ['clang-format'],
       \ }
 let g:ale_fix_on_save = 1
 
