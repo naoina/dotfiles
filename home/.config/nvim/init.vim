@@ -215,6 +215,7 @@ endfunction
 let g:ale_fixers = {
       \ 'go': ['goimports'],
       \ 'javascript': ['prettier_eslint'],
+      \ 'typescript': ['prettier_eslint'],
       \ 'python': ['autopep8', 'isort'],
       \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
       \ 'review': text_linters,
@@ -643,6 +644,10 @@ function! s:javascript_setting()
         \ [
         \   ['===', '!=='],
         \ ]
+endfunction
+
+function! s:typescript_setting()
+  call s:javascript_setting()
 endfunction
 
 function! s:actionscript_setting()
