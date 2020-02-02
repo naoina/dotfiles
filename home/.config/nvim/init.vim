@@ -412,6 +412,7 @@ call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go'], 'workspace_co
       \ }}})
 call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
+call s:register_lsp_server({'cmd': ['vls'], 'whitelist': ['vue']})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
