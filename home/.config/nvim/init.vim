@@ -397,6 +397,7 @@ function! s:register_lsp_server(args) abort
   endif
   let l:whitelist = a:args.whitelist
   let l:workspace_config = get(a:args, 'workspace_config', {})
+  let l:initialization_options = get(a:args, 'initialization_options', {})
   exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
     au!
     exec 'au User lsp_setup call lsp#register_server(' . string({
@@ -404,6 +405,7 @@ function! s:register_lsp_server(args) abort
           \ 'cmd': l:cmd,
           \ 'whitelist': l:whitelist,
           \ 'workspace_config': l:workspace_config,
+          \ 'initialization_options': l:initialization_options,
           \ }) . ')'
   augroup END
 endfunction
@@ -412,7 +414,7 @@ call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go'], 'workspace_co
       \ }}})
 call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
 call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
-call s:register_lsp_server({'cmd': ['vls'], 'whitelist': ['vue']})
+call s:register_lsp_server({'cmd': ['vls'], 'whitelist': ['vue'], 'initialization_options': {'config': {}}})
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
