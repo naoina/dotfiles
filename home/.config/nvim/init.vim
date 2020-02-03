@@ -770,6 +770,9 @@ function! s:go_setting()
   if exists(':GoDef')
     nnoremap <silent><buffer>gd :GoDef<CR>
   endif
+  if exists(':LspImplementation')
+    nnoremap <silent><buffer>gi :LspImplementation<CR>
+  endif
 endfunction
 
 function! s:gohtmltmpl_setting()
