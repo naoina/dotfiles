@@ -22,7 +22,7 @@ gopkgs=(
     'github.com/cespare/prettybench'
     'github.com/gohugoio/hugo'
     'golang.org/x/tools/cmd/benchcmp'
-    'golang.org/x/tools/cmd/gopls'
+    'golang.org/x/tools/gopls'
     'golang.org/x/perf/cmd/benchstat'
     'github.com/shurcooL/markdownfmt'
     'github.com/syohex/byzanz-window/cmd/byzanz-window'
@@ -32,8 +32,9 @@ gopkgs=(
     'github.com/golang/dep/cmd/dep'
     'github.com/codegangsta/gin'
     'github.com/derekparker/delve/cmd/dlv'
-    'github.com/tcnksm/gotests'
+    'github.com/cweill/gotests/...'
     'github.com/direnv/direnv'
+    'github.com/ckaznocha/protoc-gen-lint'
 )
 
 for pkg in ${gopkgs[@]}; do
