@@ -388,33 +388,7 @@ highlight link LspWarningText Error
 highlight link LspInformationText Error
 highlight link LspHintText Error
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
-" nnoremap <C-i> :LspHover<CR>
-function! s:register_lsp_server(args) abort
-  let l:cmd = a:args.cmd
-  let l:bin_name = l:cmd[0]
-  if !executable(l:bin_name)
-    return
-  endif
-  let l:whitelist = a:args.whitelist
-  let l:workspace_config = get(a:args, 'workspace_config', {})
-  let l:initialization_options = get(a:args, 'initialization_options', {})
-  exec 'augroup' substitute(l:whitelist[0], '\(\w\+\)', '\u\1LSP', '')
-    au!
-    exec 'au User lsp_setup call lsp#register_server(' . string({
-          \ 'name': l:bin_name,
-          \ 'cmd': l:cmd,
-          \ 'whitelist': l:whitelist,
-          \ 'workspace_config': l:workspace_config,
-          \ 'initialization_options': l:initialization_options,
-          \ }) . ')'
-  augroup END
-endfunction
-call s:register_lsp_server({'cmd': ['gopls'], 'whitelist': ['go'], 'workspace_config': {'gopls': {
-      \ 'completeUnimported': v:true,
-      \ }}})
-call s:register_lsp_server({'cmd': ['typescript-language-server', '--stdio'], 'whitelist': ['javascript', 'typescript']})
-call s:register_lsp_server({'cmd': ['pyls'], 'whitelist': ['python']})
-call s:register_lsp_server({'cmd': ['vls'], 'whitelist': ['vue'], 'initialization_options': {'config': {}}})
+Plug 'mattn/vim-lsp-settings'
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
@@ -903,10 +877,6 @@ function! s:setting()
 
     let f = prefix . '_surround()'
     call s:call_if_exists(f)
-  endif
-
-  if exists(substitute(&filetype, '\(\w\+\)', '#\u\1LSP', ''))
-    setlocal omnifunc=lsp#complete
   endif
 endfunction
 
