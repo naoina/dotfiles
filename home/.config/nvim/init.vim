@@ -383,6 +383,7 @@ Plug 'prabirshrestha/vim-lsp'
 let g:lsp_text_edit_enabled = 0
 let g:lsp_signature_help_enabled = 0
 let g:lsp_highlight_references_enabled = 1
+let g:lsp_diagnostics_echo_cursor = 1
 highlight link LspErrorText Error
 highlight link LspWarningText Error
 highlight link LspInformationText Error
