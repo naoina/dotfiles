@@ -1,5 +1,11 @@
 snippet for "for" !b
-for (var ${1:i} = 0; $1 < $2; ++$1) {
+for (let ${1:i} = 0; $1 < $2; ++$1) {
+	$0
+}
+endsnippet
+
+snippet forr "for-of" !b
+for (const ${1:v} of $2) {
 	$0
 }
 endsnippet
