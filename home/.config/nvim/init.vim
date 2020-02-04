@@ -388,6 +388,17 @@ highlight link LspErrorText Error
 highlight link LspWarningText Error
 highlight link LspInformationText Error
 highlight link LspHintText Error
+function! s:on_lsp_buffer_enabled() abort
+    setlocal omnifunc=lsp#complete
+    setlocal signcolumn=yes
+    nmap <buffer> gd <plug>(lsp-definition)
+    nmap <buffer> gi <plug>(lsp-implementation)
+endfunction
+
+augroup lsp_install
+    au!
+    autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 
@@ -741,12 +752,6 @@ function! s:go_setting()
         \ ]
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
-  endif
-  if exists(':GoDef')
-    nnoremap <silent><buffer>gd :GoDef<CR>
-  endif
-  if exists(':LspImplementation')
-    nnoremap <silent><buffer>gi :LspImplementation<CR>
   endif
 endfunction
 
