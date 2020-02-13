@@ -357,6 +357,9 @@ let g:go_gocode_unimported_packages = 1
 let g:go_template_autocreate = 0
 let g:go_gocode_propose_source = 0
 
+Plug 'buoto/gotests-vim'
+let g:gotests_template_dir = expand('~/.config/gotests/templates')
+
 function! s:asyncomplete_register_source(name, options) abort
   exec 'augroup' 'Asyncomplete_' . a:name
     exec 'au! User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#' . a:name . '#get_source_options(' . string(extend({
@@ -403,7 +406,8 @@ Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
-Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
+Plug 'buoto/gotests-vim'
+" Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
 Plug 'vim-scripts/Align', { 'on': ['Align'] }
 Plug 'tpope/vim-repeat'
 
