@@ -327,5 +327,29 @@ function ssh-keygen {
     rm -f "$privatekey.tmp"
 }
 
+function use {
+    case "$1" in
+        go*)
+            if [ ! -x "$HOME/sdk/$1" ]; then
+                if [ "$2" != "-u" ]; then
+                    echo "$0: error: $1 not found" >&2
+                    echo "Run \"$0 $1 -u\" to download $1 and use it" >&2
+                    return 1
+                fi
+                local go=$(whence go)
+                if [ ! -x "$go" ]; then
+                    echo "executable go not found in \$PATH" >&2
+                    return 1
+                fi
+                $go get golang.org/dl/$1 && $1 download
+            fi
+            local execfile="$(whence $1)"
+            local target="${execfile%/*}/go"
+            echo "$execfile -> $target"
+            ln -sf "$execfile" "$target"
+            ;;
+    esac
+}
+
 # added by travis gem
 [ -f /home/naoina/.travis/travis.sh ] && source /home/naoina/.travis/travis.sh
