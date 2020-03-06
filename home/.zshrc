@@ -341,7 +341,7 @@ function use {
                     echo "executable go not found in \$PATH" >&2
                     return 1
                 fi
-                $go get golang.org/dl/$1 && $1 download
+                GO111MODULE=off $go get golang.org/dl/$1 && $1 download
             fi
             local execfile="$(whence $1)"
             local target="${execfile%/*}/go"
