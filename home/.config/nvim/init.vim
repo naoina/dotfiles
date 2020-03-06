@@ -759,6 +759,10 @@ function! s:go_setting()
   endif
 endfunction
 
+function! s:gotexttmpl_setting()
+  call s:go_setting()
+endfunction
+
 function! s:gohtmltmpl_setting()
   setlocal tabstop=2 softtabstop=2 shiftwidth=2
   setlocal autoindent
@@ -903,8 +907,8 @@ augroup vimrc
   au BufNewFile,BufRead *.scala     setlocal filetype=scala
   au BufNewFile,BufRead *.mako      setlocal filetype=mako
   au BufNewFile,BufRead .bowerrc    setlocal filetype=javascript
-  au BufNewFile,BufRead *.tmpl      setlocal filetype=gotexttmpl
-  au BufNewFile,BufRead *.html.tmpl setlocal filetype=gohtmltmpl
+  au BufNewFile,BufRead *.tpl      setlocal filetype=gotexttmpl
+  au BufNewFile,BufRead *.html.tpl setlocal filetype=gohtmltmpl
 
   au WinEnter,BufEnter * match FullwidthAndEOLSpace "\(　\|\s\)\+$"
   au WinEnter,BufEnter * setlocal cursorline

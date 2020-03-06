@@ -262,7 +262,7 @@ func ($1 $2) Swap(i, j int) {
 endsnippet
 
 snippet ifcmp "if diff := cmp.Diff()" !b
-if diff := cmp.Diff(actual, expect); diff != "" {
+if diff := cmp.Diff(got, want); diff != "" {
 	t.Errorf("(-got +want)\n%v", diff)
 }
 endsnippet
