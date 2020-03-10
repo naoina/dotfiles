@@ -221,6 +221,7 @@ let g:ale_fixers = {
       \ 'review': text_linters,
       \ 'vue': ['prettier_eslint'],
       \ 'proto': ['clang-format'],
+      \ 'sh': ['shfmt'],
       \ }
 let g:ale_fix_on_save = 1
 

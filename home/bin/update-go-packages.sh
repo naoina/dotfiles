@@ -35,6 +35,7 @@ gopkgs=(
     'github.com/cweill/gotests/...'
     'github.com/direnv/direnv'
     'github.com/ckaznocha/protoc-gen-lint'
+    'github.com/mvdan/sh/cmd/shfmt'
 )
 
 for pkg in ${gopkgs[@]}; do
