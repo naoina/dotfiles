@@ -238,7 +238,7 @@ Plug 'moro/vim-review'
 Plug 'cespare/vim-toml'
 
 Plug 'plasticboy/vim-markdown'
-let g:vim_markdown_folding_disabled = 0
+let g:vim_markdown_folding_disabled = 1
 let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_toml_frontmatter = 1
 let g:vim_markdown_new_list_item_indent = 0
