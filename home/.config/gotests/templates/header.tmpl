@@ -1,7 +1,14 @@
 {{define "header"}}
 {{range .Comments}}{{.}}
 {{end -}}
-package {{.Package}}
+package {{.Package}}{{block "suffix" .Package}}
+	{{- $s := . -}}
+	{{- if gt (len $s) (len "_test") -}}
+		{{- template "suffix" (slice $s 1) -}}
+	{{- else if ne $s "_test" -}}
+		_test
+	{{- end -}}
+{{end}}
 
 import (
 {{range .Imports}}{{.Name}} {{.Path}}
