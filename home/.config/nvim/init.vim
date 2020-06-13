@@ -350,7 +350,6 @@ let g:go_highlight_function_calls = 1
 let g:go_highlight_format_strings = 1
 let g:go_fmt_command = 'goimports'
 let g:go_snippet_engine = 'ultisnipts'
-let g:go_bin_path = expand('$GOROOT/bin/')
 let g:go_def_mapping_enabled = 0
 let g:go_def_mode = 'gopls'
 let g:go_info_mode = 'gopls'
