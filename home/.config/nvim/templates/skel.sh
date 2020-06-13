@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -eu
+
 usage() {
     cat << EOF
 Usage: `basename $0`
