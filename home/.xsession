@@ -29,6 +29,7 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 export QT_QPA_PLATFORMTHEME="qt5ct"
+export QT_AUTO_SCREEN_SCALE_FACTOR=0
 
 if [ -x "`which chromium`" ]; then
     export BROWSER="chromium"
@@ -45,6 +46,7 @@ xset s off
 xset r rate 250 50
 xset b off
 xset -dpms
+xss-lock -- i3lock -n -u &
 #xrandr --dpi 96
 #xinput -set-prop "$(xinput list | perl -ne 'print $1 if /Touchpad\s+id=(\d+)/')" --type=float 'libinput Accel Speed' 1
 syndaemon -i 0.5 -t -k &
