@@ -44,7 +44,7 @@
 [web]
 	browser = xdg-open
 [ghq]
-	root = ~/work/src
+	root = ~/go/src
 [github]
 	user = naoina
 [fetch]
