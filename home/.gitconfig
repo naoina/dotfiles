@@ -57,3 +57,5 @@
 	diffFilter = diff-highlight
 [url "git@github.com:naoina"]
 	insteadOf = https://github.com/naoina
+[pull]
+	ff = only
