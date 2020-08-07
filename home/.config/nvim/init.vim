@@ -360,6 +360,8 @@ let g:go_gocode_propose_source = 0
 Plug 'buoto/gotests-vim'
 let g:gotests_template_dir = expand('~/.config/gotests/templates')
 
+Plug '110y/vim-go-expr-completion', { 'do': 'go get -u github.com/110y/go-expr-completion' }
+
 function! s:asyncomplete_register_source(name, options) abort
   exec 'augroup' 'Asyncomplete_' . a:name
     exec 'au! User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#' . a:name . '#get_source_options(' . string(extend({
@@ -757,6 +759,7 @@ function! s:go_setting()
   if exists(':DlvToggleBreakpoint')
     nnoremap <silent><buffer><leader>b :DlvToggleBreakpoint<CR>
   endif
+  nnoremap <silent><buffer>ge :<C-u>call go#expr#complete()<CR>
 endfunction
 
 function! s:gotexttmpl_setting()
