@@ -78,7 +78,7 @@ if [ -x "`whence go`" ]; then
 fi
 
 if [ -x "`whence fzf`" ]; then
-    export FZF_DEFAULT_OPTS="--color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff' --layout=reverse-list"
+    export FZF_DEFAULT_OPTS="--color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff' --layout=reverse"
 fi
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8

@@ -113,9 +113,10 @@ let g:fzf_action = {
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit',
       \ }
-nnoremap <silent><C-p> :<C-u>call fzf#vim#files(finddir('.git/..', expand('%:p:h') . ';'))<CR>
-nnoremap <silent><C-x><C-p><C-p> :<C-u>call fzf#vim#files('.')<CR>
-nnoremap <silent><C-x><C-p><C-b> :<C-u>call fzf#vim#buffers('')<CR>
+let fzf_options = {'options': ['--layout=reverse-list']}
+nnoremap <silent><C-p> :<C-u>call fzf#vim#files(finddir('.git/..', expand('%:p:h') . ';'), fzf_options)<CR>
+nnoremap <silent><C-x><C-p><C-p> :<C-u>call fzf#vim#files('.', fzf_options)<CR>
+nnoremap <silent><C-x><C-p><C-b> :<C-u>call fzf#vim#buffers('', fzf_options)<CR>
 imap <C-x><C-f> <plug>(fzf-complete-path)
 
 Plug 'kana/vim-altr', { 'on': ['An', 'Ap'] }
