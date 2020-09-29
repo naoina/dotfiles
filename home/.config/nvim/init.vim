@@ -91,16 +91,32 @@ nnoremap <C-c>uh :Unite history/yank<CR>
 nnoremap <C-c>uc :Unite colorscheme -auto-preview<CR>
 nnoremap <C-c>uo :Unite -vertical outline<CR>
 
-Plug 'ctrlpvim/ctrlp.vim'
-let g:ctrlp_types = ['buf', 'mru', 'fil']
-let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20,results:0'
-let g:ctrlp_custom_ignore = {
-      \ 'dir': '\v[\/](,|vendor|node_modules)$',
-      \ 'file': '\v\.(' . join([
-      \     'exe', 'so', 'dll', 'jpe?g', 'png', 'gif', 'ico', 'pdf', 'mp4',
-      \     'ttf', 'svg', 'otf', 'eot', 'woff2?', 'log', 'env(rc)?', 'map',
-      \     ], '|') . ')$'
+" Plug 'ctrlpvim/ctrlp.vim'
+" let g:ctrlp_types = ['buf', 'mru', 'fil']
+" let g:ctrlp_match_window = 'bottom,order:ttb,min:1,max:20,results:0'
+" let g:ctrlp_custom_ignore = {
+"      \ 'dir': '\v[\/](,|vendor|node_modules)$',
+"      \ 'file': '\v\.(' . join([
+"      \     'exe', 'so', 'dll', 'jpe?g', 'png', 'gif', 'ico', 'pdf', 'mp4',
+"      \     'ttf', 'svg', 'otf', 'eot', 'woff2?', 'log', 'env(rc)?', 'map',
+"      \     ], '|') . ')$'
+"      \ }
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+let g:fzf_layout = { 'down': '40%' }
+if has('nvim')
+  autocmd! FileType fzf
+  autocmd  FileType fzf set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+endif
+let g:fzf_action = {
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit',
       \ }
+nnoremap <silent><C-p> :<C-u>call fzf#vim#files(finddir('.git/..', expand('%:p:h') . ';'))<CR>
+nnoremap <silent><C-x><C-p><C-p> :<C-u>call fzf#vim#files('.')<CR>
+nnoremap <silent><C-x><C-p><C-b> :<C-u>call fzf#vim#buffers('')<CR>
+imap <C-x><C-f> <plug>(fzf-complete-path)
 
 Plug 'kana/vim-altr', { 'on': ['An', 'Ap'] }
 function! OnloadVimAltr() abort
@@ -231,7 +247,6 @@ let g:ale_fixers['solidity'] = ['solium']
 let g:ale_linters['solidity'] = ['truffle', 'solhint', 'solium']
 
 Plug 'mattn/webapi-vim'
-Plug 'rking/ag.vim'
 Plug 'tpope/vim-rails'
 Plug 'othree/html5.vim'
 Plug 'moro/vim-review'

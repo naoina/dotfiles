@@ -77,6 +77,10 @@ if [ -x "`whence go`" ]; then
     export GOARCH=`go env GOARCH`
 fi
 
+if [ -x "`whence fzf`" ]; then
+    export FZF_DEFAULT_OPTS="--color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff' --layout=reverse-list"
+fi
+
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
 
 #if [ -x "`whence llvm-gcc`" ]; then
@@ -194,6 +198,7 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
     antigen bundle zsh-users/zsh-completions src
     antigen apply
 
+    zstyle ":anyframe:selector:" use fzf
     bindkey "^R" anyframe-widget-put-history
     bindkey "^T" anyframe-widget-insert-git-branch-all
     bindkey "^Xa" anyframe-widget-git-add

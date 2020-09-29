@@ -15,8 +15,6 @@ gopkgs=(
     'github.com/jackc/pgx'
     'github.com/mattn/go-sqlite3'
     'github.com/go-sql-driver/mysql'
-    'github.com/peco/peco/cmd/peco'
-    'github.com/peco/migemogrep'
     'github.com/koron/gomigemo/cmd/gmigemo'
     'golang.org/x/tools/cmd/stringer'
     'github.com/cespare/prettybench'
@@ -36,6 +34,7 @@ gopkgs=(
     'github.com/direnv/direnv'
     'github.com/ckaznocha/protoc-gen-lint'
     'github.com/mvdan/sh/cmd/shfmt'
+    'github.com/junegunn/fzf'
 )
 
 for pkg in ${gopkgs[@]}; do
