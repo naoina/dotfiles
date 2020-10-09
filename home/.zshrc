@@ -78,7 +78,14 @@ if [ -x "`whence go`" ]; then
 fi
 
 if [ -x "`whence fzf`" ]; then
-    export FZF_DEFAULT_OPTS="--color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff' --layout=reverse"
+    FZF_DEFAULT_OPTS=(
+        --multi
+        --color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff'
+        --layout=reverse
+        --height='75%'
+    )
+    FZF_DEFAULT_OPTS=$(IFS=$'\n'; echo "${FZF_DEFAULT_OPTS[*]}")
+    export FZF_DEFAULT_OPTS
 fi
 
 [ -n "$DISPLAY" ] && export LANG=ja_JP.UTF-8
@@ -196,15 +203,31 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
     . $HOME/.zsh/antigen.zsh
     antigen bundle mollifier/anyframe
     antigen bundle zsh-users/zsh-completions src
+    antigen bundle junegunn/fzf shell/completion.zsh
     antigen bundle Aloxaf/fzf-tab
     antigen apply
 
     zstyle ":anyframe:selector:" use fzf
     bindkey "^R" anyframe-widget-put-history
-    bindkey "^T" anyframe-widget-insert-git-branch-all
+    # bindkey "^T" anyframe-widget-insert-git-branch-all
     bindkey "^Xa" anyframe-widget-git-add
 
     alias r="anyframe-widget-cd-ghq-repository-relative-path"
+
+    FZF_TAB_COMMAND=(
+        fzf
+        --ansi
+        --expect='$continuous_trigger,$print_query'
+        --nth=2,3
+        --delimiter='\x00'
+        --height='${FZF_TMUX_HEIGHT:=75%}'
+        --tiebreak=begin
+        --cycle
+        '--query=$query'
+        '--header-lines=$#headers'
+        --print-query
+    )
+    zstyle ':fzf-tab:*' command $FZF_TAB_COMMAND
 fi
 
 if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then

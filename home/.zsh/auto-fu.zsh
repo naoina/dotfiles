@@ -776,7 +776,7 @@ afu+complete-word () {
           local y="((*-)#directories|all-files|(command|executable)s)"
           y=${AUTO_FU_PATHITH:-${y}}
           local -a x; x=${(M)${(@z)"${_lastcomp[tags]}"}:#${~y}}
-          zle complete-word
+          zle expand-word
           [[ -n $x ]] && zle -U "$LBUFFER[-1]"
           return
         };;
