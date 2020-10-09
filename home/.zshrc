@@ -196,6 +196,7 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
     . $HOME/.zsh/antigen.zsh
     antigen bundle mollifier/anyframe
     antigen bundle zsh-users/zsh-completions src
+    antigen bundle Aloxaf/fzf-tab
     antigen apply
 
     zstyle ":anyframe:selector:" use fzf
@@ -210,8 +211,8 @@ if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
     . $HOME/.zsh/auto-fu.zsh
     AUTO_FU_NOCP=1
     zle-line-init () {auto-fu-init;}; zle -N zle-line-init
-    zstyle ':completion:*' completer _oldlist _complete
-    zle -N zle-keymap-select auto-fu-zle-keymap-select
+    # zstyle ':completion:*' completer _oldlist _complete
+    # zle -N zle-keymap-select auto-fu-zle-keymap-select
     zstyle ':auto-fu:var' postdisplay $''
 fi
 

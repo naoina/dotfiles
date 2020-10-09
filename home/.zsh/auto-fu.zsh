@@ -320,9 +320,9 @@ afu-install () {
 
   bindkey -N afu emacs
   { "$@" }
-  bindkey -M afu "^I" afu+complete-word
-  bindkey -M afu "^M" afu+accept-line
-  bindkey -M afu "^J" afu+accept-line
+  # bindkey -M afu "^I" afu+complete-word
+  # bindkey -M afu "^M" afu+accept-line
+  # bindkey -M afu "^J" afu+accept-line
   bindkey -M afu "^O" afu+accept-line-and-down-history
   bindkey -M afu "^[a" afu+accept-and-hold
   bindkey -M afu "^X^[" afu+vi-cmd-mode
