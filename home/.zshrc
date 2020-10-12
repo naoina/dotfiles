@@ -83,6 +83,7 @@ if [ -x "`whence fzf`" ]; then
         --color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff'
         --layout=reverse
         --height='75%'
+        --bind='ctrl-f:page-down,ctrl-b:page-up,tab:down,btab:up,ctrl-/:toggle+down,ctrl-^:toggle+down'
     )
     FZF_DEFAULT_OPTS=$(IFS=$'\n'; echo "${FZF_DEFAULT_OPTS[*]}")
     export FZF_DEFAULT_OPTS
