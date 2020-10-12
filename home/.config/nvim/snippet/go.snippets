@@ -243,6 +243,10 @@ snippet e "fmt.Errorf()" !w
 fmt.Errorf("$0")
 endsnippet
 
+snippet ree "return fmt.Errorf()" !w
+return fmt.Errorf("${1:failed to ${2}}: %w", err)
+endsnippet
+
 snippet tfe "t.Fatal(err)" !b
 t.Fatal(err)
 endsnippet
