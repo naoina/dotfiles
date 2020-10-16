@@ -72,6 +72,14 @@ export HC_OPTS="-W"
 export VIRTUALENV_USE_DISTRIBUTE=1
 export WORKON_HOME="$HOME/work/virtualenv"
 
+function ealias() {
+    alias $@
+    local args="$@"
+    args=${args%%\=*}
+    zstyle -a ':globalias:var' filters filters
+    filters+=(${args##* })
+    zstyle ':globalias:var' filters $filters
+}
 
 if [ -x "`whence go`" ]; then
     export GOOS=`go env GOOS`
@@ -138,7 +146,7 @@ case "$OSTYPE" in
 	;;
     freebsd*)
         alias ls="/bin/ls -AGw"
-        alias fetch="fetch -r"
+        ealias fetch="fetch -r"
         ;;
     *)
 	alias ls="/bin/ls -A"
@@ -155,20 +163,20 @@ esac
 [[ -x "`whence -p rascut`" ]] && alias rascut="_JAVA_OPTIONS=-Duser.language=en `whence rascut`"
 [[ -x "`whence -p mplayer`" ]] && alias mplayer="`whence mplayer` -softvol"
 [[ -x "`whence -p ctags`" ]] && alias ctags="ctags --sort=foldcase"
-[[ -x "`whence -p tree`" ]] && alias tree="tree --charset ascii"
+[[ -x "`whence -p tree`" ]] && ealias tree="tree --charset ascii"
 [[ -x "`whence -p cdrecord`" ]] && alias cdrecord="cdrecord driveropts=burnfree"
 [[ -x "`whence -p wodim`" ]] && alias wodim="wodim driveropts=burnfree"
-[[ -x "`whence -p emacs`" ]] && alias emacs="emacs -nw"
-[[ -x "`whence -p display`" ]] && alias display="display -geometry +0+0"
+[[ -x "`whence -p emacs`" ]] && ealias emacs="emacs -nw"
+[[ -x "`whence -p display`" ]] && ealias display="display -geometry +0+0"
 [[ -x "`whence -p rhino`" ]] && alias rhino="rlwrap java -jar /usr/share/java/js.jar"
-[[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && alias exit="screen -d $STY"
-[[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && alias exit="tmux detach"
-[[ -x "`whence -p dig`" ]] && alias dig="dig +noedns"
-[[ -x "`whence -p ios_webkit_debug_proxy`" ]] && alias ios_webkit_debug_proxy="ios_webkit_debug_proxy -f http://chrome-devtools-frontend.appspot.com/static/18.0.1025.74/devtools.html"
+[[ -x "`whence -p screen`" ]] && [ -n "$STY" ] && ealias exit="screen -d $STY"
+[[ -x "`whence -p tmux`" ]] && [ -n "$TMUX" ] && ealias exit="tmux detach"
+[[ -x "`whence -p dig`" ]] && ealias dig="dig +noedns"
+[[ -x "`whence -p ios_webkit_debug_proxy`" ]] && ealias ios_webkit_debug_proxy="ios_webkit_debug_proxy -f http://chrome-devtools-frontend.appspot.com/static/18.0.1025.74/devtools.html"
 if [ -x "`whence -p virtualenvwrapper.sh`" ]; then
     . "`whence -p virtualenvwrapper.sh`"
 else
-    [[ -x "`whence -p virtualenv`" ]] && alias virtualenv="virtualenv --no-site-packages"
+    [[ -x "`whence -p virtualenv`" ]] && ealias virtualenv="virtualenv --no-site-packages"
 fi
 if [ -x "`whence -p smlsharp`" ]; then
     if [ -x "`whence -p rlwrap`" ]; then
@@ -184,15 +192,15 @@ if [[ -x "$(whence -p direnv)" ]]; then
     eval "$(direnv hook zsh)"
 fi
 
-alias ll="ls -l"
-alias lz="ll -Z"
+ealias ll="ls -l"
+ealias lz="ll -Z"
 alias df="df -h"
 alias du="du -h"
-alias gprof="gprof -b"
+ealias gprof="gprof -b"
 alias grep="grep --color=auto -I"
 # alias yaourt="yaourt --tmp /home/tmp"
-alias gp="git pull"
-alias sduo="sudo"
+ealias gp="git pull"
+ealias sduo="sudo"
 alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xargs pip install -U pip'
 
 # ulimit -c unlimited
@@ -213,7 +221,7 @@ function --antigen-init--() {
     # bindkey "^T" anyframe-widget-insert-git-branch-all
     bindkey "^Xa" anyframe-widget-git-add
 
-    alias r="anyframe-widget-cd-ghq-repository-relative-path"
+    ealias r="anyframe-widget-cd-ghq-repository-relative-path"
 
     FZF_TAB_COMMAND=(
         fzf
