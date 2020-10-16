@@ -85,7 +85,7 @@ if [ -x "`whence fzf`" ]; then
         --height='75%'
         --bind='ctrl-f:page-down,ctrl-b:page-up,tab:down,btab:up,ctrl-/:toggle+down,ctrl-^:toggle+down'
     )
-    FZF_DEFAULT_OPTS=$(IFS=$'\n'; echo "${FZF_DEFAULT_OPTS[*]}")
+    FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"
     export FZF_DEFAULT_OPTS
 fi
 
