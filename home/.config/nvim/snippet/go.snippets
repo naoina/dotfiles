@@ -243,8 +243,12 @@ snippet e "fmt.Errorf()" !w
 fmt.Errorf("$0")
 endsnippet
 
-snippet ree "return fmt.Errorf()" !w
+snippet ree "return fmt.Errorf()" !b
 return fmt.Errorf("${1:failed to ${2}}: %w", err)
+endsnippet
+
+snippet rnee "return nil, fmt.Errorf()" !b
+return nil, fmt.Errorf("${1:failed to ${2}}: %w", err)
 endsnippet
 
 snippet tfe "t.Fatal(err)" !b
