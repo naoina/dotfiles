@@ -8,7 +8,7 @@
 	ciac = commit --amend -c HEAD
 	ciad = commit --amend -C HEAD --reset-author
 	co = checkout
-	st = status
+	st = !git -c color.status=always status | fzf --ansi | sed -Ee 's/^\\s*(.+:)?\\s*//'
 	resolve = mergetool
 	glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
 	dic = diff --cached
