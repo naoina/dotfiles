@@ -203,6 +203,10 @@ ealias gp="git pull"
 ealias sduo="sudo"
 alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xargs pip install -U pip'
 
+ealias -g F='| fzf'
+ealias -g FV='| fzf | xargs -r $EDITOR'
+ealias -g VV='| xargs -r $EDITOR'
+
 # ulimit -c unlimited
 umask 022
 export NVM_DIR="$(readlink -f $HOME/.nvm)"
