@@ -72,6 +72,7 @@ export HC_OPTS="-W"
 export VIRTUALENV_USE_DISTRIBUTE=1
 export WORKON_HOME="$HOME/work/virtualenv"
 
+
 if [ -x "`whence go`" ]; then
     export GOOS=`go env GOOS`
     export GOARCH=`go env GOARCH`
@@ -200,8 +201,7 @@ export NVM_DIR="$(readlink -f $HOME/.nvm)"
 source $NVM_DIR/nvm.sh
 source $NVM_DIR/bash_completion
 
-if [[ -f $HOME/.zsh/antigen.zsh ]]; then
-    . $HOME/.zsh/antigen.zsh
+function --antigen-init--() {
     antigen bundle mollifier/anyframe
     antigen bundle zsh-users/zsh-completions src
     antigen bundle junegunn/fzf shell/completion.zsh
@@ -229,30 +229,37 @@ if [[ -f $HOME/.zsh/antigen.zsh ]]; then
         --print-query
     )
     zstyle ':fzf-tab:*' command $FZF_TAB_COMMAND
-fi
+}
 
-if [[ -f $HOME/.zsh/auto-fu.zsh ]]; then
-    . $HOME/.zsh/auto-fu.zsh
+function --auto-fu-init--() {
     AUTO_FU_NOCP=1
     zle-line-init () {auto-fu-init;}; zle -N zle-line-init
     # zstyle ':completion:*' completer _oldlist _complete
     # zle -N zle-keymap-select auto-fu-zle-keymap-select
     zstyle ':auto-fu:var' postdisplay $''
-fi
+}
 
-if [[ -f $HOME/.zsh/load-nvmrc.zsh ]]; then
-    . $HOME/.zsh/load-nvmrc.zsh
+function --load-nvmrc-init--() {
     autoload -U add-zsh-hook
     add-zsh-hook chpwd load-nvmrc
     load-nvmrc
-fi
+}
 
-if [[ -f $HOME/.zsh/activate-venv.zsh ]]; then
-    . $HOME/.zsh/activate-venv.zsh
+function --activate-venv-init--() {
     autoload -U add-zsh-hook
     add-zsh-hook chpwd activate-venv
     activate-venv
-fi
+}
+
+for plug in $HOME/.zsh/*.zsh; do
+    if [[ -f "$plug" ]]; then
+        . "$plug"
+        local initfunc="--${${${plug##*/}%.zsh}#??-}-init--"
+        if type -- "$initfunc" | grep -q 'function'; then
+            "$initfunc"
+        fi
+    fi
+done
 
 if [[ -x "`whence -p gpg-agent`" ]]; then
     export GPG_TTY=$(tty)
