@@ -18,7 +18,7 @@
 	ignored = !git ls-files -v | grep "^[a-z]"
 	pr = pull-request
 	cleanup = !git branch --merged | grep -v '*' | xargs -n 1 git branch -d
-	g = grep -P
+	g = !zsh -c 'git grep --color=always -P \"$1\" | fzf --ansi | cut -d \":\" -f 1 | xargs -r $EDITOR' -
 [color]
 	ui = auto
 [core]
