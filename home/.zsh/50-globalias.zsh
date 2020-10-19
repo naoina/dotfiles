@@ -28,9 +28,16 @@ function globalias() {
         zle _expand_alias
         zle expand-word
     fi
-    zle accept-line
+    if [[ "$KEYS" = ' ' ]]; then
+        zle self-insert
+    else
+        zle accept-line
+    fi
 }
-
 zle -N globalias
+
+bindkey -M emacs " " globalias
+bindkey -M viins " " globalias
+
 bindkey -M emacs "^M" globalias
 bindkey -M viins "^M" globalias
