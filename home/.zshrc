@@ -89,7 +89,7 @@ fi
 if [ -x "`whence fzf`" ]; then
     FZF_DEFAULT_OPTS=(
         --multi
-        --color='fg+:#000000,bg+:#ff00ff,gutter:#ffffff,hl:#00ffff,hl+:#00ffff'
+        --color='fg+:-1,bg+:255,gutter:-1,hl:142,hl+:142'
         --layout=reverse
         --height='75%'
         --bind='ctrl-f:page-down,ctrl-b:page-up,tab:down,btab:up,ctrl-/:toggle+down,ctrl-^:toggle+down'
@@ -241,6 +241,7 @@ function --antigen-init--() {
         --print-query
     )
     zstyle ':fzf-tab:*' command $FZF_TAB_COMMAND
+    zstyle ':fzf-tab:*' no-group-color ''
 }
 
 function --auto-fu-init--() {
