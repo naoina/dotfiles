@@ -202,6 +202,7 @@ alias grep="grep --color=auto -I"
 ealias gp="git pull"
 ealias sduo="sudo"
 alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xargs pip install -U pip'
+ealias cdd='local dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"; unset dir'
 
 ealias -g F='| fzf'
 ealias -g FV='| fzf | xargs -r $EDITOR'
