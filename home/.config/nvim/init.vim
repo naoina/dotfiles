@@ -422,6 +422,18 @@ augroup lsp_install
 augroup END
 Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'mattn/vim-lsp-settings'
+let g:lsp_settings = {
+      \ 'gopls': {
+        \ 'initialization_options': {
+          \ 'diagnostics': v:true,
+          \ 'completeUnimported': v:true,
+          \ 'matcher': 'fuzzy',
+          \ 'usePlaceholders': v:true,
+        \ }
+      \ }
+    \ }
+Plug 'hrsh7th/vim-vsnip'
+Plug 'hrsh7th/vim-vsnip-integ'
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'buoto/gotests-vim'
