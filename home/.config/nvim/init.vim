@@ -357,7 +357,7 @@ let g:coffee_compile_vert = 1
 
 Plug 'mustache/vim-mustache-handlebars'
 
-Plug 'fatih/vim-go'
+" Plug 'fatih/vim-go'
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 0
 let g:go_highlight_extra_types = 1
@@ -401,10 +401,11 @@ Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 call s:asyncomplete_register_source('ultisnips', {})
 Plug 'prabirshrestha/async.vim'
 Plug 'prabirshrestha/vim-lsp'
-let g:lsp_text_edit_enabled = 0
+let g:lsp_text_edit_enabled = 1
 let g:lsp_signature_help_enabled = 0
 let g:lsp_highlight_references_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 0
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_document_code_action_signs_enabled = 0
 highlight link LspErrorText Error
 highlight link LspWarningText Error
 highlight link LspInformationText Error
@@ -425,15 +426,15 @@ Plug 'mattn/vim-lsp-settings'
 let g:lsp_settings = {
       \ 'gopls': {
         \ 'initialization_options': {
-          \ 'diagnostics': v:true,
           \ 'completeUnimported': v:true,
           \ 'matcher': 'fuzzy',
           \ 'usePlaceholders': v:true,
+          \ 'staticcheck': v:true,
         \ }
       \ }
     \ }
-Plug 'hrsh7th/vim-vsnip'
-Plug 'hrsh7th/vim-vsnip-integ'
+Plug 'thomasfaingnaert/vim-lsp-snippets'
+Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
 Plug 'buoto/gotests-vim'
