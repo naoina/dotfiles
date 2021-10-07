@@ -203,6 +203,7 @@ ealias gp="git pull"
 ealias sduo="sudo"
 alias pipupgrade=$'pip list --outdated --format=legacy | awk \'{print $1}\' | xargs pip install -U pip'
 ealias cdd='local dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"; unset dir'
+ealias cdr='cd "$(git rev-parse --show-toplevel 2> /dev/null)"'
 
 ealias -g F='| fzf'
 ealias -g FV='| fzf | xargs -r $EDITOR'
