@@ -2,6 +2,8 @@
 	name = Naoya Inada
 	email = naoina@kuune.org
 	signingkey = 5EA11523
+[init]
+	defaultBranch = main
 [alias]
 	ci = commit
 	cia = commit --amend -C HEAD
