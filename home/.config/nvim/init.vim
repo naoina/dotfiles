@@ -441,6 +441,7 @@ Plug 'buoto/gotests-vim'
 " Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
 Plug 'vim-scripts/Align', { 'on': ['Align'] }
 Plug 'tpope/vim-repeat'
+Plug 'editorconfig/editorconfig-vim'
 
 Plug 'Yggdroot/indentLine', { 'for': ['coffee', 'python', 'jade', 'pug', 'stylus', 'haml'] }
 let g:indentLine_enabled = 0
