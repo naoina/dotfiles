@@ -54,7 +54,7 @@ syndaemon -i 0.5 -t -k &
 # uim-xim &
 # scim -d
 # ibus-daemon --xim -d
-fcitx-autostart
+fcitx5 -d
 start-pulseaudio-x11
 blueman-applet &
 # touchegg >/dev/null 2>&1 &
