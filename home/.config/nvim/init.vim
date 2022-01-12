@@ -231,12 +231,12 @@ function! s:protocol_markdown(buffer) abort
 endfunction
 let g:ale_fixers = {
       \ 'go': ['goimports'],
-      \ 'javascript': ['prettier_eslint'],
-      \ 'typescript': ['prettier_eslint'],
+      \ 'javascript': ['prettier', 'eslint'],
+      \ 'typescript': ['prettier', 'eslint'],
       \ 'python': ['autopep8', 'isort'],
       \ 'markdown': text_linters + [funcref('s:protocol_markdown')],
       \ 'review': text_linters,
-      \ 'vue': ['prettier_eslint'],
+      \ 'vue': ['prettier', 'eslint'],
       \ 'proto': ['clang-format'],
       \ 'sh': ['shfmt'],
       \ }
