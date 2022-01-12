@@ -461,6 +461,7 @@ augroup VimMQL5
 augroup END
 
 Plug 'tomlion/vim-solidity'
+Plug 'jparise/vim-graphql'
 
 call plug#helptags()
 call plug#end()
