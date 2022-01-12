@@ -404,5 +404,8 @@ function use {
     esac
 }
 
+# Disable ^S
+stty stop undef
+
 # added by travis gem
 [ -f /home/naoina/.travis/travis.sh ] && source /home/naoina/.travis/travis.sh
