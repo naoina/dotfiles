@@ -4,6 +4,9 @@ themehome = awful.util.getdir("config") .. "/theme"
 
 theme = {}
 
+-- You can use your own command to set your wallpaper
+theme.wallpaper = os.getenv("HOME") .. "/media/image/clarisanimeJK.png"
+
 theme.font          = "Monospace Bold 7"
 
 theme.bg_normal     = "#222222"
@@ -72,9 +75,6 @@ theme.titlebar_maximized_button_normal_inactive = themehome .. "/titlebar/maximi
 theme.titlebar_maximized_button_focus_inactive  = themehome .. "/titlebar/maximized_focus_inactive.png"
 theme.titlebar_maximized_button_normal_active = themehome .. "/titlebar/maximized_normal_active.png"
 theme.titlebar_maximized_button_focus_active  = themehome .. "/titlebar/maximized_focus_active.png"
-
--- You can use your own command to set your wallpaper
-theme.wallpaper = os.getenv("HOME") .. "/media/image/Anihonetwallpaper17746.jpg"
 
 -- You can use your own layout icons like this:
 theme.layout_fairh = themehome .. "/layouts/fairhw.png"
