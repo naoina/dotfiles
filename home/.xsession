@@ -31,10 +31,10 @@ export XMODIFIERS=@im=fcitx
 export QT_QPA_PLATFORMTHEME="qt5ct"
 export QT_AUTO_SCREEN_SCALE_FACTOR=0
 
-if [ -x "`which chromium`" ]; then
+if [ -x "`which google-chrome-stable`" ]; then
+    export BROWSER="google-chrome-stable"
+elif [ -x "`which chromium`" ]; then
     export BROWSER="chromium"
-elif [ -x "`which google-chrome`" ]; then
-    export BROWSER="google-chrome"
 elif [ -x "`which firefox`" ]; then
     export BROWSER="firefox"
 fi
