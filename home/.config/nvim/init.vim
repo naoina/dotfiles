@@ -239,6 +239,9 @@ let g:ale_fixers = {
       \ 'vue': ['prettier', 'eslint'],
       \ 'proto': ['clang-format'],
       \ 'sh': ['shfmt'],
+      \ 'tf': ['terraform'],
+      \ 'typescriptreact': ['prettier'],
+      \ 'css': ['prettier'],
       \ }
 let g:ale_fix_on_save = 1
 
@@ -335,7 +338,7 @@ let g:colorv_no_global_map = 1
 let g:colorv_preview_ftype = join(g:colorv_filetypes, ',')
 
 Plug 'mattn/emmet-vim', {
-      \ 'for': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gohtmltmpl'],
+      \ 'for': ['html', 'xhtml', 'xml', 'htmldjango', 'mako', 'eruby', 'php', 'smarty', 'vue', 'gohtmltmpl', 'typescriptreact'],
       \ }
 
 Plug 'klen/python-mode', { 'for': ['python'] }
