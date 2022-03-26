@@ -87,6 +87,9 @@ if [ -x "`whence go`" ]; then
 fi
 
 if [ -x "`whence fzf`" ]; then
+    if [ -x "`whence fd`" ]; then
+        export FZF_DEFAULT_COMMAND='fd --type f'
+    fi
     FZF_DEFAULT_OPTS=(
         --multi
         --color='fg+:-1,bg+:255,gutter:-1,hl:142,hl+:142'
