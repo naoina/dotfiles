@@ -193,6 +193,7 @@ let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'go': ['go build', 'go vet'],
       \ 'review': ['review-compile'],
+      \ 'graphql': ['gqlint'],
       \ }
 let g:ale_python_mypy_options = '--ignore-missing-imports'
 let text_linters = [
@@ -239,9 +240,10 @@ let g:ale_fixers = {
       \ 'vue': ['prettier', 'eslint'],
       \ 'proto': ['clang-format'],
       \ 'sh': ['shfmt'],
-      \ 'tf': ['terraform'],
+      \ 'terraform': ['terraform'],
       \ 'typescriptreact': ['prettier'],
       \ 'css': ['prettier'],
+      \ 'graphql': ['prettier'],
       \ }
 let g:ale_fix_on_save = 1
 
