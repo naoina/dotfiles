@@ -467,6 +467,7 @@ augroup END
 
 Plug 'tomlion/vim-solidity'
 Plug 'jparise/vim-graphql'
+Plug 'hashivim/vim-terraform'
 
 call plug#helptags()
 call plug#end()
