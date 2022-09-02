@@ -325,6 +325,7 @@ let g:quickrun_config = {
       \       'type': 'javascript/nodejs',
       \   },
       \ }
+nnoremap <silent><leader>r :QuickRun<CR>
 
 Plug 'mattn/gist-vim', { 'on': 'Gist' }
 let g:gist_detect_filetype = 1
