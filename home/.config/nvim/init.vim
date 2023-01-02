@@ -468,6 +468,7 @@ augroup END
 Plug 'tomlion/vim-solidity'
 Plug 'jparise/vim-graphql'
 Plug 'hashivim/vim-terraform'
+Plug 'jjo/vim-cue'
 Plug 'rbtnn/vim-ambiwidth'
 
 call plug#helptags()
