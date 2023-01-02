@@ -108,12 +108,12 @@ fi
 #    export CXX="llvm-g++"
 #fi
 
-if [ -x "`whence nvim`" ]; then
-    export EDITOR="`whence nvim`"
-    alias vi="`whence nvim`"
-elif [ -x "`whence vim`" ]; then
+if [ -x "`whence vim`" ]; then
     export EDITOR="`whence vim`"
     alias vi="`whence vim`"
+elif [ -x "`whence nvim`" ]; then
+    export EDITOR="`whence nvim`"
+    alias vi="`whence nvim`"
 else
     export EDITOR="`whence vi`"
 fi

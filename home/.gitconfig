@@ -10,7 +10,7 @@
 	ciac = commit --amend -c HEAD
 	ciad = commit --amend -C HEAD --reset-author
 	co = checkout
-	st = !git -c color.status=always status | fzf --ansi | sed -Ee 's/^\\s*(.+:)?\\s*//' | xargs -r $EDITOR
+	st = !git -c color.status=always status | fzf --ansi | sed -Ee 's/^\\s*(.+:)?\\s*//' | xargs -r -o $EDITOR
 	resolve = mergetool
 	glog = log --graph --date-order -C -M --pretty=format:'<%h> %ad [%an] %Cgreen%d%Creset %s' --all --date=short
 	dic = diff --cached
@@ -20,11 +20,11 @@
 	ignored = !git ls-files -v | grep "^[a-z]"
 	pr = pull-request
 	cleanup = !git branch --merged | grep -v '*' | xargs -n 1 git branch -d
-	g = !zsh -c 'git grep --color=always -P \"$@\" | fzf --ansi | cut -d \":\" -f 1 | xargs -r $EDITOR' -
+	g = !zsh -c 'git grep --color=always -P \"$@\" | fzf --ansi | cut -d \":\" -f 1 | xargs -r -o $EDITOR' -
 [color]
 	ui = auto
 [core]
-	editor = nvim
+	editor = vim
 	quotepath = false
 [merge]
 	tool = git-vimdiff

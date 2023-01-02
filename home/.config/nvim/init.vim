@@ -469,6 +469,7 @@ augroup END
 Plug 'tomlion/vim-solidity'
 Plug 'jparise/vim-graphql'
 Plug 'hashivim/vim-terraform'
+Plug 'rbtnn/vim-ambiwidth'
 
 call plug#helptags()
 call plug#end()
@@ -505,7 +506,6 @@ set showcmd
 set shortmess+=Iw
 set iminsert=1
 set cinkeys+=;
-set ambiwidth=double
 set foldopen=block,hor,jump,mark,percent,quickfix,search,tag,undo
 set foldlevel=0
 set browsedir=buffer
@@ -524,6 +524,7 @@ set fileencodings=ucs-bom,utf-8,japan,cp932,utf-16,utf-8
 set fileformats=unix,dos,mac
 set nofixendofline
 set updatetime=500
+set fillchars+=vert:\|
 
 " reload with encoding.
 command! EncUTF8      e ++enc=utf-8
