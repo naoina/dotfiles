@@ -363,7 +363,7 @@ let g:coffee_compile_vert = 1
 
 Plug 'mustache/vim-mustache-handlebars'
 
-" Plug 'fatih/vim-go'
+Plug 'fatih/vim-go'
 let g:go_fmt_fail_silently = 1
 let g:go_fmt_autosave = 0
 let g:go_highlight_extra_types = 1
@@ -443,7 +443,6 @@ Plug 'thomasfaingnaert/vim-lsp-snippets'
 Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 
 Plug 'sebdah/vim-delve', { 'for': ['go'] }
-Plug 'buoto/gotests-vim'
 " Plug 'tcnksm/gotests', { 'rtp': 'editor/vim' }
 Plug 'vim-scripts/Align', { 'on': ['Align'] }
 Plug 'tpope/vim-repeat'
