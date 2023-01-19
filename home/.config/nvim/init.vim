@@ -189,6 +189,7 @@ Plug 'w0rp/ale'
 let g:ale_lint_on_enter = 1
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
+let g:ale_virtualtext_cursor = 0
 let g:ale_linters = {
       \ 'javascript': ['eslint'],
       \ 'go': ['go build', 'go vet'],
@@ -410,7 +411,9 @@ Plug 'prabirshrestha/vim-lsp'
 let g:lsp_text_edit_enabled = 1
 let g:lsp_signature_help_enabled = 0
 let g:lsp_highlight_references_enabled = 1
+let g:lsp_diagnostics_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_diagnostics_virtual_text_enabled = 0
 let g:lsp_document_code_action_signs_enabled = 0
 highlight link LspErrorText Error
 highlight link LspWarningText Error
