@@ -55,6 +55,7 @@
 	enabled = true
 [commit]
 	gpgsign = true
+	template = ~/.gitmessage.txt
 [interactive]
 	diffFilter = diff-highlight
 [url "git@github.com:naoina"]
