@@ -225,6 +225,14 @@ local function create_goimpl_complete_func()
   end
 end
 
+local function to_snake_case(s)
+  return s:gsub("%u", "_%1"):gsub("^_", ""):lower()
+end
+
+local function to_upper_case(s)
+  return s:gsub("_%l", string.upper):gsub("^%l", string.upper)
+end
+
 require("lazy").setup({
   { "folke/lazy.nvim" },
   {
@@ -1205,8 +1213,22 @@ augroup("LspAttach", function(group)
       define_keymap("n", "[d", vim.diagnostic.goto_prev, { buffer = bufnr, desc = "vim.diagnostic.goto_prev" })
       define_keymap("n", "]d", vim.diagnostic.goto_next, { buffer = bufnr, desc = "vim.diagnostic.goto_next" })
       define_keymap("n", "K", vim.lsp.buf.hover, { buffer = bufnr, desc = [[LSP request "textDocument/hover"]] })
-      -- define_keymap("n", "D", vim.diagnostic.open_float, { buffer = bufnr, desc = "vim.diagnostic.open_float" })
       define_command("LspDiagnosticOpenFloat", vim.diagnostic.open_float, { desc = "vim.diagnostic.open_float" })
+      local methods = {}
+      for k, _ in pairs(vim.lsp.handlers) do
+        if k:match("^textDocument/") and k ~= "textDocument/publishDiagnostics" and k ~= "textDocument/codeAction" then
+          table.insert(methods, k)
+        end
+      end
+      for _, k in pairs(methods) do
+        local base = k:gsub("^textDocument/", "")
+        local method = to_snake_case(base)
+        if vim.lsp.buf[method] then
+          define_command("Lsp" .. to_upper_case(base), function()
+            vim.lsp.buf[method]()
+          end, { desc = [[LSP request "]] .. k .. [["]] })
+        end
+      end
       define_command("LspCodeAction", function()
         require("actions-preview").code_actions()
       end, { desc = [[LSP request "textDocument/codeAction"]] })
