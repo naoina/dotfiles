@@ -396,6 +396,10 @@ require("lazy").setup({
           },
         },
       })
+      for k, _ in pairs(builtin) do
+        local cmd = "Telescope " .. k
+        define_command(cmd, nil, { desc = cmd })
+      end
     end),
   },
   {
