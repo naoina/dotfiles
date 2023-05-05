@@ -920,10 +920,10 @@ require("lazy").setup({
             {
               "diagnostics",
               diagnostics_color = {
-                error = { gui = "bold" },
-                warn = { gui = "bold" },
-                info = { gui = "bold" },
-                hint = { gui = "bold" },
+                error = "DiagnosticError",
+                warn = "DiagnosticWarn",
+                info = "DiagnosticInfo",
+                hint = "DiagnosticHint",
               },
             },
             {
