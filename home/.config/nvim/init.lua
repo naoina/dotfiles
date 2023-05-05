@@ -523,12 +523,8 @@ require("lazy").setup({
   },
   {
     "tpope/vim-fugitive",
-    cmd = init(function()
-      return {
-        define_command("Git blame", function()
-          vim.cmd.Git("blame")
-        end, { desc = "git blame" }),
-      }
+    config = setup(function()
+      define_command("Git blame", nil, { desc = "git blame" })
     end),
   },
   {
