@@ -297,6 +297,14 @@ require("lazy").setup({
         define_keymap("n", "<C-x><C-p><C-h>", function()
           require(builtin).highlights()
         end, { desc = "Telescope highlights" }),
+        define_keymap("n", "<C-x><C-p><C-g>", function()
+          local cwd = get_git_root()
+          if vim.fn.getreg("/") == "" then
+            require(builtin).live_grep({ cwd = cwd })
+          else
+            require(builtin).grep_string({ cwd = cwd })
+          end
+        end, { desc = "Telescope grep" }),
         define_keymap("n", "<C-q>", function()
           require(builtin).diagnostics()
         end, { desc = "Telescope diagnostics" }),
@@ -360,6 +368,12 @@ require("lazy").setup({
         },
         pickers = vim.tbl_deep_extend("force", pickers, {
           find_files = {
+            sorting_strategy = "ascending",
+          },
+          live_grep = {
+            sorting_strategy = "ascending",
+          },
+          grep_string = {
             sorting_strategy = "ascending",
           },
           highlights = {
@@ -1077,6 +1091,7 @@ vim.keymap.set("n", "<C-l>", function()
   if exists(":RCReset") then
     vim.cmd("RCReset")
   end
+  vim.fn.setreg("/", "")
   vim.api.nvim_echo({ { "", "" } }, false, {})
 end, { silent = true })
 vim.keymap.set("n", "<C-k>", "<C-w>W", { silent = true })
