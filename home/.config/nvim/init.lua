@@ -707,12 +707,18 @@ require("lazy").setup({
           }),
         },
         mapping = M.mapping.preset.insert({
+          ["<Esc>"] = M.mapping(function(fallback)
+            require("luasnip").unlink_current()
+            fallback()
+          end, { "i", "s" }),
           ["<Tab>"] = M.mapping(function(fallback)
-            if require("luasnip").expand_or_jumpable() then
+            if require("luasnip").expand_or_locally_jumpable() then
               if not require("luasnip").expand_or_jump() then
                 fallback()
               end
-            elseif not M.confirm({ select = true }) then
+              return
+            end
+            if not M.confirm({ select = true }) then
               fallback()
             end
           end, { "i", "s" }),
