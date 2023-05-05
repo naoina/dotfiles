@@ -279,6 +279,10 @@ require("lazy").setup({
           require(builtin).find_files({ cwd = get_git_root() })
         end, { desc = "Telescope find_files cwd=git_root" }),
         define_keymap("c", "<C-p>", function()
+          if vim.fn.getcmdtype():match("[/?]") then
+            require(builtin).search_history()
+            return
+          end
           vim.fn.setcmdline("")
           require(builtin).command_history({
             filter_fn = filter_fn,
