@@ -724,9 +724,14 @@ require("lazy").setup({
             end
           end, { "i", "s" }),
           ["<CR>"] = M.mapping.confirm({ select = true }),
-          ["<C-e>"] = function(fallback)
+          ["<C-e>"] = M.mapping(function(fallback)
+            local has_copilot, copilot_enabled = pcall(vim.fn["copilot#Enabled"])
+            if has_copilot and copilot_enabled and vim.fn["copilot#GetDisplayedSuggestion"]().text ~= "" then
+              vim.api.nvim_feedkeys(vim.fn["copilot#Accept"](fallback), "i", false)
+              return
+            end
             fallback()
-          end,
+          end, { "i" }),
         }),
       })
     end),
@@ -1034,6 +1039,13 @@ require("lazy").setup({
       M.setup({
         telescope = require("telescope.config").pickers.find_files,
       })
+    end),
+  },
+  {
+    "github/copilot.vim",
+    config = setup(function()
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_no_tab_map = true
     end),
   },
 }, {
