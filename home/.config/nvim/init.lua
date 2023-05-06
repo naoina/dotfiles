@@ -686,6 +686,11 @@ require("lazy").setup({
     build = "make install_jsregexp",
     config = setup(function(M, main)
       M.setup()
+      for k, v in pairs({
+        typescriptreact = { "typescript" },
+      }) do
+        M.filetype_extend(k, v)
+      end
       require(main .. ".loaders.from_lua").lazy_load()
       vim.api.nvim_create_user_command("LuaSnipEdit", function()
         require("luasnip.loaders").edit_snippet_files({
