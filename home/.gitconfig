@@ -24,7 +24,6 @@
 [color]
 	ui = auto
 [core]
-	editor = vim
 	quotepath = false
 [merge]
 	tool = git-vimdiff
