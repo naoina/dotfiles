@@ -297,6 +297,10 @@ if [[ -x "`whence -p gpg-agent`" ]]; then
     gpg-connect-agent updatestartuptty /bye >/dev/null
 fi
 
+if [[ -x "`whence -p github-copilot-cli`" ]]; then
+    eval "$(github-copilot-cli alias -- "$0")"
+fi
+
 function ssh-agent {
     eval `command ssh-agent`
     command ssh-add
