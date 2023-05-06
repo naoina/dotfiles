@@ -79,7 +79,15 @@ return {
   ),
 
   s(
-    { trig = "," },
+    {
+      trig = ",",
+      condition = function(line_to_cursor, matched_trigger)
+        return line_to_cursor:match("%s+" .. matched_trigger)
+      end,
+      show_condition = function()
+        return false
+      end,
+    },
     fmta("<>, <>", {
       i(1, { "_" }),
       i(2, { "err" }),

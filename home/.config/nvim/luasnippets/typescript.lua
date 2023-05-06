@@ -244,4 +244,12 @@ return {
       }
     )
   ),
+
+  s({
+    trig = "rn",
+    name = "return null",
+    condition = function(line_to_cursor, matched_trigger)
+      return line_to_cursor:match("^%s*" .. matched_trigger)
+    end,
+  }, fmta(" return null;", {})),
 }

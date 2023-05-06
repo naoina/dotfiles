@@ -686,7 +686,7 @@ require("lazy").setup({
     build = "make install_jsregexp",
     config = setup(function(M, main)
       M.setup()
-      require(main .. ".loaders.from_lua").lazy_load({ paths = { "./snippets" } })
+      require(main .. ".loaders.from_lua").lazy_load()
       vim.api.nvim_create_user_command("LuaSnipEdit", function()
         require("luasnip.loaders").edit_snippet_files({
           ft_filter = function(filetype)
