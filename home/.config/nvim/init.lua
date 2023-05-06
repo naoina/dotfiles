@@ -692,6 +692,16 @@ require("lazy").setup({
           ft_filter = function(filetype)
             return vim.opt.filetype:get() == filetype
           end,
+          extend = function(ft, ft_paths)
+            if #ft_paths ~= 0 then
+              return {}
+            end
+            local util = require(main .. ".loaders.util")
+            return vim.tbl_map(function(path)
+              local ft_path = path .. "/" .. ft .. ".lua"
+              return { ft_path, ft_path }
+            end, util.normalize_paths(nil, "luasnippets"))
+          end,
         })
       end, {})
     end),
