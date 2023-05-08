@@ -218,9 +218,7 @@ local function create_goimpl_complete_func()
     end
     return vim.tbl_map(function(item)
       local mod = item.detail:match([[%(from "(.+)"%)$]])
-      local prefix = mod:match([[^(.*/)[^/]+$]])
-      local e = item.textEdit
-      return prefix .. A .. e.newText:sub(e.range["end"].character - e.range.start.character + 1)
+      return mod .. "." .. item.textEdit.newText
     end, items)
   end
 end
