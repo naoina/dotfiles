@@ -37,7 +37,7 @@ end
 
 local function init(f)
   return function(plugin)
-    f(get_main(plugin))
+    return f(get_main(plugin))
   end
 end
 
@@ -103,13 +103,13 @@ end
 local function define_command(name, cmd, opts)
   after_lazy_done(function()
     opts = opts or {}
-    name = ":" .. name
-    if not exists(name) or not cmd then
-      local desc = opts.desc or (type(cmd) == "string" and cmd or name)
-      require("legendary").command({ name, cmd, description = desc })
+    local cmd_name = ":" .. name
+    if not exists(cmd_name) or not cmd then
+      local desc = opts.desc or (type(cmd) == "string" and cmd or cmd_name)
+      require("legendary").command({ cmd_name, cmd, description = desc })
     end
   end)
-  return { vim.split(name, " ")[1] }
+  return vim.split(name, " ")[1]
 end
 
 local function augroup(group, f)
