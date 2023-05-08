@@ -90,12 +90,16 @@ local function define_keymap(modes, lhs, rhs, opts)
     for _, mode in pairs(modes) do
       local defined = tbl_find(function(item)
         return item.class.name == "Keymap"
-          and item.keys:lower() == lhs:lower()
+          and vim.api.nvim_replace_termcodes(item.keys, true, false, true) == vim.api.nvim_replace_termcodes(
+            lhs,
+            true,
+            false,
+            true
+          )
           and (item.mode_mappings[mode] ~= nil or vim.tbl_contains(item.mode_mappings, mode))
       end, require("legendary.data.state").items.items)
-      if not defined then
-        require("legendary").keymap({ lhs, rhs, mode = mode, description = opts.desc, opts = opts })
-      end
+      local desc = defined and "" or opts.desc
+      require("legendary").keymap({ lhs, rhs, mode = mode, description = desc, opts = opts })
     end
   end)
   return { lhs, rhs, mode = modes }
