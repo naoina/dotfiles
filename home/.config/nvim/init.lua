@@ -88,16 +88,17 @@ local function define_keymap(modes, lhs, rhs, opts)
     opts = opts or {}
     modes = type(modes) == "string" and { modes } or modes
     for _, mode in pairs(modes) do
-      local keymaps = opts.buffer and vim.api.nvim_buf_get_keymap(opts.buffer, mode) or vim.api.nvim_get_keymap(mode)
-      local defined = tbl_find(function(keymap)
-        return keymap.lhs:lower() == lhs:lower() and keymap.mode == mode
-      end, keymaps)
+      local defined = tbl_find(function(item)
+        return item.class.name == "Keymap"
+          and item.keys:lower() == lhs:lower()
+          and (item.mode_mappings[mode] ~= nil or vim.tbl_contains(item.mode_mappings, mode))
+      end, require("legendary.data.state").items.items)
       if not defined then
         require("legendary").keymap({ lhs, rhs, mode = mode, description = opts.desc, opts = opts })
       end
     end
   end)
-  return { lhs, mode = modes }
+  return { lhs, rhs, mode = modes }
 end
 
 local function define_command(name, cmd, opts)
@@ -1043,9 +1044,9 @@ require("lazy").setup({
           pattern = [[\b(KEYWORDS)\b]],
         },
       })
-      vim.keymap.set("n", "<C-t>", function()
+      define_keymap("n", "<C-t>", function()
         require("telescope").load_extension("todo-comments").todo()
-      end)
+      end, { desc = "todo-comments" })
     end),
   },
   {
