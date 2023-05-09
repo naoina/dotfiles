@@ -798,7 +798,7 @@ require("lazy").setup({
                 matcher = "Fuzzy",
                 usePlaceholders = false,
                 staticcheck = true,
-                verboseOutput = true, -- TODO
+                verboseOutput = false,
               },
             },
           })
