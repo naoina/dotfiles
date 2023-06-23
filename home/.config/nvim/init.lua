@@ -1061,6 +1061,9 @@ require("lazy").setup({
         input = {
           border = win_border,
           insert_only = true,
+          win_options = {
+            listchars = "precedes:.,extends:.",
+          },
           get_config = function(opts)
             -- for goimpl
             if vim.opt.filetype:get() == "go" and opts.prompt == "Enter interface name: " then
@@ -1200,6 +1203,7 @@ for k, v in pairs({
     verthoriz = "+",
   },
   autochdir = true,
+  ambiwidth = "double",
 }) do
   vim.opt[k] = v
 end
