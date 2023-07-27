@@ -295,7 +295,9 @@ require("lazy").setup({
           require(builtin).find_files()
         end, { desc = "Telescope find_files" }),
         define_keymap("n", "<C-x><C-p><C-b>", function()
-          require(builtin).buffers()
+          require(builtin).buffers({
+            cwd = get_git_root(),
+          })
         end, { desc = "Telescope buffers" }),
         define_keymap("n", "<C-x><C-p><C-h>", function()
           require(builtin).highlights()
@@ -1078,7 +1080,9 @@ require("lazy").setup({
         },
       })
       define_keymap("n", "<C-t>", function()
-        require("telescope").load_extension("todo-comments").todo()
+        require("telescope").load_extension("todo-comments").todo({
+          cwd = get_git_root(),
+        })
       end, { desc = "todo-comments" })
     end),
   },
