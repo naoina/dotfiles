@@ -575,37 +575,20 @@ require("lazy").setup({
   },
   {
     "norcalli/nvim-colorizer.lua",
-    config = default_setup,
-  },
-  {
-    "petertriho/nvim-scrollbar",
-    config = setup(function(M)
-      M.setup({
-        marks = {
-          Cursor = {
-            text = "*",
-          },
-        },
-        excluded_buftypes = {
-          "terminal",
-          "nofile",
-        },
-        excluded_filetypes = {
-          "prompt",
-          "TelescopePrompt",
-          "noice",
-        },
-      })
+    cmd = init(function()
+      return {
+        define_command("ColorizerToggle", nil, { desc = "Toggle colorizer" }),
+      }
     end),
+    config = default_setup,
   },
   {
     "kevinhwang91/nvim-hlslens",
     dependencies = {
-      "petertriho/nvim-scrollbar",
       "daisuzu/rainbowcyclone.vim",
     },
-    config = setup(function(_, main)
-      require("scrollbar.handlers.search").setup()
+    config = setup(function(M, main)
+      M.setup()
       local star = exists(":RCReset") and "<Plug>(rc_highlight_with_cursor_complete)" or "*"
       vim.keymap.set(
         "n",
