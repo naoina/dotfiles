@@ -911,13 +911,21 @@ require("lazy").setup({
     end),
   },
   {
-    "naoina/previm",
-    cmd = "PrevimOpen",
-    init = function()
-      vim.g.previm_open_cmd = "xdg-open"
-      vim.g.previm_show_header = false
+    "iamcco/markdown-preview.nvim",
+    build = function()
+      vim.fn["mkdp#util#install"]()
     end,
-    config = default_setup,
+    ft = { "markdown" },
+    cmd = init(function()
+      return {
+        define_command("MarkdownPreview", nil, { desc = "Preview markdown file on the browser" }),
+      }
+    end),
+    config = setup(function()
+      vim.g.mkdp_preview_options = {
+        disable_filename = true,
+      }
+    end),
   },
   {
     "andymass/vim-matchup",
