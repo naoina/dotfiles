@@ -557,7 +557,38 @@ require("lazy").setup({
   {
     "tpope/vim-fugitive",
     config = setup(function()
+      define_command("Git", nil, { desc = "git status" })
       define_command("Git blame", nil, { desc = "git blame" })
+    end),
+  },
+  {
+    "rhysd/committia.vim",
+    config = default_setup,
+  },
+  {
+    "hotwatermorning/auto-git-diff",
+    config = default_setup,
+  },
+  {
+    "sindrets/diffview.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+    },
+    cmd = init(function()
+      return {
+        define_command("DiffviewOpen", nil, { desc = "Open diffview.nvim view" }),
+        define_command("DiffviewClose", nil, { desc = "Close diffview.nvim view" }),
+      }
+    end),
+    config = setup(function(M)
+      M.setup({
+        use_icons = false,
+        keymaps = {
+          file_panel = {
+            { "n", "q", M.close },
+          },
+        },
+      })
     end),
   },
   {
