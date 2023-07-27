@@ -637,6 +637,21 @@ require("lazy").setup({
     end),
   },
   {
+    "neovim/nvim-lspconfig",
+    cmd = init(function()
+      return {
+        define_command("LspInfo", nil, { desc = "Displays attached, active, and configured language servers" }),
+        define_command("LspStop", nil, { desc = "Manually stops the given language client(s)" }),
+        define_command("LspLog", nil, { desc = "Opens the Nvim LSP client log" }),
+      }
+    end),
+    config = setup(function(_M, main)
+      require(main .. ".ui.windows").default_options = {
+        border = win_border,
+      }
+    end),
+  },
+  {
     "williamboman/mason.nvim",
     build = ":MasonUpdate",
     cmd = init(function()
@@ -1236,7 +1251,7 @@ vim.diagnostic.config({
   underline = true,
   virtual_text = {
     prefix = "",
-    spacing = 2,
+    spacing = 0,
   },
 })
 
