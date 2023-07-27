@@ -1307,7 +1307,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
   border = win_border,
 })
-vim.lsp.set_log_level("debug") -- TODO
+-- vim.lsp.set_log_level("debug") -- TODO
 
 augroup("LspAttach", function(group)
   vim.api.nvim_create_autocmd("LspAttach", {
