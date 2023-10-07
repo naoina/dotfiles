@@ -17,6 +17,7 @@ local colors = {
   yellow = "#ffff00",
   orange = "#ffa500",
   gray = "#555555",
+  green = "#00d700",
 }
 
 local groups = {
@@ -40,8 +41,8 @@ local groups = {
   Comment = { fg = colors.light_blue },
   Keyword = { fg = colors.dark_blue, bold = true },
   Statement = { fg = colors.dark_blue, bold = true },
-  Constant = { fg = "#00d700", bold = true },
-  Type = { fg = "#00d700" },
+  Constant = { fg = colors.green, bold = true },
+  Type = { fg = colors.green },
   Function = { fg = colors.blue },
   Folded = { fg = "#c6c6c6", bg = "NONE", bold = true },
   Include = { fg = "#8700af" },
@@ -54,6 +55,8 @@ local groups = {
   SignColumn = { bg = "NONE" },
   Error = { fg = colors.red, bg = colors.yellow, bold = true },
   NormalFloat = { fg = colors.black, bg = colors.white },
+  diffAdded = { fg = colors.green },
+  diffRemoved = { fg = colors.red },
 
   FileFormatCRLF = { fg = "#a100ff", bg = "#87ffff", bold = true },
   FileEncoding = { link = "FileFormatCRLF" },
@@ -68,6 +71,7 @@ local groups = {
   DiagnosticUnderlineError = { fg = colors.black, bg = colors.yellow, bold = true, underline = true },
   DiagnosticUnderlineWarn = { fg = colors.black, bg = colors.white, underline = true },
   DiagnosticInfo = { fg = "#999999", bold = true },
+  DiagnosticHint = { fg = "#999999" },
 
   TelescopePromptCounter = { link = "TelescopeNormal" },
   TelescopeMatching = { fg = "#00afaf" },
