@@ -50,8 +50,13 @@ precmd () {
     [[ -n "$vcs_info_msg_0_" ]] && psvar[1]="$vcs_info_msg_0_"
     [[ -n "$SSH_AUTH_SOCK" ]] && psvar[2]="{`basename $SSH_AUTH_SOCK`}"
 }
+function _reset-prompt-and-accept-line {
+  zle .reset-prompt
+  zle .accept-line
+}
+zle -N accept-line _reset-prompt-and-accept-line
 PROMPT="%F{green}%1v%f[%~]
-[%n@%M(`uname -m`)%2v]%# "
+[%n@%M(`uname -m`)][%D{%Y-%m-%d %H:%M:%S}]%# "
 
 #[[ -e "/etc/zsh/zprofile" ]] && source /etc/zsh/zprofile
 
