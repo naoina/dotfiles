@@ -246,8 +246,10 @@ require("lazy").setup({
       M.setup({
         include_builtin = false,
         include_legendary_cmds = false,
-        which_key = {
-          auto_register = true,
+        extensions = {
+          which_key = {
+            auto_register = true,
+          },
         },
       })
       define_keymap({ "n", "v" }, "<C-c>", M.find)
@@ -466,13 +468,10 @@ require("lazy").setup({
           "toml",
           "tsx",
           "yaml",
+          "diff",
+          "gitcommit",
         },
         highlight = {
-          enable = true,
-        },
-
-        -- For JoosepAlviste/nvim-ts-context-commentstring
-        context_commentstring = {
           enable = true,
         },
 
@@ -684,20 +683,28 @@ require("lazy").setup({
     config = default_setup,
   },
   {
+    "lukas-reineke/lsp-format.nvim",
+    config = setup(function(M)
+      M.setup({
+        typescript = {
+          exclude = { "tsserver" },
+        },
+      })
+    end),
+  },
+  {
     "jose-elias-alvarez/null-ls.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "lukas-reineke/lsp-format.nvim",
     },
     config = setup(function(M)
-      local function on_attach(client, _bufnr)
-        require("lsp-format").on_attach(client)
-      end
       M.setup({
         sources = {
           -- Managed by jay-babu/mason-null-ls
         },
-        on_attach = on_attach,
+        on_attach = require("lsp-format").on_attach,
+        -- debug = true,
       })
     end),
   },
@@ -804,7 +811,15 @@ require("lazy").setup({
           ["<C-e>"] = M.mapping(function(fallback)
             local has_copilot, copilot_enabled = pcall(vim.fn["copilot#Enabled"])
             if has_copilot and copilot_enabled and vim.fn["copilot#GetDisplayedSuggestion"]().text ~= "" then
-              vim.api.nvim_feedkeys(vim.fn["copilot#Accept"](fallback), "i", false)
+              vim.api.nvim_feedkeys(vim.fn["copilot#AcceptLine"](fallback), "i", false)
+              return
+            end
+            fallback()
+          end, { "i" }),
+          ["<C-f>"] = M.mapping(function(fallback)
+            local has_copilot, copilot_enabled = pcall(vim.fn["copilot#Enabled"])
+            if has_copilot and copilot_enabled and vim.fn["copilot#GetDisplayedSuggestion"]().text ~= "" then
+              vim.api.nvim_feedkeys(vim.fn["copilot#AcceptWord"](fallback), "i", false)
               return
             end
             fallback()
@@ -822,17 +837,26 @@ require("lazy").setup({
       local capabilities = M.default_capabilities()
       require("mason-lspconfig").setup_handlers({
         function(server_name)
-          require("lspconfig")[server_name].setup({
+          local config = {
             capabilities = capabilities,
-            settings = {
+            on_attach = nil,
+            init_options = {
+              documentFormatting = true,
+            },
+          }
+          if server_name == "gopls" then
+            config.settings = {
               gopls = {
                 matcher = "Fuzzy",
                 usePlaceholders = false,
                 staticcheck = true,
                 verboseOutput = false,
               },
-            },
-          })
+            }
+          elseif server_name == "terraformls" then
+            config.on_attach = require("lsp-format").on_attach
+          end
+          require("lspconfig")[server_name].setup(config)
         end,
       })
     end),
