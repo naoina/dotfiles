@@ -76,6 +76,7 @@ export HC_OPTS="-W"
 # export GIT_SSH="$HOME/bin/ssh-github"
 export VIRTUALENV_USE_DISTRIBUTE=1
 export WORKON_HOME="$HOME/work/virtualenv"
+export AWS_PAGER=""
 
 function ealias() {
     alias $@
