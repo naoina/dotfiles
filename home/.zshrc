@@ -417,7 +417,7 @@ function use {
 }
 
 # Disable ^S
-stty stop undef
+stty -ixon
 
 # added by travis gem
 [ -f /home/naoina/.travis/travis.sh ] && source /home/naoina/.travis/travis.sh
