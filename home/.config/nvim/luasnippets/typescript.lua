@@ -25,6 +25,8 @@ local types = require("luasnip.util.types")
 local parse = require("luasnip.util.parser").parse_snippet
 local ms = ls.multi_snippet
 
+local util = require("luasnippets.util")
+
 local unimplemented = "// TODO: not implemented yet"
 
 return {
@@ -252,4 +254,17 @@ return {
       return line_to_cursor:match("^%s*" .. matched_trigger)
     end,
   }, fmta(" return null;", {})),
+
+  s(
+    {
+      trig = "i",
+      name = "import",
+      condition = util.beginning_of_line,
+      show_condition = util.do_not_show,
+    },
+    fmta([[import <> from '<module>';]], {
+      module = i(1, { "module" }),
+      i(2, { "" }),
+    })
+  ),
 }

@@ -25,6 +25,7 @@ local types = require("luasnip.util.types")
 local parse = require("luasnip.util.parser").parse_snippet
 local ms = ls.multi_snippet
 
+local util = require("luasnippets.util")
 local unimplemented = "// TODO: not implemented yet"
 
 return {
@@ -57,7 +58,12 @@ return {
   ),
 
   s(
-    { trig = "v", name = "var" },
+    {
+      trig = "v",
+      name = "var",
+      condition = util.beginning_of_line,
+      show_condition = util.do_not_show,
+    },
     fmta("var <name> <type>", {
       name = i(1, { "name" }),
       type = i(2, { "string" }),
@@ -269,12 +275,8 @@ return {
     {
       trig = "m",
       name = "method",
-      condition = function(line_to_cursor, matched_trigger)
-        return line_to_cursor:match("^%s*" .. matched_trigger .. "$")
-      end,
-      show_condition = function()
-        return false
-      end,
+      condition = util.beginning_of_line,
+      show_condition = util.do_not_show,
     },
     fmta(
       [[
@@ -293,7 +295,10 @@ return {
   ),
 
   s(
-    { trig = "type" },
+    {
+      trig = "type",
+      condition = util.beginning_of_line,
+    },
     fmta("type <name> <type>", {
       name = i(1, { "name" }),
       type = i(2, { "type" }),
@@ -301,7 +306,12 @@ return {
   ),
 
   s(
-    { trig = "t", name = "type ... struct" },
+    {
+      trig = "t",
+      name = "type ... struct",
+      condition = util.beginning_of_line,
+      show_condition = util.do_not_show,
+    },
     fmta(
       [[
       type <name> struct {
@@ -364,7 +374,12 @@ return {
   ),
 
   s(
-    { trig = "p", name = "fmt.Printf" },
+    {
+      trig = "p",
+      name = "fmt.Printf",
+      condition = util.beginning_of_line,
+      show_condition = util.do_not_show,
+    },
     fmta([[fmt.Printf("%+v\n", <>)]], {
       i(0, { "" }),
     })
@@ -477,9 +492,7 @@ return {
   s({
     trig = "r",
     name = "return",
-    condition = function(line_to_cursor)
-      return not line_to_cursor:match(":=")
-    end,
+    condition = util.beginning_of_line,
   }, fmta("return <>", { i(0, { "" }) })),
 
   s({ trig = "re", name = "return err" }, fmta("return err", {})),
