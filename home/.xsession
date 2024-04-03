@@ -39,6 +39,8 @@ elif [ -x "`which firefox`" ]; then
     export BROWSER="firefox"
 fi
 
+dbus-update-activation-environment --systemd --all
+
 # xmodmap $HOME/.Xmodmap
 
 # Default settings.
@@ -57,6 +59,8 @@ syndaemon -i 0.5 -t -k &
 fcitx5 -d
 start-pulseaudio-x11
 blueman-applet &
+/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
+xautolock -time 10 -locker "1password --lock" -detectsleep &
 # touchegg >/dev/null 2>&1 &
 
 if [ -x "`which devmon`" -a ! "`pgrep devmon`" ]; then
