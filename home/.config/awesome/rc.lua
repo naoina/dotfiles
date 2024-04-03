@@ -664,6 +664,14 @@ globalkeys = awful.util.table.join(
         function ()
             awful.spawn("shutter -s -e")
             -- awful.util.spawn("import -window root " .. os.getenv("HOME") .. "/media/screenshot/" .. os.date("%Y%m%d%H%M%S") .. ".png")
+        end),
+    awful.key({}, "#232", -- BrightnessDown
+        function ()
+            awful.spawn("xbacklight -dec 10")
+        end),
+    awful.key({}, "#233", -- BrightnessUp
+        function ()
+            awful.spawn("xbacklight -inc 10")
         end)
 )
 
