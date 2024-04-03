@@ -864,7 +864,7 @@ awesome.connect_signal("battery::threshold",
     end)
 
 -- Startup applications
-if awesome.startup then
-    awful.spawn("picom")
-    awful.spawn("zeal")
-end
+-- if awesome.startup then
+--     -- awful.spawn("picom")
+--     awful.spawn("zeal")
+-- end
