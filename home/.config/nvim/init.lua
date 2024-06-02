@@ -1065,7 +1065,11 @@ require("lazy").setup({
   },
   {
     "stevearc/aerial.nvim",
+    dependencies = {
+      "nvim-telescope/telescope.nvim",
+    },
     config = setup(function(M)
+      local telescope = require("telescope")
       M.setup({
         close_on_select = true,
         keymaps = {
@@ -1076,10 +1080,11 @@ require("lazy").setup({
         },
         on_attach = function(bufnr)
           vim.keymap.set("n", "<Space>", function()
-            M.toggle()
+            telescope.extensions.aerial.aerial()
           end, { buffer = bufnr })
         end,
       })
+      telescope.load_extension("aerial")
     end),
   },
   {
