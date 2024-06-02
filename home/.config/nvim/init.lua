@@ -341,22 +341,6 @@ require("lazy").setup({
         end
         return layout
       end
-      local bottom_layout = {
-        sorting_strategy = "descending",
-        layout_strategy = "bottom_pane",
-        layout_config = {
-          height = 15,
-          prompt_position = "bottom",
-        },
-        borderchars = { "-", "|", "-", " ", "-", "+", "+", "-" },
-        results_title = false,
-        preview_title = false,
-        prompt_title = false,
-      }
-      local pickers = {}
-      for k, _ in pairs(builtin) do
-        pickers[k] = bottom_layout
-      end
       M.setup({
         defaults = {
           mappings = {
@@ -371,9 +355,20 @@ require("lazy").setup({
               ["<C-b>"] = actions.results_scrolling_up,
             },
           },
+          -- config for bottom layout
           scroll_strategy = "limit",
+          sorting_strategy = "descending",
+          layout_strategy = "bottom_pane",
+          layout_config = {
+            height = 15,
+            prompt_position = "bottom",
+          },
+          borderchars = { "-", "|", "-", " ", "-", "+", "+", "-" },
+          results_title = false,
+          preview_title = false,
+          prompt_title = false,
         },
-        pickers = vim.tbl_deep_extend("force", pickers, {
+        pickers = vim.tbl_deep_extend("force", {}, {
           find_files = {
             sorting_strategy = "ascending",
           },
