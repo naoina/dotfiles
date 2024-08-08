@@ -712,14 +712,14 @@ globalkeys = awful.util.table.join(
     {},
     "#232", -- BrightnessDown
     function()
-      awful.spawn("xbacklight -dec 10")
+      awful.spawn("brightnessctl set 10%-")
     end
   ),
   awful.key(
     {},
     "#233", -- BrightnessUp
     function()
-      awful.spawn("xbacklight -inc 10")
+      awful.spawn("brightnessctl set 10%+")
     end
   )
 )
