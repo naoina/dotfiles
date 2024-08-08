@@ -421,13 +421,6 @@ end
 timer_start_new(
   5, -- sec
   function()
-    local readable, _ = pcall(function() end)
-    local f = io.open(battery_dir .. "/" .. bat .. "/power_now")
-    local _, err, _ = f:read("*all")
-    f:close()
-    if err then
-      return true
-    end
     local battery_notified = false
     vicious.register(batterypercentagewidget, vicious.widgets.bat, function(widget, data)
       local state = data[1]
@@ -478,7 +471,7 @@ for d in dir:lines() do
 end
 dir:close()
 local wifiwidget = wibox.widget.textbox()
-vicious.register(wifiwidget, widgets.wifi, function(widget, data)
+vicious.register(wifiwidget, widgets.wifiiw, function(widget, data)
   local linp = data["{linp}"]
   local ssid = data["{ssid}"]
   local ip = data["{ip}"]
