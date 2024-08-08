@@ -287,32 +287,36 @@ for plug in $HOME/.zsh/*.zsh; do
     fi
 done
 
-if [[ -x "`whence -p gpg-agent`" ]]; then
-    export GPG_TTY=$(tty)
+# if [[ -x "`whence -p gpg-agent`" ]]; then
+#     export GPG_TTY=$(tty)
+#
+#     # Set SSH to use gpg-agent
+#     unset SSH_AGENT_PID
+#     if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
+#         export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+#     fi
+#
+#     # Start the gpg-agent if not already running
+#     if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
+#         gpg-connect-agent /bye >/dev/null 2>&1
+#     fi
+#
+#     # Refresh gpg-agent tty in case user switches into an X session
+#     gpg-connect-agent updatestartuptty /bye >/dev/null
+# fi
 
-    # Set SSH to use gpg-agent
-    unset SSH_AGENT_PID
-    if [ "${gnupg_SSH_AUTH_SOCK_by:-0}" -ne $$ ]; then
-        export SSH_AUTH_SOCK="$(gpgconf --list-dirs agent-ssh-socket)"
+if [[ -x "`whence -p ssh-agent`" ]]; then
+    auth_sock="${HOME}/.ssh/agent.sock"
+    if [ ! -S "${auth_sock}" ]; then
+        eval "$(ssh-agent -s)"
+        ln -sf "${SSH_AUTH_SOCK}" "${auth_sock}"
     fi
-
-    # Start the gpg-agent if not already running
-    if ! pgrep -x -u "${USER}" gpg-agent >/dev/null 2>&1; then
-        gpg-connect-agent /bye >/dev/null 2>&1
-    fi
-
-    # Refresh gpg-agent tty in case user switches into an X session
-    gpg-connect-agent updatestartuptty /bye >/dev/null
+    export SSH_AUTH_SOCK="${auth_sock}"
 fi
 
 if [[ -x "`whence -p github-copilot-cli`" ]]; then
     eval "$(github-copilot-cli alias -- "$0")"
 fi
-
-function ssh-agent {
-    eval `command ssh-agent`
-    command ssh-add
-}
 
 function http_server {
     DIR=${1:="."}
