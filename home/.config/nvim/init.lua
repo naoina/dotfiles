@@ -688,7 +688,7 @@ require("lazy").setup({
     end),
   },
   {
-    "jose-elias-alvarez/null-ls.nvim",
+    "nvimtools/none-ls.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "lukas-reineke/lsp-format.nvim",
@@ -708,12 +708,19 @@ require("lazy").setup({
     event = { "BufReadPre", "BufNewFile" },
     dependencies = {
       "williamboman/mason.nvim",
-      "jose-elias-alvarez/null-ls.nvim",
+      "nvimtools/none-ls.nvim",
     },
     config = setup(function(M)
       M.setup({
         automatic_setup = true,
-        handlers = {}, -- truthy value is needed to do automatic_setup
+        handlers = {
+          mypy = function()
+            local null_ls = require("null-ls")
+            null_ls.register(null_ls.builtins.diagnostics.mypy.with({
+              prefer_local = ".venv/bin",
+            }))
+          end,
+        }, -- truthy value is needed to do automatic_setup
       })
     end),
   },
