@@ -927,12 +927,13 @@ require("lazy").setup({
   },
   {
     "lukas-reineke/indent-blankline.nvim",
+    main = "ibl",
     keys = {
       {
         "<C-g>",
         function()
           vim.opt_local.cursorcolumn = not vim.opt_local.cursorcolumn:get()
-          require("indent_blankline.commands").toggle()
+          vim.cmd("IBLToggle")
         end,
         mode = "n",
         silent = true,
