@@ -748,7 +748,7 @@ require("lazy").setup({
             return vim.tbl_map(function(path)
               local ft_path = path .. "/" .. ft .. ".lua"
               return { ft_path, ft_path }
-            end, util.normalize_paths(nil, "luasnippets"))
+            end, util.resolve_root_paths(nil, "luasnippets"))
           end,
         })
       end, {})
