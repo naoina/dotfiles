@@ -193,9 +193,9 @@ if [ -x "`whence -p smlsharp`" ]; then
     fi
 fi
 [[ -s "$HOME/.gvm/scripts/gvm" ]] && source "$HOME/.gvm/scripts/gvm"
-if [ -x "`whence -p hub`" ]; then
-    eval "$(hub alias -s)"
-fi
+# if [ -x "`whence -p hub`" ]; then
+#     eval "$(hub alias -s)"
+# fi
 
 if [[ -x "$(whence -p direnv)" ]]; then
     eval "$(direnv hook zsh)"
@@ -215,6 +215,18 @@ ealias cdd='local dir=$(find ${1:-.} -type d 2> /dev/null | fzf +m) && cd "$dir"
 ealias cdr='cd "$(git rev-parse --show-toplevel 2> /dev/null)"'
 ealias mount="findmnt"
 alias docker="UID="$(id -u)" GID="$(id -g)" docker"
+
+function op_plugin_run {
+    if [ -x "`whence -p op`" ]; then
+        op plugin run "$@"
+    else
+        command "$1" "${@:2}"
+    fi
+}
+
+function gh {
+    op_plugin_run gh "$@"
+}
 
 ealias -g F='| fzf'
 ealias -g FV='| fzf | xargs -r $EDITOR'
@@ -317,6 +329,9 @@ fi
 if [[ -x "`whence -p github-copilot-cli`" ]]; then
     eval "$(github-copilot-cli alias -- "$0")"
 fi
+# if [[ -x "`whence -p gh`" ]]; then
+#     eval "$(gh copilot alias -- zsh)"
+# fi
 
 function http_server {
     DIR=${1:="."}
