@@ -832,7 +832,7 @@ require("lazy").setup({
             end
             fallback()
           end, { "i" }),
-          ["<C-f>"] = M.mapping(function(fallback)
+          ["<C-l>"] = M.mapping(function(fallback)
             local has_copilot, copilot_enabled = pcall(vim.fn["copilot#Enabled"])
             if has_copilot and copilot_enabled and vim.fn["copilot#GetDisplayedSuggestion"]().text ~= "" then
               vim.api.nvim_feedkeys(vim.fn["copilot#AcceptWord"](fallback), "i", false)
@@ -1231,8 +1231,10 @@ vim.keymap.set("n", "yu", "<Cmd>%y +<CR>", { silent = true })
 vim.keymap.set("c", "<C-n>", "<Down>")
 vim.keymap.set("n", "<C-n>", "<Cmd>bnext<CR>", { silent = true })
 vim.keymap.set("i", "<C-h>", "<Bs>")
+vim.keymap.set("i", "<C-j>", "<Esc>")
 vim.keymap.set({ "i", "c" }, "<C-a>", "<Home>")
 vim.keymap.set({ "i", "c" }, "<C-e>", "<End>")
+vim.keymap.set({ "n" }, "<C-e>", "<End>a")
 vim.keymap.set({ "i", "c" }, "<C-f>", "<Right>")
 vim.keymap.set({ "i", "c" }, "<C-b>", "<Left>")
 
