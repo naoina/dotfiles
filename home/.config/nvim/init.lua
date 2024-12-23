@@ -558,6 +558,12 @@ require("lazy").setup({
     end),
   },
   {
+    "tpope/vim-rhubarb",
+    dependencies = {
+      "tpope/vim-fugitive",
+    },
+  },
+  {
     "rhysd/committia.vim",
     config = default_setup,
   },
@@ -865,6 +871,12 @@ require("lazy").setup({
             }
           elseif server_name == "terraformls" then
             config.on_attach = require("lsp-format").on_attach
+          elseif server_name == "mdx_analyzer" then
+            vim.filetype.add({
+              extension = {
+                mdx = "markdown.mdx",
+              },
+            })
           end
           require("lspconfig")[server_name].setup(config)
         end,
@@ -1171,6 +1183,11 @@ require("lazy").setup({
       vim.g.copilot_assume_mapped = true
       vim.g.copilot_no_tab_map = true
     end),
+  },
+  {
+    "davidmh/mdx.nvim",
+    config = true,
+    dependencies = { "nvim-treesitter/nvim-treesitter" },
   },
 }, {
   git = {
