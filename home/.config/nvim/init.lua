@@ -1005,12 +1005,7 @@ require("lazy").setup({
         },
         sections = {
           lualine_a = {
-            {
-              "branch",
-              fmt = function(s)
-                return "[Git(" .. s .. ")]"
-              end,
-            },
+            { "%=[0x%B]" },
           },
           lualine_b = {
             {
@@ -1051,7 +1046,6 @@ require("lazy").setup({
           lualine_c = {},
           lualine_x = {},
           lualine_y = {
-            { "%=[0x%B]" },
             {
               "location",
               fmt = function(s)
