@@ -1002,7 +1002,7 @@ require("lazy").setup({
         },
         sections = {
           lualine_a = {
-            { "%=[0x%B]" },
+            { "%([0x%B]%)" },
           },
           lualine_b = {
             {
