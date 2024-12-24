@@ -246,23 +246,8 @@ require("lazy").setup({
       M.setup({
         include_builtin = false,
         include_legendary_cmds = false,
-        extensions = {
-          which_key = {
-            auto_register = true,
-          },
-        },
       })
       define_keymap({ "n", "v" }, "<C-c>", M.find)
-    end),
-  },
-  {
-    "folke/which-key.nvim",
-    config = setup(function(M)
-      M.setup({
-        window = {
-          border = win_border,
-        },
-      })
     end),
   },
   {
