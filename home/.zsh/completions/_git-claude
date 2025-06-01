@@ -1,0 +1,151 @@
+#compdef git-claude
+#description git claude - Git worktree management for AI implementation branches
+
+# zsh completion for git claude subcommand
+# Place this file as ~/.zsh/completions/_git-claude
+
+_git-claude() {
+    local context state line
+    local -a commands
+    
+    commands=(
+        'start:Create worktree for branch'
+        'end:Remove worktree and directory'
+        'help:Show usage information'
+    )
+    
+    case $words[2] in
+        start)
+            _arguments -C \
+                '1:command:(start)' \
+                '2::branch:->branch_start'
+            ;;
+        end)
+            _arguments -C \
+                '1:command:(end)' \
+                '2:branch:->branch_end'
+            ;;
+        *)
+            _arguments -C \
+                '1:command:->command'
+            ;;
+    esac
+    
+    case $state in
+        command)
+            _describe 'claude commands' commands
+            ;;
+        branch_start)
+            # start コマンドの場合：全てのブランチ（ローカル + リモート）を補完（省略可能）
+            _git_branch_names
+            ;;
+        branch_end)
+            # end コマンドの場合：worktreeが存在するブランチのみを補完（必須）
+            _git_claude_worktree_branches
+            ;;
+    esac
+}
+}
+
+#compdef git-claude
+#description git claude - Git worktree management for AI implementation branches
+
+# bash/zsh completion for git claude subcommand
+# Place this file as ~/.zsh/completions/_git-claude
+
+_git-claude() {
+    local context state line
+    local -a commands
+    
+    commands=(
+        'start:Create worktree for branch'
+        'end:Remove worktree and directory'
+        'help:Show usage information'
+    )
+    
+    case ${words[2]:-} in
+        start)
+            _arguments -C \
+                '1:command:(start)' \
+                '2::branch:->branch_start'
+            ;;
+        end)
+            _arguments -C \
+                '1:command:(end)' \
+                '2:branch:->branch_end'
+            ;;
+        *)
+            _arguments -C \
+                '1:command:->command'
+            ;;
+    esac
+    
+    case $state in
+        command)
+            _describe 'claude commands' commands
+            ;;
+        branch_start)
+            # start コマンドの場合：全てのブランチ（ローカル + リモート）を補完（省略可能）
+            _git_branch_names
+            ;;
+        branch_end)
+            # end コマンドの場合：worktreeが存在するブランチのみを補完（必須）
+            _git_claude_worktree_branches
+            ;;
+    esac
+}
+
+# worktreeが存在するブランチを取得する関数
+_git_claude_worktree_branches() {
+    local -a worktree_branches
+    local repo_name worktree_path branch_info dir_name branch_name
+    
+    # リポジトリ名を取得
+    repo_name=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
+    
+    if [[ -n "$repo_name" ]]; then
+        # git worktree list の出力から worktree を抽出し、該当するディレクトリを探す
+        while IFS= read -r line; do
+            if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
+                worktree_path="${BASH_REMATCH[1]}"
+                dir_name=$(basename "$worktree_path")
+                
+                # リポジトリ名のプレフィックスを持つディレクトリかチェック
+                if [[ "$dir_name" =~ ^${repo_name}-(.+)$ ]]; then
+                    # プレフィックスを除去してブランチ名を復元（- を / に変換）
+                    branch_name="${BASH_REMATCH[1]//-/\/}"
+                    worktree_branches+=("$branch_name")
+                fi
+            fi
+        done < <(git worktree list --porcelain 2>/dev/null)
+    fi
+    
+    _describe 'worktree branches' worktree_branches
+}
+
+# git のブランチ名補完関数（ローカル + リモート）
+_git_branch_names() {
+    local -a branches
+    local branch
+    
+    # ローカルブランチを追加
+    while read -r branch; do
+        [[ -n "$branch" ]] && branches+=("$branch:local branch")
+    done < <(git for-each-ref --format='%(refname:short)' refs/heads/ 2>/dev/null)
+    
+    # リモートブランチを追加（origin/ プレフィックスを除去）
+    while read -r branch; do
+        if [[ "$branch" =~ ^origin/(.+)$ ]]; then
+            local remote_branch="${BASH_REMATCH[1]}"
+            # HEADブランチは除外し、ローカルブランチと重複しない場合のみ追加
+            if [[ "$remote_branch" != "HEAD" ]] && [[ ! " ${branches[*]} " =~ " ${remote_branch}:" ]]; then
+                branches+=("$remote_branch:remote branch")
+            fi
+        fi
+    done < <(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ 2>/dev/null)
+    
+    _describe 'branches' branches
+}
+
+# gitのサブコマンドとして claude を登録
+_git-claude "$@"

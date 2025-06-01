@@ -1,0 +1,267 @@
+#!/bin/bash
+
+# git-claude - Git worktree management for AI implementation branches
+# Usage: git claude start <branch_name>
+#        git claude end <branch_name>
+
+set -e
+
+# 現在のブランチ名を取得
+get_current_branch() {
+	git branch --show-current 2>/dev/null
+}
+
+# リポジトリルートディレクトリを取得
+get_repo_root() {
+	git rev-parse --show-toplevel 2>/dev/null
+}
+
+# リポジトリ名を取得
+get_repo_name() {
+	basename "$(get_repo_root)"
+}
+
+# ブランチ名のディレクトリ名への変換（リポジトリ名をプレフィックスとして追加）
+convert_branch_to_dirname() {
+	local repo_name=$(get_repo_name)
+	local branch_converted="${1//\//-}"
+	echo "${repo_name}-${branch_converted}"
+}
+
+# 使用方法を表示する関数
+show_usage() {
+	echo "Usage:"
+	echo "  git claude start [branch_name]   - Create worktree for branch (defaults to current branch)"
+	echo "  git claude end <branch_name>     - Remove worktree and directory"
+	echo ""
+	echo "Examples:"
+	echo "  git claude start feature/new-api"
+	echo "  git claude start                 # Uses current branch"
+	echo "  git claude end feature/new-api"
+	echo ""
+	echo "Note: Directory will be named as <repo-name>-<branch-name>"
+	echo "      (e.g., 'myproject-feature-new-api' for repo 'myproject')"
+}
+
+# エラーメッセージを表示して終了
+error_exit() {
+	echo "Error: $1" >&2
+	exit 1
+}
+
+# コマンドの存在確認
+command_exists() {
+	command -v "$1" >/dev/null 2>&1
+}
+
+# direnvが利用可能かチェック
+check_direnv() {
+	if ! command_exists direnv; then
+		echo "Warning: direnv is not installed. Skipping direnv setup."
+		return 1
+	fi
+	return 0
+}
+
+# claudeコマンドが利用可能かチェック
+check_claude() {
+	if ! command_exists claude; then
+		echo "Warning: claude command is not available. Skipping environment setup."
+		return 1
+	fi
+	return 0
+}
+
+# gitリポジトリ内かチェック
+check_git_repo() {
+	if ! git rev-parse --git-dir >/dev/null 2>&1; then
+		error_exit "Not in a git repository"
+	fi
+}
+
+# ブランチが存在するかチェック
+branch_exists() {
+	git show-ref --verify --quiet "refs/heads/$1" 2>/dev/null
+}
+
+# リモートブランチが存在するかチェック
+remote_branch_exists() {
+	git show-ref --verify --quiet "refs/remotes/origin/$1" 2>/dev/null
+}
+
+# worktreeが存在するかチェック
+worktree_exists() {
+	local worktree_path="$1"
+	git worktree list | grep -q "$worktree_path" 2>/dev/null
+}
+
+# start コマンドの実装
+cmd_start() {
+	local branch_name="$1"
+
+	# ブランチ名が指定されていない場合は現在のブランチを使用
+	if [[ -z "$branch_name" ]]; then
+		branch_name=$(get_current_branch)
+		if [[ -z "$branch_name" ]]; then
+			error_exit "Could not determine current branch name"
+		fi
+		echo "Using current branch: $branch_name"
+	fi
+
+	# ディレクトリ名に変換
+	local dir_name=$(convert_branch_to_dirname "$branch_name")
+
+	# リポジトリルートを取得
+	local repo_root=$(get_repo_root)
+	if [[ -z "$repo_root" ]]; then
+		error_exit "Could not determine repository root"
+	fi
+
+	# 一つ上の階層のパス（リポジトリルートの親ディレクトリ）
+	local parent_dir=$(dirname "$repo_root")/"$dir_name"
+	local abs_parent_dir="$parent_dir"
+
+	# 既にworktreeが存在するかチェック
+	if worktree_exists "$abs_parent_dir"; then
+		error_exit "Worktree already exists at $parent_dir"
+	fi
+
+	# ディレクトリが既に存在するかチェック
+	if [[ -d "$parent_dir" ]]; then
+		error_exit "Directory $parent_dir already exists"
+	fi
+
+	# ブランチの存在確認と作成
+	if branch_exists "$branch_name"; then
+		echo "Branch '$branch_name' already exists"
+	elif remote_branch_exists "$branch_name"; then
+		echo "Creating local branch '$branch_name' from remote"
+		git branch "$branch_name" "origin/$branch_name"
+	else
+		echo "Creating new branch '$branch_name'"
+		git branch "$branch_name"
+	fi
+
+	# worktreeを作成（常に-fオプションを使用、リポジトリルートで実行）
+	echo "Creating worktree at $parent_dir"
+	(cd "$repo_root" && git worktree add -f "$parent_dir" "$branch_name")
+
+	# .envrc が存在する場合はシンボリックリンクを作成
+	if [[ -f "$repo_root/.envrc" ]]; then
+		echo "Creating symlink for .envrc"
+		ln -s "$repo_root/.envrc" "$parent_dir/.envrc"
+
+		# direnvが利用可能な場合のみdirenv allowを実行
+		if check_direnv; then
+			echo "Setting up direnv in worktree"
+			(cd "$parent_dir" && direnv allow)
+		fi
+	fi
+
+	# CLAUDE.md が存在する場合はシンボリックリンクを作成
+	if [[ -f "$repo_root/CLAUDE.md" ]]; then
+		echo "Creating symlink for CLAUDE.md"
+		ln -s "$repo_root/CLAUDE.md" "$parent_dir/CLAUDE.md"
+	fi
+
+	# .env.*.local および .env.local ファイルをコピー
+	local env_files_found=0
+	# bashのglob展開を使用
+	shopt -s nullglob # マッチしない場合は空にする
+	local env_files=("$repo_root"/.env.*.local "$repo_root"/.env.local)
+	shopt -u nullglob
+
+	for env_file in "${env_files[@]}"; do
+		if [[ -f "$env_file" ]]; then
+			local filename=$(basename "$env_file")
+			echo "Copying $filename"
+			cp "$env_file" "$parent_dir/$filename"
+			env_files_found=1
+		fi
+	done
+
+	if [[ $env_files_found -eq 0 ]]; then
+		# .env.*.local や .env.local が見つからない場合の情報メッセージ
+		echo "No .env.*.local or .env.local files found to copy"
+	fi
+
+	# claudeコマンドが利用可能な場合のみセットアップを実行
+	if check_claude; then
+		echo "Setting up development environment with Claude"
+		(cd "$parent_dir" && claude "開発環境のセットアップをして")
+	fi
+
+	echo "Worktree created successfully!"
+	echo "You can now work in: $parent_dir"
+	echo "To switch to the worktree: cd $parent_dir"
+}
+
+# end コマンドの実装
+cmd_end() {
+	local branch_name="$1"
+
+	if [[ -z "$branch_name" ]]; then
+		error_exit "Branch name is required for end command"
+	fi
+
+	# ディレクトリ名に変換
+	local dir_name=$(convert_branch_to_dirname "$branch_name")
+
+	# リポジトリルートを取得
+	local repo_root=$(get_repo_root)
+	if [[ -z "$repo_root" ]]; then
+		error_exit "Could not determine repository root"
+	fi
+
+	# 一つ上の階層のパス（リポジトリルートの親ディレクトリ）
+	local parent_dir=$(dirname "$repo_root")/"$dir_name"
+	local abs_parent_dir="$parent_dir"
+
+	# worktreeが存在するかチェック
+	if ! worktree_exists "$abs_parent_dir"; then
+		error_exit "Worktree does not exist at $parent_dir"
+	fi
+
+	# worktreeを削除（リポジトリルートで実行）
+	echo "Removing worktree at $parent_dir"
+	(cd "$repo_root" && git worktree remove "$parent_dir" --force)
+
+	echo "Worktree removed successfully!"
+	echo "Note: Branch '$branch_name' still exists. Remove manually if needed with:"
+	echo "  git branch -d $branch_name"
+}
+
+# メイン処理
+main() {
+	check_git_repo
+
+	local command="$1"
+	local branch_name="$2"
+
+	case "$command" in
+	start)
+		cmd_start "$branch_name"
+		;;
+	end)
+		cmd_end "$branch_name"
+		;;
+	-h | --help | help)
+		show_usage
+		;;
+	"")
+		echo "Error: Command is required" >&2
+		echo ""
+		show_usage
+		exit 1
+		;;
+	*)
+		echo "Error: Unknown command '$command'" >&2
+		echo ""
+		show_usage
+		exit 1
+		;;
+	esac
+}
+
+# スクリプト実行
+main "$@"
