@@ -54,7 +54,11 @@ local function winhighlight(t)
 end
 
 local function get_git_root()
-  local dot_git_path = vim.fn.findfile(".git", ".;")
+  local dot_git_path = vim.fn.finddir(".git", ".;")
+  if dot_git_path == "" then
+    -- for git worktree
+    dot_git_path = vim.fn.findfile(".git", ".;")
+  end
   return vim.fn.fnamemodify(dot_git_path, ":h")
 end
 
