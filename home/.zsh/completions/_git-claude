@@ -14,56 +14,7 @@ _git-claude() {
         'help:Show usage information'
     )
     
-    case $words[2] in
-        start)
-            _arguments -C \
-                '1:command:(start)' \
-                '2::branch:->branch_start'
-            ;;
-        end)
-            _arguments -C \
-                '1:command:(end)' \
-                '2:branch:->branch_end'
-            ;;
-        *)
-            _arguments -C \
-                '1:command:->command'
-            ;;
-    esac
-    
-    case $state in
-        command)
-            _describe 'claude commands' commands
-            ;;
-        branch_start)
-            # start コマンドの場合：全てのブランチ（ローカル + リモート）を補完（省略可能）
-            _git_branch_names
-            ;;
-        branch_end)
-            # end コマンドの場合：worktreeが存在するブランチのみを補完（必須）
-            _git_claude_worktree_branches
-            ;;
-    esac
-}
-}
-
-#compdef git-claude
-#description git claude - Git worktree management for AI implementation branches
-
-# bash/zsh completion for git claude subcommand
-# Place this file as ~/.zsh/completions/_git-claude
-
-_git-claude() {
-    local context state line
-    local -a commands
-    
-    commands=(
-        'start:Create worktree for branch'
-        'end:Remove worktree and directory'
-        'help:Show usage information'
-    )
-    
-    case ${words[2]:-} in
+    case ${words[2]} in
         start)
             _arguments -C \
                 '1:command:(start)' \
@@ -106,14 +57,15 @@ _git_claude_worktree_branches() {
     if [[ -n "$repo_name" ]]; then
         # git worktree list の出力から worktree を抽出し、該当するディレクトリを探す
         while IFS= read -r line; do
-            if [[ "$line" =~ ^worktree\ (.+)$ ]]; then
-                worktree_path="${BASH_REMATCH[1]}"
+            # zsh の正規表現マッチングを使用
+            if [[ "$line" =~ '^worktree (.+)$' ]]; then
+                worktree_path="${match[1]}"
                 dir_name=$(basename "$worktree_path")
                 
                 # リポジトリ名のプレフィックスを持つディレクトリかチェック
-                if [[ "$dir_name" =~ ^${repo_name}-(.+)$ ]]; then
+                if [[ "$dir_name" =~ "^${repo_name}-(.+)$" ]]; then
                     # プレフィックスを除去してブランチ名を復元（- を / に変換）
-                    branch_name="${BASH_REMATCH[1]//-/\/}"
+                    branch_name="${match[1]//-/\/}"
                     worktree_branches+=("$branch_name")
                 fi
             fi
@@ -130,16 +82,16 @@ _git_branch_names() {
     
     # ローカルブランチを追加
     while read -r branch; do
-        [[ -n "$branch" ]] && branches+=("$branch:local branch")
+        [[ -n "$branch" ]] && branches+=("$branch")
     done < <(git for-each-ref --format='%(refname:short)' refs/heads/ 2>/dev/null)
     
     # リモートブランチを追加（origin/ プレフィックスを除去）
     while read -r branch; do
-        if [[ "$branch" =~ ^origin/(.+)$ ]]; then
-            local remote_branch="${BASH_REMATCH[1]}"
+        if [[ "$branch" =~ '^origin/(.+)$' ]]; then
+            local remote_branch="${match[1]}"
             # HEADブランチは除外し、ローカルブランチと重複しない場合のみ追加
-            if [[ "$remote_branch" != "HEAD" ]] && [[ ! " ${branches[*]} " =~ " ${remote_branch}:" ]]; then
-                branches+=("$remote_branch:remote branch")
+            if [[ "$remote_branch" != "HEAD" ]] && [[ ! " ${branches[*]} " =~ " ${remote_branch}" ]]; then
+                branches+=("$remote_branch")
             fi
         fi
     done < <(git for-each-ref --format='%(refname:short)' refs/remotes/origin/ 2>/dev/null)
@@ -147,5 +99,5 @@ _git_branch_names() {
     _describe 'branches' branches
 }
 
-# gitのサブコマンドとして claude を登録
-_git-claude "$@"
+# gitのサブコマンドとして登録
+compdef _git-claude git-claude
