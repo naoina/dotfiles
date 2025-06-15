@@ -164,21 +164,26 @@ cmd_start() {
 		ln -s "$repo_root/CLAUDE.md" "$parent_dir/CLAUDE.md"
 	fi
 
-	# .env.*.local および .env.local ファイルをコピー
+	# .env.*.local および .env.local ファイルをコピー（サブディレクトリも含む）
 	local env_files_found=0
-	# bashのglob展開を使用
-	shopt -s nullglob # マッチしない場合は空にする
-	local env_files=("$repo_root"/.env.*.local "$repo_root"/.env.local)
-	shopt -u nullglob
+	echo "Searching for .env files to copy..."
 
-	for env_file in "${env_files[@]}"; do
-		if [[ -f "$env_file" ]]; then
-			local filename=$(basename "$env_file")
-			echo "Copying $filename"
-			cp "$env_file" "$parent_dir/$filename"
-			env_files_found=1
+	# findコマンドを使用してリポジトリ内のすべての .env.*.local と .env.local ファイルを検索
+	while IFS= read -r -d '' env_file; do
+		# リポジトリルートからの相対パスを取得
+		local rel_path="${env_file#$repo_root/}"
+		local dest_path="$parent_dir/$rel_path"
+		local dest_dir=$(dirname "$dest_path")
+
+		# 必要に応じてディレクトリを作成
+		if [[ ! -d "$dest_dir" ]]; then
+			mkdir -p "$dest_dir"
 		fi
-	done
+
+		echo "Copying $rel_path"
+		cp "$env_file" "$dest_path"
+		env_files_found=1
+	done < <(find "$repo_root" -type f \( -name ".env.*.local" -o -name ".env.local" \) -print0)
 
 	if [[ $env_files_found -eq 0 ]]; then
 		# .env.*.local や .env.local が見つからない場合の情報メッセージ
