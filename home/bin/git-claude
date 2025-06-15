@@ -193,7 +193,7 @@ cmd_start() {
 	# claudeコマンドが利用可能な場合のみセットアップを実行
 	if check_claude; then
 		echo "Setting up development environment with Claude"
-		(cd "$parent_dir" && claude "開発環境のセットアップをして")
+		(cd "$parent_dir" && claude "依存関係のインストールをしてください。ultrathink")
 	fi
 
 	echo "Worktree created successfully!"
