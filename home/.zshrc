@@ -225,7 +225,7 @@ function op_plugin_run {
 }
 
 function gh {
-    op_plugin_run gh "$@"
+    op_plugin_run gh -- "$@"
 }
 
 ealias -g F='| fzf'
