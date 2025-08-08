@@ -45,7 +45,7 @@ convert_branch_to_dirname() {
 show_usage() {
 	echo "Usage:"
 	echo "  git claude start [branch_name]   - Create worktree for branch (defaults to current branch)"
-	echo "  git claude end <branch_name>     - Remove worktree and directory"
+	echo "  git claude end <branch_name>     - Remove worktree and delete branch"
 	echo ""
 	echo "Examples:"
 	echo "  git claude start feature/new-api"
@@ -54,6 +54,8 @@ show_usage() {
 	echo ""
 	echo "Note: Directory will be named as <repo-name>-<branch-name>"
 	echo "      (e.g., 'myproject-feature-new-api' for repo 'myproject')"
+	echo ""
+	echo "Warning: 'git claude end' will remove both the worktree AND the branch"
 }
 
 # エラーメッセージを表示して終了
@@ -293,9 +295,18 @@ cmd_end() {
 	echo "Removing worktree at $found_path"
 	git worktree remove "$found_path" --force
 
-	echo "Worktree removed successfully!"
-	echo "Note: Branch '$branch_name' still exists. Remove manually if needed with:"
-	echo "  git branch -d $branch_name"
+	# ブランチを削除
+	echo "Removing branch '$branch_name'"
+	if git branch -d "$branch_name" 2>/dev/null; then
+		echo "Branch '$branch_name' removed successfully!"
+	else
+		# -d で削除できない場合は -D を使用（マージされていないブランチの場合）
+		echo "Branch '$branch_name' is not fully merged. Force deleting..."
+		git branch -D "$branch_name"
+		echo "Branch '$branch_name' force removed!"
+	fi
+
+	echo "Worktree and branch removed successfully!"
 }
 
 # メイン処理

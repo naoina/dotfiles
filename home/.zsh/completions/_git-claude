@@ -10,7 +10,7 @@ _git-claude() {
     
     commands=(
         'start:Create worktree for branch'
-        'end:Remove worktree and directory'
+        'end:Remove worktree and delete branch'
         'help:Show usage information'
     )
     
