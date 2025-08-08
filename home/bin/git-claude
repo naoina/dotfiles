@@ -261,27 +261,37 @@ cmd_end() {
 		error_exit "Branch name is required for end command"
 	fi
 
-	# ディレクトリ名に変換
-	local dir_name=$(convert_branch_to_dirname "$branch_name")
+	# git worktree list を使って実際のworktreeパスを検索
+	local worktree_path=""
+	local found_path=""
+	local found_branch=""
 
-	# メインリポジトリルートを取得
-	local main_repo_root=$(get_main_repo_root)
-	if [[ -z "$main_repo_root" ]]; then
-		error_exit "Could not determine main repository root"
+	# git worktree list --porcelain の出力を解析
+	while IFS= read -r line; do
+		if [[ "$line" =~ ^worktree[[:space:]](.+)$ ]]; then
+			worktree_path="${BASH_REMATCH[1]}"
+		elif [[ "$line" =~ ^branch[[:space:]]refs/heads/(.+)$ ]]; then
+			found_branch="${BASH_REMATCH[1]}"
+			if [[ "$found_branch" == "$branch_name" ]]; then
+				found_path="$worktree_path"
+			fi
+		fi
+	done < <(git worktree list --porcelain)
+
+	# worktreeが見つからない場合
+	if [[ -z "$found_path" ]]; then
+		error_exit "Worktree for branch '$branch_name' not found"
 	fi
 
-	# 一つ上の階層のパス（メインリポジトリルートの親ディレクトリ）
-	local parent_dir=$(dirname "$main_repo_root")/"$dir_name"
-	local abs_parent_dir="$parent_dir"
-
-	# worktreeが存在するかチェック
-	if ! worktree_exists "$abs_parent_dir"; then
-		error_exit "Worktree does not exist at $parent_dir"
+	# メインリポジトリのパスと同じ場合はエラー
+	local main_repo_root=$(get_main_repo_root)
+	if [[ "$found_path" == "$main_repo_root" ]]; then
+		error_exit "Cannot remove main worktree"
 	fi
 
 	# worktreeを削除
-	echo "Removing worktree at $parent_dir"
-	git worktree remove "$parent_dir" --force
+	echo "Removing worktree at $found_path"
+	git worktree remove "$found_path" --force
 
 	echo "Worktree removed successfully!"
 	echo "Note: Branch '$branch_name' still exists. Remove manually if needed with:"
