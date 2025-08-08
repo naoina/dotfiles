@@ -16,9 +16,22 @@ get_repo_root() {
 	git rev-parse --show-toplevel 2>/dev/null
 }
 
-# リポジトリ名を取得
+# メインのリポジトリディレクトリを取得（worktreeからでも正しく取得）
+get_main_repo_root() {
+	# git worktree listの最初の行がメインのリポジトリ
+	git worktree list | head -n1 | awk '{print $1}' 2>/dev/null
+}
+
+# リポジトリ名を取得（worktreeからでも正しいリポジトリ名を取得）
 get_repo_name() {
-	basename "$(get_repo_root)"
+	local main_repo_root=$(get_main_repo_root)
+	if [[ -n "$main_repo_root" ]]; then
+		# メインリポジトリのパスからリポジトリ名を取得
+		basename "$main_repo_root"
+	else
+		# フォールバック（通常は到達しないはず）
+		basename "$(get_repo_root)"
+	fi
 }
 
 # ブランチ名のディレクトリ名への変換（リポジトリ名をプレフィックスとして追加）
@@ -111,14 +124,14 @@ cmd_start() {
 	# ディレクトリ名に変換
 	local dir_name=$(convert_branch_to_dirname "$branch_name")
 
-	# リポジトリルートを取得
-	local repo_root=$(get_repo_root)
-	if [[ -z "$repo_root" ]]; then
-		error_exit "Could not determine repository root"
+	# メインリポジトリルートを取得
+	local main_repo_root=$(get_main_repo_root)
+	if [[ -z "$main_repo_root" ]]; then
+		error_exit "Could not determine main repository root"
 	fi
 
-	# 一つ上の階層のパス（リポジトリルートの親ディレクトリ）
-	local parent_dir=$(dirname "$repo_root")/"$dir_name"
+	# 一つ上の階層のパス（メインリポジトリルートの親ディレクトリ）
+	local parent_dir=$(dirname "$main_repo_root")/"$dir_name"
 	local abs_parent_dir="$parent_dir"
 
 	# 既にworktreeが存在するかチェック
@@ -142,16 +155,29 @@ cmd_start() {
 		git branch "$branch_name"
 	fi
 
-	# worktreeを作成（常に-fオプションを使用、リポジトリルートで実行）
+	# 現在のリポジトリルート（worktreeかもしれない）
+	local current_repo_root=$(get_repo_root)
+
+	# worktreeを作成（常に-fオプションを使用）
 	echo "Creating worktree at $parent_dir"
-	(cd "$repo_root" && git worktree add -f "$parent_dir" "$branch_name")
+	git worktree add -f "$parent_dir" "$branch_name"
 
 	# .envrc が存在する場合はシンボリックリンクを作成
-	if [[ -f "$repo_root/.envrc" ]]; then
-		echo "Creating symlink for .envrc"
-		ln -s "$repo_root/.envrc" "$parent_dir/.envrc"
+	# まず現在のworktreeから探す（優先）
+	if [[ -f "$current_repo_root/.envrc" ]]; then
+		echo "Creating symlink for .envrc from current worktree"
+		ln -s "$current_repo_root/.envrc" "$parent_dir/.envrc"
 
 		# direnvが利用可能な場合のみdirenv allowを実行
+		if check_direnv; then
+			echo "Setting up direnv in worktree"
+			(cd "$parent_dir" && direnv allow)
+		fi
+	elif [[ -f "$main_repo_root/.envrc" && "$current_repo_root" != "$main_repo_root" ]]; then
+		# メインリポジトリに.envrcがある場合（現在のworktreeにない場合）
+		echo "Creating symlink for .envrc from main repository"
+		ln -s "$main_repo_root/.envrc" "$parent_dir/.envrc"
+
 		if check_direnv; then
 			echo "Setting up direnv in worktree"
 			(cd "$parent_dir" && direnv allow)
@@ -159,19 +185,24 @@ cmd_start() {
 	fi
 
 	# CLAUDE.md が存在する場合はシンボリックリンクを作成
-	if [[ -f "$repo_root/CLAUDE.md" ]]; then
-		echo "Creating symlink for CLAUDE.md"
-		ln -s "$repo_root/CLAUDE.md" "$parent_dir/CLAUDE.md"
+	# まず現在のworktreeから探す（優先）
+	if [[ -f "$current_repo_root/CLAUDE.md" ]]; then
+		echo "Creating symlink for CLAUDE.md from current worktree"
+		ln -s "$current_repo_root/CLAUDE.md" "$parent_dir/CLAUDE.md"
+	elif [[ -f "$main_repo_root/CLAUDE.md" && "$current_repo_root" != "$main_repo_root" ]]; then
+		# メインリポジトリにCLAUDE.mdがある場合（現在のworktreeにない場合）
+		echo "Creating symlink for CLAUDE.md from main repository"
+		ln -s "$main_repo_root/CLAUDE.md" "$parent_dir/CLAUDE.md"
 	fi
 
 	# .env.*.local および .env.local ファイルをコピー（サブディレクトリも含む）
 	local env_files_found=0
 	echo "Searching for .env files to copy..."
 
-	# findコマンドを使用してリポジトリ内のすべての .env.*.local と .env.local ファイルを検索
+	# 現在のworktreeから.envファイルを検索してコピー（優先）
 	while IFS= read -r -d '' env_file; do
-		# リポジトリルートからの相対パスを取得
-		local rel_path="${env_file#$repo_root/}"
+		# 現在のリポジトリルートからの相対パスを取得
+		local rel_path="${env_file#$current_repo_root/}"
 		local dest_path="$parent_dir/$rel_path"
 		local dest_dir=$(dirname "$dest_path")
 
@@ -180,10 +211,31 @@ cmd_start() {
 			mkdir -p "$dest_dir"
 		fi
 
-		echo "Copying $rel_path"
+		echo "Copying $rel_path from current worktree"
 		cp "$env_file" "$dest_path"
 		env_files_found=1
-	done < <(find "$repo_root" -type f \( -name ".env.*.local" -o -name ".env.local" \) -print0)
+	done < <(find "$current_repo_root" -type f \( -name ".env.*.local" -o -name ".env.local" \) -print0)
+
+	# 現在のworktreeがメインリポジトリと異なる場合、メインリポジトリからも追加で.envファイルを検索
+	if [[ "$current_repo_root" != "$main_repo_root" ]]; then
+		while IFS= read -r -d '' env_file; do
+			# メインリポジトリルートからの相対パスを取得
+			local rel_path="${env_file#$main_repo_root/}"
+			local dest_path="$parent_dir/$rel_path"
+			local dest_dir=$(dirname "$dest_path")
+
+			# すでにコピー済みでない場合のみコピー（現在のworktreeを優先）
+			if [[ ! -f "$dest_path" ]]; then
+				if [[ ! -d "$dest_dir" ]]; then
+					mkdir -p "$dest_dir"
+				fi
+
+				echo "Copying $rel_path from main repository"
+				cp "$env_file" "$dest_path"
+				env_files_found=1
+			fi
+		done < <(find "$main_repo_root" -type f \( -name ".env.*.local" -o -name ".env.local" \) -print0)
+	fi
 
 	if [[ $env_files_found -eq 0 ]]; then
 		# .env.*.local や .env.local が見つからない場合の情報メッセージ
@@ -212,14 +264,14 @@ cmd_end() {
 	# ディレクトリ名に変換
 	local dir_name=$(convert_branch_to_dirname "$branch_name")
 
-	# リポジトリルートを取得
-	local repo_root=$(get_repo_root)
-	if [[ -z "$repo_root" ]]; then
-		error_exit "Could not determine repository root"
+	# メインリポジトリルートを取得
+	local main_repo_root=$(get_main_repo_root)
+	if [[ -z "$main_repo_root" ]]; then
+		error_exit "Could not determine main repository root"
 	fi
 
-	# 一つ上の階層のパス（リポジトリルートの親ディレクトリ）
-	local parent_dir=$(dirname "$repo_root")/"$dir_name"
+	# 一つ上の階層のパス（メインリポジトリルートの親ディレクトリ）
+	local parent_dir=$(dirname "$main_repo_root")/"$dir_name"
 	local abs_parent_dir="$parent_dir"
 
 	# worktreeが存在するかチェック
@@ -227,9 +279,9 @@ cmd_end() {
 		error_exit "Worktree does not exist at $parent_dir"
 	fi
 
-	# worktreeを削除（リポジトリルートで実行）
+	# worktreeを削除
 	echo "Removing worktree at $parent_dir"
-	(cd "$repo_root" && git worktree remove "$parent_dir" --force)
+	git worktree remove "$parent_dir" --force
 
 	echo "Worktree removed successfully!"
 	echo "Note: Branch '$branch_name' still exists. Remove manually if needed with:"

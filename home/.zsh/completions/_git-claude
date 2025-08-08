@@ -46,15 +46,24 @@ _git-claude() {
     esac
 }
 
+# メインリポジトリのパスを取得する関数
+_git_claude_get_main_repo_root() {
+    # git worktree listの最初の行がメインのリポジトリ
+    git worktree list 2>/dev/null | head -n1 | awk '{print $1}'
+}
+
 # worktreeが存在するブランチを取得する関数
 _git_claude_worktree_branches() {
     local -a worktree_branches
-    local repo_name worktree_path branch_info dir_name branch_name
+    local main_repo_root repo_name worktree_path branch_info dir_name branch_name
     
-    # リポジトリ名を取得
-    repo_name=$(basename "$(git rev-parse --show-toplevel 2>/dev/null)" 2>/dev/null)
+    # メインリポジトリのパスを取得
+    main_repo_root=$(_git_claude_get_main_repo_root)
     
-    if [[ -n "$repo_name" ]]; then
+    if [[ -n "$main_repo_root" ]]; then
+        # メインリポジトリのパスからリポジトリ名を取得
+        repo_name=$(basename "$main_repo_root")
+        
         # git worktree list の出力から worktree を抽出し、該当するディレクトリを探す
         while IFS= read -r line; do
             # zsh の正規表現マッチングを使用
@@ -66,7 +75,11 @@ _git_claude_worktree_branches() {
                 if [[ "$dir_name" =~ "^${repo_name}-(.+)$" ]]; then
                     # プレフィックスを除去してブランチ名を復元（- を / に変換）
                     branch_name="${match[1]//-/\/}"
-                    worktree_branches+=("$branch_name")
+                    
+                    # メインリポジトリのパスは除外（worktreeブランチのみを対象とする）
+                    if [[ "$worktree_path" != "$main_repo_root" ]]; then
+                        worktree_branches+=("$branch_name")
+                    fi
                 fi
             fi
         done < <(git worktree list --porcelain 2>/dev/null)
